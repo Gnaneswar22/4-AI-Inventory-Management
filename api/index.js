@@ -160,31 +160,43 @@ async function initializeData() {
   const userCount = await User.countDocuments();
   if (userCount === 0) {
     try {
-      const pPath = path.join(__dirname, 'data', 'products.json');
-      if (fs.existsSync(pPath)) {
-        await Product.insertMany(JSON.parse(fs.readFileSync(pPath, 'utf8')));
+      try {
+        const pData = require('./data/products.json');
+        await Product.insertMany(pData);
         console.log("  [init] Products seeded.");
+      } catch (e) {
+        console.log("  [init] Skip products");
       }
-      const sPath = path.join(__dirname, 'data', 'sales.json');
-      if (fs.existsSync(sPath)) {
-        await Sale.insertMany(JSON.parse(fs.readFileSync(sPath, 'utf8')));
+
+      try {
+        const sData = require('./data/sales.json');
+        await Sale.insertMany(sData);
         console.log("  [init] Sales seeded.");
+      } catch (e) {
+        console.log("  [init] Skip sales");
       }
-      const lPath = path.join(__dirname, 'data', 'stock_logs.json');
-      if (fs.existsSync(lPath)) {
-        await StockLog.insertMany(JSON.parse(fs.readFileSync(lPath, 'utf8')));
+
+      try {
+        const lData = require('./data/stock_logs.json');
+        await StockLog.insertMany(lData);
         console.log("  [init] StockLogs seeded.");
+      } catch (e) {
+        console.log("  [init] Skip stock logs");
       }
-      const uPath = path.join(__dirname, 'data', 'usage.json');
-      if (fs.existsSync(uPath)) {
-        await Usage.insertMany(JSON.parse(fs.readFileSync(uPath, 'utf8')));
+
+      try {
+        const uData = require('./data/usage.json');
+        await Usage.insertMany(uData);
         console.log("  [init] Usage seeded.");
+      } catch (e) {
+        console.log("  [init] Skip usage");
       }
-      const uFPath = path.join(__dirname, 'data', 'users.json');
-      if (fs.existsSync(uFPath)) {
-        await User.insertMany(JSON.parse(fs.readFileSync(uFPath, 'utf8')));
+
+      try {
+        const uFData = require('./data/users.json');
+        await User.insertMany(uFData);
         console.log("  [init] Users seeded.");
-      } else {
+      } catch (e) {
         await User.insertMany([
           {
             id: "u1",
@@ -201,10 +213,12 @@ async function initializeData() {
         console.log("  [init] Default admin created.");
       }
 
-      const fPath = path.join(__dirname, 'data', 'forecasts.json');
-      if (fs.existsSync(fPath)) {
-        await ForecastData.create(JSON.parse(fs.readFileSync(fPath, 'utf8')));
+      try {
+        const fData = require('./data/forecasts.json');
+        await ForecastData.create(fData);
         console.log("  [init] Forecasts seeded.");
+      } catch (e) {
+        console.log("  [init] Skip forecasts");
       }
     } catch (e) {
       console.log("  [init] Seeding error:", e.message);
@@ -214,10 +228,10 @@ async function initializeData() {
   const counterCount = await SalesCounter.countDocuments();
   if (counterCount === 0) {
     try {
-      const cPath = path.join(__dirname, 'data', 'sales_counter.json');
-      if (fs.existsSync(cPath)) {
-        await SalesCounter.create(JSON.parse(fs.readFileSync(cPath, 'utf8')));
-      } else {
+      try {
+        const cData = require('./data/sales_counter.json');
+        await SalesCounter.create(cData);
+      } catch (e) {
         await SalesCounter.create({ totalSalesCount: 0, totalRevenue: 0 });
       }
       console.log("  [init] Sales counter initialized.");
