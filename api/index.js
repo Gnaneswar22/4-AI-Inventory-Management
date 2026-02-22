@@ -192,26 +192,31 @@ async function initializeData() {
         console.log("  [init] Skip usage");
       }
 
-      try {
-        const uFData = require('./data/users.json');
-        await User.insertMany(uFData);
-        console.log("  [init] Users seeded.");
-      } catch (e) {
-        await User.insertMany([
-          {
-            id: "u1",
-            name: "Admin User",
-            email: "admin@invenio.ai",
-            password: bcrypt.hashSync("admin123", 10),
-            role: "ADMIN",
-            avatar: "https://picsum.photos/200/200",
-            security_question: "What is your favorite color?",
-            security_answer: bcrypt.hashSync("blue", 10),
-            created_at: new Date().toISOString(),
-          }
-        ]);
-        console.log("  [init] Default admin created.");
-      }
+      await User.insertMany([
+        {
+          id: "u1",
+          name: "Admin User",
+          email: "admin@invenio.ai",
+          password: bcrypt.hashSync("admin123", 10),
+          role: "ADMIN",
+          avatar: "https://picsum.photos/200/200",
+          security_question: "What is your favorite color?",
+          security_answer: bcrypt.hashSync("blue", 10),
+          created_at: new Date().toISOString(),
+        },
+        {
+          id: "u2",
+          name: "Store Manager",
+          email: "manager@invenio.ai",
+          password: bcrypt.hashSync("manager123", 10),
+          role: "USER",
+          avatar: "https://picsum.photos/201/201",
+          security_question: "What is your pet's name?",
+          security_answer: bcrypt.hashSync("buddy", 10),
+          created_at: new Date().toISOString(),
+        }
+      ]);
+      console.log("  [init] Default admin created.");
 
       try {
         const fData = require('./data/forecasts.json');
