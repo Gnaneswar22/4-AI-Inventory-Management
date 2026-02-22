@@ -1,0 +1,242 @@
+[
+  {
+    "id": "e48b4480",
+    "name": "Samsung Galaxy Buds Pro",
+    "category": "Electronics",
+    "stockQuantity": 45,
+    "minStockLevel": 15,
+    "price": 8999,
+    "manufacturer": "Samsung Electronics",
+    "lastUpdated": "2026-02-13T16:16:12.049118"
+  },
+  {
+    "id": "7449cc98",
+    "name": "boAt Airdopes 141",
+    "category": "Electronics",
+    "stockQuantity": 120,
+    "minStockLevel": 40,
+    "price": 1299,
+    "manufacturer": "boAt Lifestyle",
+    "lastUpdated": "2026-01-10T20:52:11.049212"
+  },
+  {
+    "id": "c823a8cf",
+    "name": "JBL Flip 6 Bluetooth Speaker",
+    "category": "Electronics",
+    "stockQuantity": 18,
+    "minStockLevel": 10,
+    "price": 11999,
+    "manufacturer": "HARMAN International",
+    "lastUpdated": "2026-01-20T13:59:57.049257"
+  },
+  {
+    "id": "9f11d8e0",
+    "name": "Realme Power Bank 20000mAh",
+    "category": "Electronics",
+    "stockQuantity": 65,
+    "minStockLevel": 25,
+    "price": 1499,
+    "manufacturer": "Realme India",
+    "lastUpdated": "2026-01-09T23:59:28.049282"
+  },
+  {
+    "id": "765a5dea",
+    "name": "Nike Air Zoom Pegasus 40",
+    "category": "Shoes",
+    "stockQuantity": 22,
+    "minStockLevel": 20,
+    "price": 11500,
+    "manufacturer": "Nike India Pvt Ltd",
+    "lastUpdated": "2026-01-19T19:44:48.049301"
+  },
+  {
+    "id": "581ee0a9",
+    "name": "Adidas Ultraboost Light",
+    "category": "Shoes",
+    "stockQuantity": 35,
+    "minStockLevel": 15,
+    "price": 16000,
+    "manufacturer": "Adidas India",
+    "lastUpdated": "2026-02-04T14:01:08.049322"
+  },
+  {
+    "id": "8a300792",
+    "name": "Puma RS-X Reinvention",
+    "category": "Shoes",
+    "stockQuantity": 8,
+    "minStockLevel": 25,
+    "price": 9999,
+    "manufacturer": "Puma Sports India",
+    "lastUpdated": "2026-01-26T00:10:38.049354"
+  },
+  {
+    "id": "c719dbe0",
+    "name": "Reebok Classic Leather",
+    "category": "Shoes",
+    "stockQuantity": 50,
+    "minStockLevel": 20,
+    "price": 6499,
+    "manufacturer": "Reebok India",
+    "lastUpdated": "2026-02-05T15:29:41.049374"
+  },
+  {
+    "id": "4f550f72",
+    "name": "Titan Neo Analog Watch",
+    "category": "Watches",
+    "stockQuantity": 30,
+    "minStockLevel": 10,
+    "price": 4500,
+    "manufacturer": "Titan Company",
+    "lastUpdated": "2026-01-11T21:48:30.049396"
+  },
+  {
+    "id": "a96ce5cf",
+    "name": "Fossil Gen 6 Smartwatch",
+    "category": "Watches",
+    "stockQuantity": 5,
+    "minStockLevel": 12,
+    "price": 24000,
+    "manufacturer": "Fossil India",
+    "lastUpdated": "2026-02-04T23:50:00.049416"
+  },
+  {
+    "id": "da57ac06",
+    "name": "Casio G-Shock GA-2100",
+    "category": "Watches",
+    "stockQuantity": 42,
+    "minStockLevel": 15,
+    "price": 8995,
+    "manufacturer": "Casio India",
+    "lastUpdated": "2025-12-27T22:52:13.049435"
+  },
+  {
+    "id": "1fc5bab6",
+    "name": "Levi's 501 Original Jeans",
+    "category": "Clothing",
+    "stockQuantity": 75,
+    "minStockLevel": 30,
+    "price": 3499,
+    "manufacturer": "Levi Strauss India",
+    "lastUpdated": "2026-01-03T18:17:26.049455"
+  },
+  {
+    "id": "fa34a920",
+    "name": "Allen Solly Formal Shirt",
+    "category": "Clothing",
+    "stockQuantity": 90,
+    "minStockLevel": 35,
+    "price": 1799,
+    "manufacturer": "Aditya Birla Fashion",
+    "lastUpdated": "2026-02-09T22:24:19.049477"
+  },
+  {
+    "id": "99186694",
+    "name": "US Polo Assn T-Shirt",
+    "category": "Clothing",
+    "stockQuantity": 110,
+    "minStockLevel": 50,
+    "price": 999,
+    "manufacturer": "USPA India",
+    "lastUpdated": "2026-01-23T21:45:51.049496"
+  },
+  {
+    "id": "904d81f0",
+    "name": "Raymond Blazer Suit",
+    "category": "Clothing",
+    "stockQuantity": 12,
+    "minStockLevel": 8,
+    "price": 14999,
+    "manufacturer": "Raymond Group",
+    "lastUpdated": "2026-01-16T17:43:51.049519"
+  },
+  {
+    "id": "4036de9f",
+    "name": "Louis Philippe Leather Belt",
+    "category": "Accessories",
+    "stockQuantity": 60,
+    "minStockLevel": 25,
+    "price": 2499,
+    "manufacturer": "Aditya Birla Fashion",
+    "lastUpdated": "2026-01-13T13:14:47.049539"
+  },
+  {
+    "id": "77370b03",
+    "name": "Tommy Hilfiger Wallet",
+    "category": "Accessories",
+    "stockQuantity": 40,
+    "minStockLevel": 20,
+    "price": 3200,
+    "manufacturer": "Tommy Hilfiger India",
+    "lastUpdated": "2026-02-11T14:28:48.049558"
+  },
+  {
+    "id": "fa205072",
+    "name": "Ray-Ban Aviator Sunglasses",
+    "category": "Accessories",
+    "stockQuantity": 15,
+    "minStockLevel": 10,
+    "price": 7990,
+    "manufacturer": "Luxottica India",
+    "lastUpdated": "2026-02-20T15:00:40.049578"
+  },
+  {
+    "id": "0c762de2",
+    "name": "Atomic Habits — James Clear",
+    "category": "Books",
+    "stockQuantity": 150,
+    "minStockLevel": 50,
+    "price": 550,
+    "manufacturer": "Penguin Random House",
+    "lastUpdated": "2026-01-17T14:06:04.049598"
+  },
+  {
+    "id": "768543b7",
+    "name": "Psychology of Money — Morgan Housel",
+    "category": "Books",
+    "stockQuantity": 85,
+    "minStockLevel": 30,
+    "price": 399,
+    "manufacturer": "Jaico Publishing",
+    "lastUpdated": "2025-12-28T19:51:17.049617"
+  },
+  {
+    "id": "c0edd589",
+    "name": "Ikigai — Héctor García",
+    "category": "Books",
+    "stockQuantity": 95,
+    "minStockLevel": 40,
+    "price": 350,
+    "manufacturer": "Penguin Books India",
+    "lastUpdated": "2026-01-26T23:07:33.049635"
+  },
+  {
+    "id": "63b8f1fb",
+    "name": "Milton Thermosteel Flask 1L",
+    "category": "Home & Kitchen",
+    "stockQuantity": 200,
+    "minStockLevel": 80,
+    "price": 799,
+    "manufacturer": "Milton Industries",
+    "lastUpdated": "2026-02-08T20:07:58.049654"
+  },
+  {
+    "id": "12c614c2",
+    "name": "Prestige Omega Fry Pan",
+    "category": "Home & Kitchen",
+    "stockQuantity": 55,
+    "minStockLevel": 20,
+    "price": 1599,
+    "manufacturer": "TTK Prestige",
+    "lastUpdated": "2026-01-10T11:30:58.049675"
+  },
+  {
+    "id": "d05595b0",
+    "name": "Pigeon LED Desk Lamp",
+    "category": "Home & Kitchen",
+    "stockQuantity": 70,
+    "minStockLevel": 30,
+    "price": 899,
+    "manufacturer": "Stove Craft Ltd",
+    "lastUpdated": "2026-01-21T15:35:17.049696"
+  }
+]

@@ -1,0 +1,974 @@
+[
+  {
+    "id": "62e4cc7c",
+    "productId": "c719dbe0",
+    "action": "SALE",
+    "quantityChange": -3,
+    "remainingStock": 47,
+    "timestamp": "2026-02-23T12:02:18.054032",
+    "note": "Sold 3 × Reebok Classic Leather to Sneha Das"
+  },
+  {
+    "id": "d00263ba",
+    "productId": "c0edd589",
+    "action": "USAGE",
+    "quantityChange": -2,
+    "remainingStock": 93,
+    "timestamp": "2026-02-22T13:32:03.058937",
+    "note": "Internal use: Exhibition by Store Manager"
+  },
+  {
+    "id": "0733048f",
+    "productId": "768543b7",
+    "action": "USAGE",
+    "quantityChange": -2,
+    "remainingStock": 83,
+    "timestamp": "2026-02-21T18:09:21.059161",
+    "note": "Internal use: Staff use by Store Manager"
+  },
+  {
+    "id": "3a3acbc0",
+    "productId": "e48b4480",
+    "action": "USAGE",
+    "quantityChange": -1,
+    "remainingStock": 44,
+    "timestamp": "2026-02-20T23:04:46.059132",
+    "note": "Internal use: Gifting by Admin User"
+  },
+  {
+    "id": "3fdf8733",
+    "productId": "4f550f72",
+    "action": "USAGE",
+    "quantityChange": -2,
+    "remainingStock": 28,
+    "timestamp": "2026-02-20T11:53:55.058959",
+    "note": "Internal use: Warehouse audit sample by Warehouse Lead"
+  },
+  {
+    "id": "58b51942",
+    "productId": "c823a8cf",
+    "action": "RESTOCK",
+    "quantityChange": 47,
+    "remainingStock": 65,
+    "timestamp": "2026-02-18T00:11:27.063727",
+    "note": "Restocked 47 units of JBL Flip 6 Bluetooth Speaker"
+  },
+  {
+    "id": "40ab132d",
+    "productId": "63b8f1fb",
+    "action": "RESTOCK",
+    "quantityChange": 24,
+    "remainingStock": 224,
+    "timestamp": "2026-02-17T23:51:36.063778",
+    "note": "Restocked 24 units of Milton Thermosteel Flask 1L"
+  },
+  {
+    "id": "ab707a4c",
+    "productId": "e48b4480",
+    "action": "USAGE",
+    "quantityChange": -3,
+    "remainingStock": 42,
+    "timestamp": "2026-02-17T20:53:26.058798",
+    "note": "Internal use: Warehouse audit sample by Warehouse Lead"
+  },
+  {
+    "id": "8506f6d1",
+    "productId": "768543b7",
+    "action": "SALE",
+    "quantityChange": -2,
+    "remainingStock": 83,
+    "timestamp": "2026-02-16T16:05:46.054515",
+    "note": "Sold 2 × Psychology of Money — Morgan Housel to Karthik Menon"
+  },
+  {
+    "id": "6c7b0430",
+    "productId": "c0edd589",
+    "action": "RESTOCK",
+    "quantityChange": 24,
+    "remainingStock": 119,
+    "timestamp": "2026-02-15T11:42:36.063753",
+    "note": "Restocked 24 units of Ikigai — Héctor García"
+  },
+  {
+    "id": "b3c3e13b",
+    "productId": "99186694",
+    "action": "SALE",
+    "quantityChange": -3,
+    "remainingStock": 107,
+    "timestamp": "2026-02-13T21:35:31.054097",
+    "note": "Sold 3 × US Polo Assn T-Shirt to Swathi Chakraborty"
+  },
+  {
+    "id": "320ba2fb",
+    "productId": "63b8f1fb",
+    "action": "SALE",
+    "quantityChange": -2,
+    "remainingStock": 198,
+    "timestamp": "2026-02-13T19:58:01.054219",
+    "note": "Sold 2 × Milton Thermosteel Flask 1L to Karthik Menon"
+  },
+  {
+    "id": "8ef6305b",
+    "productId": "4036de9f",
+    "action": "USAGE",
+    "quantityChange": -1,
+    "remainingStock": 59,
+    "timestamp": "2026-02-13T16:01:01.059117",
+    "note": "Internal use: Product demo by Store Manager"
+  },
+  {
+    "id": "83427a69",
+    "productId": "63b8f1fb",
+    "action": "RESTOCK",
+    "quantityChange": 54,
+    "remainingStock": 254,
+    "timestamp": "2026-02-13T13:48:34.063805",
+    "note": "Restocked 54 units of Milton Thermosteel Flask 1L"
+  },
+  {
+    "id": "6bcf1994",
+    "productId": "c823a8cf",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 17,
+    "timestamp": "2026-02-12T23:22:18.054418",
+    "note": "Sold 1 × JBL Flip 6 Bluetooth Speaker to Suresh Iyer"
+  },
+  {
+    "id": "ef323442",
+    "productId": "c823a8cf",
+    "action": "RESTOCK",
+    "quantityChange": 100,
+    "remainingStock": 118,
+    "timestamp": "2026-02-08T18:20:14.063832",
+    "note": "Restocked 100 units of JBL Flip 6 Bluetooth Speaker"
+  },
+  {
+    "id": "57288372",
+    "productId": "4f550f72",
+    "action": "USAGE",
+    "quantityChange": -3,
+    "remainingStock": 27,
+    "timestamp": "2026-02-07T23:43:00.059042",
+    "note": "Internal use: Staff use by Admin User"
+  },
+  {
+    "id": "987fd6eb",
+    "productId": "d05595b0",
+    "action": "SALE",
+    "quantityChange": -2,
+    "remainingStock": 68,
+    "timestamp": "2026-02-07T22:42:16.054949",
+    "note": "Sold 2 × Pigeon LED Desk Lamp to Swathi Chakraborty"
+  },
+  {
+    "id": "51f70201",
+    "productId": "c823a8cf",
+    "action": "SALE",
+    "quantityChange": -3,
+    "remainingStock": 15,
+    "timestamp": "2026-02-07T13:13:54.055028",
+    "note": "Sold 3 × JBL Flip 6 Bluetooth Speaker to Ritu Saxena"
+  },
+  {
+    "id": "ee5ea2dd",
+    "productId": "da57ac06",
+    "action": "SALE",
+    "quantityChange": -5,
+    "remainingStock": 37,
+    "timestamp": "2026-02-06T21:20:35.054619",
+    "note": "Sold 5 × Casio G-Shock GA-2100 to Arun Pillai"
+  },
+  {
+    "id": "84898cac",
+    "productId": "c719dbe0",
+    "action": "SALE",
+    "quantityChange": -5,
+    "remainingStock": 45,
+    "timestamp": "2026-02-06T20:09:21.053960",
+    "note": "Sold 5 × Reebok Classic Leather to Karthik Menon"
+  },
+  {
+    "id": "890e672e",
+    "productId": "da57ac06",
+    "action": "USAGE",
+    "quantityChange": -3,
+    "remainingStock": 39,
+    "timestamp": "2026-02-05T21:28:55.058857",
+    "note": "Internal use: Quality testing by Store Manager"
+  },
+  {
+    "id": "88ecc5b2",
+    "productId": "4f550f72",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 26,
+    "timestamp": "2026-02-03T15:59:15.053754",
+    "note": "Sold 4 × Titan Neo Analog Watch to Neha Gupta"
+  },
+  {
+    "id": "e5a433a0",
+    "productId": "c823a8cf",
+    "action": "SALE",
+    "quantityChange": -3,
+    "remainingStock": 15,
+    "timestamp": "2026-02-03T14:56:36.054171",
+    "note": "Sold 3 × JBL Flip 6 Bluetooth Speaker to Divya Rao"
+  },
+  {
+    "id": "c9987de3",
+    "productId": "a96ce5cf",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 1,
+    "timestamp": "2026-02-03T11:34:58.053986",
+    "note": "Sold 4 × Fossil Gen 6 Smartwatch to Vikram Singh"
+  },
+  {
+    "id": "360b314c",
+    "productId": "c823a8cf",
+    "action": "USAGE",
+    "quantityChange": -2,
+    "remainingStock": 16,
+    "timestamp": "2026-01-31T20:33:13.058822",
+    "note": "Internal use: Product demo by Warehouse Lead"
+  },
+  {
+    "id": "83e79d1e",
+    "productId": "c719dbe0",
+    "action": "USAGE",
+    "quantityChange": -2,
+    "remainingStock": 48,
+    "timestamp": "2026-01-30T11:28:45.058770",
+    "note": "Internal use: Warehouse audit sample by Admin User"
+  },
+  {
+    "id": "925ec1ee",
+    "productId": "c823a8cf",
+    "action": "USAGE",
+    "quantityChange": -2,
+    "remainingStock": 16,
+    "timestamp": "2026-01-29T15:23:10.058702",
+    "note": "Internal use: Photo shoot sample by Admin User"
+  },
+  {
+    "id": "b5bc7a32",
+    "productId": "768543b7",
+    "action": "RESTOCK",
+    "quantityChange": 21,
+    "remainingStock": 106,
+    "timestamp": "2026-01-27T17:22:19.063858",
+    "note": "Restocked 21 units of Psychology of Money — Morgan Housel"
+  },
+  {
+    "id": "5776a135",
+    "productId": "99186694",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 106,
+    "timestamp": "2026-01-24T23:01:46.053680",
+    "note": "Sold 4 × US Polo Assn T-Shirt to Manish Agarwal"
+  },
+  {
+    "id": "ac9b361d",
+    "productId": "63b8f1fb",
+    "action": "SALE",
+    "quantityChange": -2,
+    "remainingStock": 198,
+    "timestamp": "2026-01-24T18:48:23.054394",
+    "note": "Sold 2 × Milton Thermosteel Flask 1L to Sanya Mehta"
+  },
+  {
+    "id": "0f3b08b2",
+    "productId": "e48b4480",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 44,
+    "timestamp": "2026-01-23T22:30:27.055055",
+    "note": "Sold 1 × Samsung Galaxy Buds Pro to Rajesh Kumar"
+  },
+  {
+    "id": "0ab88b10",
+    "productId": "da57ac06",
+    "action": "SALE",
+    "quantityChange": -3,
+    "remainingStock": 39,
+    "timestamp": "2026-01-23T14:31:42.053857",
+    "note": "Sold 3 × Casio G-Shock GA-2100 to Arjun Reddy"
+  },
+  {
+    "id": "a81f281b",
+    "productId": "63b8f1fb",
+    "action": "USAGE",
+    "quantityChange": -2,
+    "remainingStock": 198,
+    "timestamp": "2026-01-21T23:12:45.058891",
+    "note": "Internal use: Return — damaged by Warehouse Lead"
+  },
+  {
+    "id": "605388ff",
+    "productId": "63b8f1fb",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 196,
+    "timestamp": "2026-01-21T18:19:10.054143",
+    "note": "Sold 4 × Milton Thermosteel Flask 1L to Rohit Verma"
+  },
+  {
+    "id": "81cd0056",
+    "productId": "4f550f72",
+    "action": "SALE",
+    "quantityChange": -3,
+    "remainingStock": 27,
+    "timestamp": "2026-01-20T14:34:02.054563",
+    "note": "Sold 3 × Titan Neo Analog Watch to Lakshmi Bhat"
+  },
+  {
+    "id": "579446b4",
+    "productId": "c823a8cf",
+    "action": "SALE",
+    "quantityChange": -2,
+    "remainingStock": 16,
+    "timestamp": "2026-01-19T21:21:26.054290",
+    "note": "Sold 2 × JBL Flip 6 Bluetooth Speaker to Arun Pillai"
+  },
+  {
+    "id": "39a184b6",
+    "productId": "4036de9f",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 56,
+    "timestamp": "2026-01-19T19:21:02.054339",
+    "note": "Sold 4 × Louis Philippe Leather Belt to Sneha Das"
+  },
+  {
+    "id": "b9513f83",
+    "productId": "765a5dea",
+    "action": "SALE",
+    "quantityChange": -3,
+    "remainingStock": 19,
+    "timestamp": "2026-01-19T17:07:42.054492",
+    "note": "Sold 3 × Nike Air Zoom Pegasus 40 to Lakshmi Bhat"
+  },
+  {
+    "id": "4de88a0a",
+    "productId": "99186694",
+    "action": "USAGE",
+    "quantityChange": -1,
+    "remainingStock": 109,
+    "timestamp": "2026-01-16T12:50:21.059102",
+    "note": "Internal use: Return — damaged by Warehouse Lead"
+  },
+  {
+    "id": "95523c90",
+    "productId": "fa34a920",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 86,
+    "timestamp": "2026-01-15T22:40:30.054924",
+    "note": "Sold 4 × Allen Solly Formal Shirt to Manish Agarwal"
+  },
+  {
+    "id": "6c93c988",
+    "productId": "a96ce5cf",
+    "action": "USAGE",
+    "quantityChange": -3,
+    "remainingStock": 2,
+    "timestamp": "2026-01-14T23:37:22.059024",
+    "note": "Internal use: Gifting by Admin User"
+  },
+  {
+    "id": "f1a04dc9",
+    "productId": "99186694",
+    "action": "SALE",
+    "quantityChange": -5,
+    "remainingStock": 105,
+    "timestamp": "2026-01-13T12:27:33.054900",
+    "note": "Sold 5 × US Polo Assn T-Shirt to Lakshmi Bhat"
+  },
+  {
+    "id": "4e3298c2",
+    "productId": "765a5dea",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 21,
+    "timestamp": "2026-01-12T18:49:28.054195",
+    "note": "Sold 1 × Nike Air Zoom Pegasus 40 to Neha Gupta"
+  },
+  {
+    "id": "178b14de",
+    "productId": "d05595b0",
+    "action": "USAGE",
+    "quantityChange": -1,
+    "remainingStock": 69,
+    "timestamp": "2026-01-12T13:32:29.058981",
+    "note": "Internal use: Exhibition by Warehouse Lead"
+  },
+  {
+    "id": "a3b81577",
+    "productId": "fa205072",
+    "action": "SALE",
+    "quantityChange": -2,
+    "remainingStock": 13,
+    "timestamp": "2026-01-10T16:20:17.054075",
+    "note": "Sold 2 × Ray-Ban Aviator Sunglasses to Swathi Chakraborty"
+  },
+  {
+    "id": "4913534c",
+    "productId": "c823a8cf",
+    "action": "RESTOCK",
+    "quantityChange": 90,
+    "remainingStock": 108,
+    "timestamp": "2026-01-10T15:53:03.063664",
+    "note": "Restocked 90 units of JBL Flip 6 Bluetooth Speaker"
+  },
+  {
+    "id": "3e8fc7f1",
+    "productId": "77370b03",
+    "action": "SALE",
+    "quantityChange": -5,
+    "remainingStock": 35,
+    "timestamp": "2026-01-09T22:36:02.054747",
+    "note": "Sold 5 × Tommy Hilfiger Wallet to Lakshmi Bhat"
+  },
+  {
+    "id": "db81c5f3",
+    "productId": "12c614c2",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 54,
+    "timestamp": "2026-01-09T21:58:41.054121",
+    "note": "Sold 1 × Prestige Omega Fry Pan to Pooja Nair"
+  },
+  {
+    "id": "4250bdf3",
+    "productId": "9f11d8e0",
+    "action": "USAGE",
+    "quantityChange": -2,
+    "remainingStock": 63,
+    "timestamp": "2026-01-09T16:48:56.059146",
+    "note": "Internal use: Return — damaged by Admin User"
+  },
+  {
+    "id": "a401f47d",
+    "productId": "581ee0a9",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 31,
+    "timestamp": "2026-01-08T13:34:50.054055",
+    "note": "Sold 4 × Adidas Ultraboost Light to Arjun Reddy"
+  },
+  {
+    "id": "5baba6e4",
+    "productId": "7449cc98",
+    "action": "SALE",
+    "quantityChange": -2,
+    "remainingStock": 118,
+    "timestamp": "2026-01-08T13:20:01.054247",
+    "note": "Sold 2 × boAt Airdopes 141 to Ankit Patel"
+  },
+  {
+    "id": "95ceefe3",
+    "productId": "904d81f0",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 11,
+    "timestamp": "2026-01-05T15:29:40.054645",
+    "note": "Sold 1 × Raymond Blazer Suit to Sanya Mehta"
+  },
+  {
+    "id": "b65b9301",
+    "productId": "904d81f0",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 11,
+    "timestamp": "2026-01-04T19:12:33.053779",
+    "note": "Sold 1 × Raymond Blazer Suit to Lakshmi Bhat"
+  },
+  {
+    "id": "fda340ed",
+    "productId": "e48b4480",
+    "action": "USAGE",
+    "quantityChange": -2,
+    "remainingStock": 43,
+    "timestamp": "2026-01-04T15:45:12.059057",
+    "note": "Internal use: Return — damaged by Admin User"
+  },
+  {
+    "id": "6c522b41",
+    "productId": "12c614c2",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 51,
+    "timestamp": "2026-01-03T17:50:44.053623",
+    "note": "Sold 4 × Prestige Omega Fry Pan to Ankit Patel"
+  },
+  {
+    "id": "f6c8cfde",
+    "productId": "765a5dea",
+    "action": "USAGE",
+    "quantityChange": -1,
+    "remainingStock": 21,
+    "timestamp": "2026-01-03T00:09:32.058916",
+    "note": "Internal use: Photo shoot sample by Warehouse Lead"
+  },
+  {
+    "id": "41e13a5e",
+    "productId": "4f550f72",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 29,
+    "timestamp": "2026-01-01T22:13:26.054695",
+    "note": "Sold 1 × Titan Neo Analog Watch to Suresh Iyer"
+  },
+  {
+    "id": "e72fa7c7",
+    "productId": "d05595b0",
+    "action": "USAGE",
+    "quantityChange": -3,
+    "remainingStock": 67,
+    "timestamp": "2026-01-01T12:35:46.059072",
+    "note": "Internal use: Photo shoot sample by Store Manager"
+  },
+  {
+    "id": "0cdbf0d8",
+    "productId": "c823a8cf",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 14,
+    "timestamp": "2025-12-31T20:45:16.054671",
+    "note": "Sold 4 × JBL Flip 6 Bluetooth Speaker to Sanya Mehta"
+  },
+  {
+    "id": "475227e1",
+    "productId": "da57ac06",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 41,
+    "timestamp": "2025-12-30T15:24:24.054819",
+    "note": "Sold 1 × Casio G-Shock GA-2100 to Suresh Iyer"
+  },
+  {
+    "id": "41971aeb",
+    "productId": "63b8f1fb",
+    "action": "RESTOCK",
+    "quantityChange": 42,
+    "remainingStock": 242,
+    "timestamp": "2025-12-29T16:30:36.063884",
+    "note": "Restocked 42 units of Milton Thermosteel Flask 1L"
+  },
+  {
+    "id": "0f23b729",
+    "productId": "765a5dea",
+    "action": "RESTOCK",
+    "quantityChange": 32,
+    "remainingStock": 54,
+    "timestamp": "2025-12-29T14:02:51.063919",
+    "note": "Restocked 32 units of Nike Air Zoom Pegasus 40"
+  },
+  {
+    "id": "eb19e2ca",
+    "productId": "4036de9f",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 59,
+    "timestamp": "2025-12-28T21:29:21.054538",
+    "note": "Sold 1 × Louis Philippe Leather Belt to Lakshmi Bhat"
+  },
+  {
+    "id": "6009169e",
+    "productId": "c823a8cf",
+    "action": "USAGE",
+    "quantityChange": -3,
+    "remainingStock": 15,
+    "timestamp": "2025-12-25T21:56:02.059087",
+    "note": "Internal use: Staff use by Warehouse Lead"
+  },
+  {
+    "id": "c7bf2108",
+    "productId": "da57ac06",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 38,
+    "timestamp": "2025-12-25T17:06:25.054316",
+    "note": "Sold 4 × Casio G-Shock GA-2100 to Divya Rao"
+  },
+  {
+    "id": "67b46946",
+    "productId": "fa34a920",
+    "action": "SALE",
+    "quantityChange": -2,
+    "remainingStock": 88,
+    "timestamp": "2025-12-21T19:09:14.053705",
+    "note": "Sold 2 × Allen Solly Formal Shirt to Vikram Singh"
+  },
+  {
+    "id": "ed3baf4b",
+    "productId": "765a5dea",
+    "action": "SALE",
+    "quantityChange": -2,
+    "remainingStock": 20,
+    "timestamp": "2025-12-20T21:51:13.055003",
+    "note": "Sold 2 × Nike Air Zoom Pegasus 40 to Rohit Verma"
+  },
+  {
+    "id": "83ff9a1d",
+    "productId": "63b8f1fb",
+    "action": "SALE",
+    "quantityChange": -5,
+    "remainingStock": 195,
+    "timestamp": "2025-12-18T14:13:13.054466",
+    "note": "Sold 5 × Milton Thermosteel Flask 1L to Arun Pillai"
+  },
+  {
+    "id": "9c6da911",
+    "productId": "7449cc98",
+    "action": "SALE",
+    "quantityChange": -2,
+    "remainingStock": 118,
+    "timestamp": "2025-12-17T22:37:59.053553",
+    "note": "Sold 2 × boAt Airdopes 141 to Arjun Reddy"
+  },
+  {
+    "id": "b518dca4",
+    "productId": "4f550f72",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 29,
+    "timestamp": "2025-12-12T22:37:15.054850",
+    "note": "Sold 1 × Titan Neo Analog Watch to Pooja Nair"
+  },
+  {
+    "id": "01752de0",
+    "productId": "da57ac06",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 38,
+    "timestamp": "2025-12-09T15:54:57.053883",
+    "note": "Sold 4 × Casio G-Shock GA-2100 to Priya Sharma"
+  },
+  {
+    "id": "e203de2a",
+    "productId": "9f11d8e0",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 61,
+    "timestamp": "2025-12-05T13:58:41.053933",
+    "note": "Sold 4 × Realme Power Bank 20000mAh to Swathi Chakraborty"
+  },
+  {
+    "id": "e6cc0f51",
+    "productId": "8a300792",
+    "action": "SALE",
+    "quantityChange": -5,
+    "remainingStock": 3,
+    "timestamp": "2025-12-02T22:39:38.053654",
+    "note": "Sold 5 × Puma RS-X Reinvention to Priya Sharma"
+  },
+  {
+    "id": "66d933a8",
+    "productId": "77370b03",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 39,
+    "timestamp": "2025-12-02T11:26:48.054443",
+    "note": "Sold 1 × Tommy Hilfiger Wallet to Ritu Saxena"
+  },
+  {
+    "id": "82dd04cd",
+    "productId": "fa34a920",
+    "action": "SALE",
+    "quantityChange": -3,
+    "remainingStock": 87,
+    "timestamp": "2025-12-01T18:45:01.053907",
+    "note": "Sold 3 × Allen Solly Formal Shirt to Lakshmi Bhat"
+  },
+  {
+    "id": "a9afe982",
+    "productId": "4036de9f",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 59,
+    "timestamp": "2025-12-01T15:21:03.054719",
+    "note": "Sold 1 × Louis Philippe Leather Belt to Sanya Mehta"
+  },
+  {
+    "id": "8782b2b5",
+    "productId": "a96ce5cf",
+    "action": "INITIAL",
+    "quantityChange": 5,
+    "remainingStock": 5,
+    "timestamp": "2025-11-30T22:36:09.062464",
+    "note": "Initial stock entry for Fossil Gen 6 Smartwatch"
+  },
+  {
+    "id": "5c0067c7",
+    "productId": "63b8f1fb",
+    "action": "INITIAL",
+    "quantityChange": 200,
+    "remainingStock": 200,
+    "timestamp": "2025-11-30T22:12:37.062697",
+    "note": "Initial stock entry for Milton Thermosteel Flask 1L"
+  },
+  {
+    "id": "33148b76",
+    "productId": "63b8f1fb",
+    "action": "SALE",
+    "quantityChange": -3,
+    "remainingStock": 197,
+    "timestamp": "2025-11-30T16:57:04.054592",
+    "note": "Sold 3 × Milton Thermosteel Flask 1L to Deepak Tiwari"
+  },
+  {
+    "id": "70040919",
+    "productId": "768543b7",
+    "action": "INITIAL",
+    "quantityChange": 85,
+    "remainingStock": 85,
+    "timestamp": "2025-11-30T16:53:02.062660",
+    "note": "Initial stock entry for Psychology of Money — Morgan Housel"
+  },
+  {
+    "id": "16c9d8e7",
+    "productId": "63b8f1fb",
+    "action": "SALE",
+    "quantityChange": -3,
+    "remainingStock": 197,
+    "timestamp": "2025-11-30T14:44:04.054972",
+    "note": "Sold 3 × Milton Thermosteel Flask 1L to Rohit Verma"
+  },
+  {
+    "id": "a320fc16",
+    "productId": "e48b4480",
+    "action": "INITIAL",
+    "quantityChange": 45,
+    "remainingStock": 45,
+    "timestamp": "2025-11-30T13:15:18.061637",
+    "note": "Initial stock entry for Samsung Galaxy Buds Pro"
+  },
+  {
+    "id": "e3566e06",
+    "productId": "8a300792",
+    "action": "INITIAL",
+    "quantityChange": 8,
+    "remainingStock": 8,
+    "timestamp": "2025-11-30T12:26:02.062390",
+    "note": "Initial stock entry for Puma RS-X Reinvention"
+  },
+  {
+    "id": "0b6484d1",
+    "productId": "768543b7",
+    "action": "SALE",
+    "quantityChange": -4,
+    "remainingStock": 81,
+    "timestamp": "2025-11-29T21:28:57.054363",
+    "note": "Sold 4 × Psychology of Money — Morgan Housel to Karthik Menon"
+  },
+  {
+    "id": "6902f7da",
+    "productId": "581ee0a9",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 34,
+    "timestamp": "2025-11-29T21:18:09.054011",
+    "note": "Sold 1 × Adidas Ultraboost Light to Vikram Singh"
+  },
+  {
+    "id": "019e8feb",
+    "productId": "0c762de2",
+    "action": "INITIAL",
+    "quantityChange": 150,
+    "remainingStock": 150,
+    "timestamp": "2025-11-29T17:22:37.062640",
+    "note": "Initial stock entry for Atomic Habits — James Clear"
+  },
+  {
+    "id": "747b463d",
+    "productId": "581ee0a9",
+    "action": "INITIAL",
+    "quantityChange": 35,
+    "remainingStock": 35,
+    "timestamp": "2025-11-29T14:10:35.062368",
+    "note": "Initial stock entry for Adidas Ultraboost Light"
+  },
+  {
+    "id": "cfbdcc0e",
+    "productId": "99186694",
+    "action": "INITIAL",
+    "quantityChange": 110,
+    "remainingStock": 110,
+    "timestamp": "2025-11-28T17:26:40.062539",
+    "note": "Initial stock entry for US Polo Assn T-Shirt"
+  },
+  {
+    "id": "c0974b01",
+    "productId": "77370b03",
+    "action": "INITIAL",
+    "quantityChange": 40,
+    "remainingStock": 40,
+    "timestamp": "2025-11-28T17:16:49.062595",
+    "note": "Initial stock entry for Tommy Hilfiger Wallet"
+  },
+  {
+    "id": "41e990ca",
+    "productId": "765a5dea",
+    "action": "INITIAL",
+    "quantityChange": 22,
+    "remainingStock": 22,
+    "timestamp": "2025-11-28T16:23:02.062328",
+    "note": "Initial stock entry for Nike Air Zoom Pegasus 40"
+  },
+  {
+    "id": "074faff8",
+    "productId": "da57ac06",
+    "action": "INITIAL",
+    "quantityChange": 42,
+    "remainingStock": 42,
+    "timestamp": "2025-11-28T15:52:18.062483",
+    "note": "Initial stock entry for Casio G-Shock GA-2100"
+  },
+  {
+    "id": "1f451fe7",
+    "productId": "77370b03",
+    "action": "SALE",
+    "quantityChange": -5,
+    "remainingStock": 35,
+    "timestamp": "2025-11-28T13:41:35.053728",
+    "note": "Sold 5 × Tommy Hilfiger Wallet to Vikram Singh"
+  },
+  {
+    "id": "289099e9",
+    "productId": "fa205072",
+    "action": "INITIAL",
+    "quantityChange": 15,
+    "remainingStock": 15,
+    "timestamp": "2025-11-27T21:23:14.062615",
+    "note": "Initial stock entry for Ray-Ban Aviator Sunglasses"
+  },
+  {
+    "id": "574bcdff",
+    "productId": "4036de9f",
+    "action": "INITIAL",
+    "quantityChange": 60,
+    "remainingStock": 60,
+    "timestamp": "2025-11-27T20:53:18.062576",
+    "note": "Initial stock entry for Louis Philippe Leather Belt"
+  },
+  {
+    "id": "5886791a",
+    "productId": "77370b03",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 39,
+    "timestamp": "2025-11-27T19:30:41.053831",
+    "note": "Sold 1 × Tommy Hilfiger Wallet to Rajesh Kumar"
+  },
+  {
+    "id": "bba7f57f",
+    "productId": "7449cc98",
+    "action": "INITIAL",
+    "quantityChange": 120,
+    "remainingStock": 120,
+    "timestamp": "2025-11-27T15:54:37.061712",
+    "note": "Initial stock entry for boAt Airdopes 141"
+  },
+  {
+    "id": "00cc28b5",
+    "productId": "9f11d8e0",
+    "action": "INITIAL",
+    "quantityChange": 65,
+    "remainingStock": 65,
+    "timestamp": "2025-11-26T22:36:55.061745",
+    "note": "Initial stock entry for Realme Power Bank 20000mAh"
+  },
+  {
+    "id": "bd4e3beb",
+    "productId": "c0edd589",
+    "action": "INITIAL",
+    "quantityChange": 95,
+    "remainingStock": 95,
+    "timestamp": "2025-11-26T20:56:24.062678",
+    "note": "Initial stock entry for Ikigai — Héctor García"
+  },
+  {
+    "id": "3f88d527",
+    "productId": "1fc5bab6",
+    "action": "INITIAL",
+    "quantityChange": 75,
+    "remainingStock": 75,
+    "timestamp": "2025-11-26T15:24:13.062503",
+    "note": "Initial stock entry for Levi's 501 Original Jeans"
+  },
+  {
+    "id": "84ada76d",
+    "productId": "d05595b0",
+    "action": "INITIAL",
+    "quantityChange": 70,
+    "remainingStock": 70,
+    "timestamp": "2025-11-26T14:32:30.062736",
+    "note": "Initial stock entry for Pigeon LED Desk Lamp"
+  },
+  {
+    "id": "6a3dfcf5",
+    "productId": "c823a8cf",
+    "action": "INITIAL",
+    "quantityChange": 18,
+    "remainingStock": 18,
+    "timestamp": "2025-11-26T00:00:08.061730",
+    "note": "Initial stock entry for JBL Flip 6 Bluetooth Speaker"
+  },
+  {
+    "id": "d4a5691f",
+    "productId": "fa34a920",
+    "action": "INITIAL",
+    "quantityChange": 90,
+    "remainingStock": 90,
+    "timestamp": "2025-11-25T21:26:59.062520",
+    "note": "Initial stock entry for Allen Solly Formal Shirt"
+  },
+  {
+    "id": "3270da1c",
+    "productId": "765a5dea",
+    "action": "SALE",
+    "quantityChange": -1,
+    "remainingStock": 21,
+    "timestamp": "2025-11-25T17:52:35.054875",
+    "note": "Sold 1 × Nike Air Zoom Pegasus 40 to Lakshmi Bhat"
+  },
+  {
+    "id": "5a462ac3",
+    "productId": "904d81f0",
+    "action": "INITIAL",
+    "quantityChange": 12,
+    "remainingStock": 12,
+    "timestamp": "2025-11-25T17:03:24.062558",
+    "note": "Initial stock entry for Raymond Blazer Suit"
+  },
+  {
+    "id": "85c5dc9b",
+    "productId": "12c614c2",
+    "action": "INITIAL",
+    "quantityChange": 55,
+    "remainingStock": 55,
+    "timestamp": "2025-11-25T16:11:58.062718",
+    "note": "Initial stock entry for Prestige Omega Fry Pan"
+  },
+  {
+    "id": "6d667ed7",
+    "productId": "4f550f72",
+    "action": "INITIAL",
+    "quantityChange": 30,
+    "remainingStock": 30,
+    "timestamp": "2025-11-25T13:33:32.062430",
+    "note": "Initial stock entry for Titan Neo Analog Watch"
+  },
+  {
+    "id": "ff628622",
+    "productId": "c719dbe0",
+    "action": "INITIAL",
+    "quantityChange": 50,
+    "remainingStock": 50,
+    "timestamp": "2025-11-25T11:26:38.062410",
+    "note": "Initial stock entry for Reebok Classic Leather"
+  }
+]

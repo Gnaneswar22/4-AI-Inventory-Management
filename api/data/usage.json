@@ -1,0 +1,202 @@
+[
+  {
+    "id": "c9c5aefe",
+    "productId": "c0edd589",
+    "productName": "Ikigai — Héctor García",
+    "userId": "10de3d87",
+    "userName": "Store Manager",
+    "quantity": 2,
+    "reason": "Exhibition",
+    "date": "2026-02-22T13:32:03.058937"
+  },
+  {
+    "id": "13a2d522",
+    "productId": "768543b7",
+    "productName": "Psychology of Money — Morgan Housel",
+    "userId": "10de3d87",
+    "userName": "Store Manager",
+    "quantity": 2,
+    "reason": "Staff use",
+    "date": "2026-02-21T18:09:21.059161"
+  },
+  {
+    "id": "f876479f",
+    "productId": "e48b4480",
+    "productName": "Samsung Galaxy Buds Pro",
+    "userId": "867a5aad",
+    "userName": "Admin User",
+    "quantity": 1,
+    "reason": "Gifting",
+    "date": "2026-02-20T23:04:46.059132"
+  },
+  {
+    "id": "e9d2ad53",
+    "productId": "4f550f72",
+    "productName": "Titan Neo Analog Watch",
+    "userId": "2b2137f3",
+    "userName": "Warehouse Lead",
+    "quantity": 2,
+    "reason": "Warehouse audit sample",
+    "date": "2026-02-20T11:53:55.058959"
+  },
+  {
+    "id": "a8deb799",
+    "productId": "e48b4480",
+    "productName": "Samsung Galaxy Buds Pro",
+    "userId": "2b2137f3",
+    "userName": "Warehouse Lead",
+    "quantity": 3,
+    "reason": "Warehouse audit sample",
+    "date": "2026-02-17T20:53:26.058798"
+  },
+  {
+    "id": "9f6a9e94",
+    "productId": "4036de9f",
+    "productName": "Louis Philippe Leather Belt",
+    "userId": "10de3d87",
+    "userName": "Store Manager",
+    "quantity": 1,
+    "reason": "Product demo",
+    "date": "2026-02-13T16:01:01.059117"
+  },
+  {
+    "id": "02f827b9",
+    "productId": "4f550f72",
+    "productName": "Titan Neo Analog Watch",
+    "userId": "867a5aad",
+    "userName": "Admin User",
+    "quantity": 3,
+    "reason": "Staff use",
+    "date": "2026-02-07T23:43:00.059042"
+  },
+  {
+    "id": "bba964b1",
+    "productId": "da57ac06",
+    "productName": "Casio G-Shock GA-2100",
+    "userId": "10de3d87",
+    "userName": "Store Manager",
+    "quantity": 3,
+    "reason": "Quality testing",
+    "date": "2026-02-05T21:28:55.058857"
+  },
+  {
+    "id": "7b3e9737",
+    "productId": "c823a8cf",
+    "productName": "JBL Flip 6 Bluetooth Speaker",
+    "userId": "2b2137f3",
+    "userName": "Warehouse Lead",
+    "quantity": 2,
+    "reason": "Product demo",
+    "date": "2026-01-31T20:33:13.058822"
+  },
+  {
+    "id": "f37fe4a6",
+    "productId": "c719dbe0",
+    "productName": "Reebok Classic Leather",
+    "userId": "867a5aad",
+    "userName": "Admin User",
+    "quantity": 2,
+    "reason": "Warehouse audit sample",
+    "date": "2026-01-30T11:28:45.058770"
+  },
+  {
+    "id": "7cf67dd1",
+    "productId": "c823a8cf",
+    "productName": "JBL Flip 6 Bluetooth Speaker",
+    "userId": "867a5aad",
+    "userName": "Admin User",
+    "quantity": 2,
+    "reason": "Photo shoot sample",
+    "date": "2026-01-29T15:23:10.058702"
+  },
+  {
+    "id": "934e30b2",
+    "productId": "63b8f1fb",
+    "productName": "Milton Thermosteel Flask 1L",
+    "userId": "2b2137f3",
+    "userName": "Warehouse Lead",
+    "quantity": 2,
+    "reason": "Return — damaged",
+    "date": "2026-01-21T23:12:45.058891"
+  },
+  {
+    "id": "3c13866d",
+    "productId": "99186694",
+    "productName": "US Polo Assn T-Shirt",
+    "userId": "2b2137f3",
+    "userName": "Warehouse Lead",
+    "quantity": 1,
+    "reason": "Return — damaged",
+    "date": "2026-01-16T12:50:21.059102"
+  },
+  {
+    "id": "bddd7489",
+    "productId": "a96ce5cf",
+    "productName": "Fossil Gen 6 Smartwatch",
+    "userId": "867a5aad",
+    "userName": "Admin User",
+    "quantity": 3,
+    "reason": "Gifting",
+    "date": "2026-01-14T23:37:22.059024"
+  },
+  {
+    "id": "7a68e44a",
+    "productId": "d05595b0",
+    "productName": "Pigeon LED Desk Lamp",
+    "userId": "2b2137f3",
+    "userName": "Warehouse Lead",
+    "quantity": 1,
+    "reason": "Exhibition",
+    "date": "2026-01-12T13:32:29.058981"
+  },
+  {
+    "id": "47342520",
+    "productId": "9f11d8e0",
+    "productName": "Realme Power Bank 20000mAh",
+    "userId": "867a5aad",
+    "userName": "Admin User",
+    "quantity": 2,
+    "reason": "Return — damaged",
+    "date": "2026-01-09T16:48:56.059146"
+  },
+  {
+    "id": "d9668b1d",
+    "productId": "e48b4480",
+    "productName": "Samsung Galaxy Buds Pro",
+    "userId": "867a5aad",
+    "userName": "Admin User",
+    "quantity": 2,
+    "reason": "Return — damaged",
+    "date": "2026-01-04T15:45:12.059057"
+  },
+  {
+    "id": "19aec456",
+    "productId": "765a5dea",
+    "productName": "Nike Air Zoom Pegasus 40",
+    "userId": "2b2137f3",
+    "userName": "Warehouse Lead",
+    "quantity": 1,
+    "reason": "Photo shoot sample",
+    "date": "2026-01-03T00:09:32.058916"
+  },
+  {
+    "id": "a03120be",
+    "productId": "d05595b0",
+    "productName": "Pigeon LED Desk Lamp",
+    "userId": "10de3d87",
+    "userName": "Store Manager",
+    "quantity": 3,
+    "reason": "Photo shoot sample",
+    "date": "2026-01-01T12:35:46.059072"
+  },
+  {
+    "id": "554e8504",
+    "productId": "c823a8cf",
+    "productName": "JBL Flip 6 Bluetooth Speaker",
+    "userId": "2b2137f3",
+    "userName": "Warehouse Lead",
+    "quantity": 3,
+    "reason": "Staff use",
+    "date": "2025-12-25T21:56:02.059087"
+  }
+]

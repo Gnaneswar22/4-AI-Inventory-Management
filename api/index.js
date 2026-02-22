@@ -159,39 +159,74 @@ function generateId() {
 async function initializeData() {
   const userCount = await User.countDocuments();
   if (userCount === 0) {
-    await User.insertMany([
-      {
-        id: "u1",
-        name: "Admin User",
-        email: "admin@invenio.ai",
-        password: bcrypt.hashSync("admin123", 10),
-        role: "ADMIN",
-        avatar: "https://picsum.photos/200/200",
-        security_question: "What is your favorite color?",
-        security_answer: bcrypt.hashSync("blue", 10),
-        created_at: new Date().toISOString(),
-      },
-      {
-        id: "u2",
-        name: "Store Manager",
-        email: "manager@invenio.ai",
-        password: bcrypt.hashSync("manager123", 10),
-        role: "USER",
-        avatar: "https://picsum.photos/201/201",
-        security_question: "What is your pet's name?",
-        security_answer: bcrypt.hashSync("buddy", 10),
-        created_at: new Date().toISOString(),
-      },
-    ]);
-    console.log("  [init] Default users created.");
+    try {
+      const pPath = path.join(__dirname, 'data', 'products.json');
+      if (fs.existsSync(pPath)) {
+        await Product.insertMany(JSON.parse(fs.readFileSync(pPath, 'utf8')));
+        console.log("  [init] Products seeded.");
+      }
+      const sPath = path.join(__dirname, 'data', 'sales.json');
+      if (fs.existsSync(sPath)) {
+        await Sale.insertMany(JSON.parse(fs.readFileSync(sPath, 'utf8')));
+        console.log("  [init] Sales seeded.");
+      }
+      const lPath = path.join(__dirname, 'data', 'stock_logs.json');
+      if (fs.existsSync(lPath)) {
+        await StockLog.insertMany(JSON.parse(fs.readFileSync(lPath, 'utf8')));
+        console.log("  [init] StockLogs seeded.");
+      }
+      const uPath = path.join(__dirname, 'data', 'usage.json');
+      if (fs.existsSync(uPath)) {
+        await Usage.insertMany(JSON.parse(fs.readFileSync(uPath, 'utf8')));
+        console.log("  [init] Usage seeded.");
+      }
+      const uFPath = path.join(__dirname, 'data', 'users.json');
+      if (fs.existsSync(uFPath)) {
+        await User.insertMany(JSON.parse(fs.readFileSync(uFPath, 'utf8')));
+        console.log("  [init] Users seeded.");
+      } else {
+        await User.insertMany([
+          {
+            id: "u1",
+            name: "Admin User",
+            email: "admin@invenio.ai",
+            password: bcrypt.hashSync("admin123", 10),
+            role: "ADMIN",
+            avatar: "https://picsum.photos/200/200",
+            security_question: "What is your favorite color?",
+            security_answer: bcrypt.hashSync("blue", 10),
+            created_at: new Date().toISOString(),
+          }
+        ]);
+        console.log("  [init] Default admin created.");
+      }
+
+      const fPath = path.join(__dirname, 'data', 'forecasts.json');
+      if (fs.existsSync(fPath)) {
+        await ForecastData.create(JSON.parse(fs.readFileSync(fPath, 'utf8')));
+        console.log("  [init] Forecasts seeded.");
+      }
+    } catch (e) {
+      console.log("  [init] Seeding error:", e.message);
+    }
   }
 
   const counterCount = await SalesCounter.countDocuments();
   if (counterCount === 0) {
-    await SalesCounter.create({ totalSalesCount: 0, totalRevenue: 0 });
-    console.log("  [init] Sales counter initialized.");
+    try {
+      const cPath = path.join(__dirname, 'data', 'sales_counter.json');
+      if (fs.existsSync(cPath)) {
+        await SalesCounter.create(JSON.parse(fs.readFileSync(cPath, 'utf8')));
+      } else {
+        await SalesCounter.create({ totalSalesCount: 0, totalRevenue: 0 });
+      }
+      console.log("  [init] Sales counter initialized.");
+    } catch (e) {
+      console.log("  [init] Sales counter error:", e.message);
+    }
   }
 }
+
 
 // ─────────────────────────────────────────────────
 // STOCK-LOG HELPER
@@ -1250,6 +1285,16 @@ app.get("/api/health", (req, res) => {
     dbState: states[mongoose.connection.readyState] || "unknown",
     timestamp: new Date().toISOString(),
   });
+});
+
+app.get("/api/secret-seed-database", async (req, res) => {
+  try {
+    await mongoose.connection.db.dropDatabase();
+    await initializeData();
+    res.json({ message: "Database dropped and re-seeded successfully." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ═══════════════════════════════════════════════════
