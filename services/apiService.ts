@@ -3,7 +3,7 @@
  * Communicates with Flask backend (JSON-based storage)
  */
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = '/api';
 
 async function apiRequest(endpoint: string, options: RequestInit = {}): Promise<any> {
   const url = `${API_BASE}${endpoint}`;

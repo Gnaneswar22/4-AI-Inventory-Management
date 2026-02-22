@@ -12,6 +12,7 @@ const session = require("express-session");
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const app = express();
 const PORT = 5000;
@@ -19,8 +20,7 @@ const PORT = 5000;
 // ─────────────────────────────────────────────────
 // MONGODB CONNECTION
 // ─────────────────────────────────────────────────
-const MONGO_URI =
-  "mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hvxvofb.mongodb.net/invenio?retryWrites=true&w=majority&appName=Cluster0";
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
   .connect(MONGO_URI, { family: 4 })
@@ -245,12 +245,10 @@ app.post("/api/auth/register", async (req, res) => {
         .status(400)
         .json({ error: "Password must be at least 6 characters." });
     if (!eSQ || !eSA)
-      return res
-        .status(400)
-        .json({
-          error:
-            "Security question and answer are required for password recovery.",
-        });
+      return res.status(400).json({
+        error:
+          "Security question and answer are required for password recovery.",
+      });
 
     const existing = await User.findOne({ email: eEmail }).lean();
     if (existing)
@@ -733,13 +731,11 @@ app.post("/api/usage", loginRequired, async (req, res) => {
       `Used by ${userName}`,
     );
 
-    return res
-      .status(201)
-      .json({
-        message: "Usage recorded!",
-        usage: newUsage,
-        updatedStock: product.stockQuantity,
-      });
+    return res.status(201).json({
+      message: "Usage recorded!",
+      usage: newUsage,
+      updatedStock: product.stockQuantity,
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
