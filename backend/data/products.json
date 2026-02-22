@@ -1,552 +1,242 @@
 [
   {
-    "id": "23d6913c",
+    "id": "e48b4480",
     "name": "Samsung Galaxy Buds Pro",
     "category": "Electronics",
     "stockQuantity": 45,
     "minStockLevel": 15,
     "price": 8999,
     "manufacturer": "Samsung Electronics",
-    "lastUpdated": "2026-01-11T02:24:18.545579"
+    "lastUpdated": "2026-02-13T16:16:12.049118"
   },
   {
-    "id": "34f46a00",
+    "id": "7449cc98",
     "name": "boAt Airdopes 141",
     "category": "Electronics",
     "stockQuantity": 120,
     "minStockLevel": 40,
     "price": 1299,
     "manufacturer": "boAt Lifestyle",
-    "lastUpdated": "2026-01-30T11:45:31.545652"
+    "lastUpdated": "2026-01-10T20:52:11.049212"
   },
   {
-    "id": "128b2df1",
+    "id": "c823a8cf",
     "name": "JBL Flip 6 Bluetooth Speaker",
     "category": "Electronics",
     "stockQuantity": 18,
     "minStockLevel": 10,
     "price": 11999,
     "manufacturer": "HARMAN International",
-    "lastUpdated": "2026-01-05T03:52:23.545687"
+    "lastUpdated": "2026-01-20T13:59:57.049257"
   },
   {
-    "id": "7fd8485c",
+    "id": "9f11d8e0",
     "name": "Realme Power Bank 20000mAh",
     "category": "Electronics",
     "stockQuantity": 65,
     "minStockLevel": 25,
     "price": 1499,
     "manufacturer": "Realme India",
-    "lastUpdated": "2025-12-26T08:00:05.545712"
+    "lastUpdated": "2026-01-09T23:59:28.049282"
   },
   {
-    "id": "03f15757",
+    "id": "765a5dea",
     "name": "Nike Air Zoom Pegasus 40",
     "category": "Shoes",
     "stockQuantity": 22,
     "minStockLevel": 20,
     "price": 11500,
     "manufacturer": "Nike India Pvt Ltd",
-    "lastUpdated": "2026-01-02T05:05:44.545737"
+    "lastUpdated": "2026-01-19T19:44:48.049301"
   },
   {
-    "id": "2750d332",
+    "id": "581ee0a9",
     "name": "Adidas Ultraboost Light",
     "category": "Shoes",
     "stockQuantity": 35,
     "minStockLevel": 15,
     "price": 16000,
     "manufacturer": "Adidas India",
-    "lastUpdated": "2026-01-26T04:58:41.545759"
+    "lastUpdated": "2026-02-04T14:01:08.049322"
   },
   {
-    "id": "75978dd0",
+    "id": "8a300792",
     "name": "Puma RS-X Reinvention",
     "category": "Shoes",
     "stockQuantity": 8,
     "minStockLevel": 25,
     "price": 9999,
     "manufacturer": "Puma Sports India",
-    "lastUpdated": "2026-02-18T06:05:03.545832"
+    "lastUpdated": "2026-01-26T00:10:38.049354"
   },
   {
-    "id": "bdab3bcb",
+    "id": "c719dbe0",
     "name": "Reebok Classic Leather",
     "category": "Shoes",
     "stockQuantity": 50,
     "minStockLevel": 20,
     "price": 6499,
     "manufacturer": "Reebok India",
-    "lastUpdated": "2026-02-17T01:41:31.545858"
+    "lastUpdated": "2026-02-05T15:29:41.049374"
   },
   {
-    "id": "7a05949f",
+    "id": "4f550f72",
     "name": "Titan Neo Analog Watch",
     "category": "Watches",
     "stockQuantity": 30,
     "minStockLevel": 10,
     "price": 4500,
     "manufacturer": "Titan Company",
-    "lastUpdated": "2026-01-26T03:12:03.545887"
+    "lastUpdated": "2026-01-11T21:48:30.049396"
   },
   {
-    "id": "964341d5",
+    "id": "a96ce5cf",
     "name": "Fossil Gen 6 Smartwatch",
     "category": "Watches",
-    "stockQuantity": 19,
+    "stockQuantity": 5,
     "minStockLevel": 12,
     "price": 24000,
     "manufacturer": "Fossil India",
-    "lastUpdated": "2026-02-17T17:45:02.751238"
+    "lastUpdated": "2026-02-04T23:50:00.049416"
   },
   {
-    "id": "47036afc",
+    "id": "da57ac06",
     "name": "Casio G-Shock GA-2100",
     "category": "Watches",
     "stockQuantity": 42,
     "minStockLevel": 15,
     "price": 8995,
     "manufacturer": "Casio India",
-    "lastUpdated": "2025-12-25T04:27:16.545928"
+    "lastUpdated": "2025-12-27T22:52:13.049435"
   },
   {
-    "id": "68228509",
+    "id": "1fc5bab6",
     "name": "Levi's 501 Original Jeans",
     "category": "Clothing",
     "stockQuantity": 75,
     "minStockLevel": 30,
     "price": 3499,
     "manufacturer": "Levi Strauss India",
-    "lastUpdated": "2025-12-20T14:37:01.545948"
+    "lastUpdated": "2026-01-03T18:17:26.049455"
   },
   {
-    "id": "a1295b93",
+    "id": "fa34a920",
     "name": "Allen Solly Formal Shirt",
     "category": "Clothing",
     "stockQuantity": 90,
     "minStockLevel": 35,
     "price": 1799,
     "manufacturer": "Aditya Birla Fashion",
-    "lastUpdated": "2025-12-26T14:32:36.545968"
+    "lastUpdated": "2026-02-09T22:24:19.049477"
   },
   {
-    "id": "06c18dc6",
+    "id": "99186694",
     "name": "US Polo Assn T-Shirt",
     "category": "Clothing",
     "stockQuantity": 110,
     "minStockLevel": 50,
     "price": 999,
     "manufacturer": "USPA India",
-    "lastUpdated": "2026-02-09T03:48:04.545988"
+    "lastUpdated": "2026-01-23T21:45:51.049496"
   },
   {
-    "id": "a5966dc2",
+    "id": "904d81f0",
     "name": "Raymond Blazer Suit",
     "category": "Clothing",
     "stockQuantity": 12,
     "minStockLevel": 8,
     "price": 14999,
     "manufacturer": "Raymond Group",
-    "lastUpdated": "2026-02-13T07:39:23.546008"
+    "lastUpdated": "2026-01-16T17:43:51.049519"
   },
   {
-    "id": "60ee9f39",
+    "id": "4036de9f",
     "name": "Louis Philippe Leather Belt",
     "category": "Accessories",
     "stockQuantity": 60,
     "minStockLevel": 25,
     "price": 2499,
     "manufacturer": "Aditya Birla Fashion",
-    "lastUpdated": "2026-01-12T07:43:35.546028"
+    "lastUpdated": "2026-01-13T13:14:47.049539"
   },
   {
-    "id": "a05e96b5",
+    "id": "77370b03",
     "name": "Tommy Hilfiger Wallet",
     "category": "Accessories",
     "stockQuantity": 40,
     "minStockLevel": 20,
     "price": 3200,
     "manufacturer": "Tommy Hilfiger India",
-    "lastUpdated": "2026-01-05T05:07:04.546047"
+    "lastUpdated": "2026-02-11T14:28:48.049558"
   },
   {
-    "id": "584396b5",
+    "id": "fa205072",
     "name": "Ray-Ban Aviator Sunglasses",
     "category": "Accessories",
     "stockQuantity": 15,
     "minStockLevel": 10,
     "price": 7990,
     "manufacturer": "Luxottica India",
-    "lastUpdated": "2025-12-20T02:18:58.546067"
+    "lastUpdated": "2026-02-20T15:00:40.049578"
   },
   {
-    "id": "95c2215b",
+    "id": "0c762de2",
     "name": "Atomic Habits — James Clear",
     "category": "Books",
     "stockQuantity": 150,
     "minStockLevel": 50,
     "price": 550,
     "manufacturer": "Penguin Random House",
-    "lastUpdated": "2025-12-24T06:51:08.546086"
+    "lastUpdated": "2026-01-17T14:06:04.049598"
   },
   {
-    "id": "1abfc76e",
+    "id": "768543b7",
     "name": "Psychology of Money — Morgan Housel",
     "category": "Books",
     "stockQuantity": 85,
     "minStockLevel": 30,
     "price": 399,
     "manufacturer": "Jaico Publishing",
-    "lastUpdated": "2026-01-27T10:04:01.546106"
+    "lastUpdated": "2025-12-28T19:51:17.049617"
   },
   {
-    "id": "870e5336",
+    "id": "c0edd589",
     "name": "Ikigai — Héctor García",
     "category": "Books",
     "stockQuantity": 95,
     "minStockLevel": 40,
     "price": 350,
     "manufacturer": "Penguin Books India",
-    "lastUpdated": "2026-01-17T08:35:42.546126"
+    "lastUpdated": "2026-01-26T23:07:33.049635"
   },
   {
-    "id": "8494d92d",
+    "id": "63b8f1fb",
     "name": "Milton Thermosteel Flask 1L",
     "category": "Home & Kitchen",
     "stockQuantity": 200,
     "minStockLevel": 80,
     "price": 799,
     "manufacturer": "Milton Industries",
-    "lastUpdated": "2026-02-15T11:31:34.546144"
+    "lastUpdated": "2026-02-08T20:07:58.049654"
   },
   {
-    "id": "7d9218a6",
+    "id": "12c614c2",
     "name": "Prestige Omega Fry Pan",
     "category": "Home & Kitchen",
     "stockQuantity": 55,
     "minStockLevel": 20,
     "price": 1599,
     "manufacturer": "TTK Prestige",
-    "lastUpdated": "2026-01-09T11:30:53.546163"
+    "lastUpdated": "2026-01-10T11:30:58.049675"
   },
   {
-    "id": "954b6709",
+    "id": "d05595b0",
     "name": "Pigeon LED Desk Lamp",
     "category": "Home & Kitchen",
     "stockQuantity": 70,
     "minStockLevel": 30,
     "price": 899,
     "manufacturer": "Stove Craft Ltd",
-    "lastUpdated": "2025-12-28T14:19:58.546182"
-  },
-  {
-    "id": "7929e926",
-    "name": "Apple AirPods 4",
-    "category": "Electronics",
-    "stockQuantity": 30,
-    "minStockLevel": 10,
-    "price": 12900,
-    "manufacturer": "Apple India",
-    "lastUpdated": "2026-02-17T00:51:44.990830"
-  },
-  {
-    "id": "e22f30e4",
-    "name": "Sony WH-1000XM5 Headphones",
-    "category": "Electronics",
-    "stockQuantity": 20,
-    "minStockLevel": 8,
-    "price": 26990,
-    "manufacturer": "Sony India",
-    "lastUpdated": "2026-02-19T00:51:44.990908"
-  },
-  {
-    "id": "51dad085",
-    "name": "Anker USB-C Charging Hub 7-in-1",
-    "category": "Electronics",
-    "stockQuantity": 55,
-    "minStockLevel": 20,
-    "price": 2499,
-    "manufacturer": "Anker Innovations",
-    "lastUpdated": "2026-02-12T00:51:44.990924"
-  },
-  {
-    "id": "112a97da",
-    "name": "Mi Smart Band 9",
-    "category": "Electronics",
-    "stockQuantity": 90,
-    "minStockLevel": 30,
-    "price": 2799,
-    "manufacturer": "Xiaomi India",
-    "lastUpdated": "2026-02-15T00:51:44.990936"
-  },
-  {
-    "id": "13bb99eb",
-    "name": "TP-Link Archer AX73 Wi-Fi 6 Router",
-    "category": "Electronics",
-    "stockQuantity": 14,
-    "minStockLevel": 5,
-    "price": 8499,
-    "manufacturer": "TP-Link India",
-    "lastUpdated": "2026-02-20T00:51:44.990946"
-  },
-  {
-    "id": "051661b2",
-    "name": "Logitech MX Master 3S Mouse",
-    "category": "Electronics",
-    "stockQuantity": 35,
-    "minStockLevel": 12,
-    "price": 9995,
-    "manufacturer": "Logitech India",
-    "lastUpdated": "2026-02-16T00:51:44.990956"
-  },
-  {
-    "id": "d5396417",
-    "name": "Samsung Galaxy Tab S9 FE",
-    "category": "Mobile & Tablets",
-    "stockQuantity": 18,
-    "minStockLevel": 6,
-    "price": 34999,
-    "manufacturer": "Samsung Electronics",
-    "lastUpdated": "2026-02-18T00:51:44.990966"
-  },
-  {
-    "id": "665763c2",
-    "name": "Redmi Note 13 Pro+ 5G",
-    "category": "Mobile & Tablets",
-    "stockQuantity": 40,
-    "minStockLevel": 15,
-    "price": 29999,
-    "manufacturer": "Xiaomi India",
-    "lastUpdated": "2026-02-14T00:51:44.990976"
-  },
-  {
-    "id": "2aa90d3e",
-    "name": "realme 13 Pro 5G",
-    "category": "Mobile & Tablets",
-    "stockQuantity": 33,
-    "minStockLevel": 12,
-    "price": 22999,
-    "manufacturer": "Realme India",
-    "lastUpdated": "2026-02-13T00:51:44.990986"
-  },
-  {
-    "id": "edec8159",
-    "name": "OnePlus Nord CE 4 Lite",
-    "category": "Mobile & Tablets",
-    "stockQuantity": 27,
-    "minStockLevel": 10,
-    "price": 19999,
-    "manufacturer": "OnePlus India",
-    "lastUpdated": "2026-02-11T00:51:44.991000"
-  },
-  {
-    "id": "18fea122",
-    "name": "HP Victus 15 Gaming Laptop",
-    "category": "Laptops & Computers",
-    "stockQuantity": 10,
-    "minStockLevel": 4,
-    "price": 64999,
-    "manufacturer": "HP India",
-    "lastUpdated": "2026-02-19T00:51:44.991013"
-  },
-  {
-    "id": "1ca4e0ca",
-    "name": "Lenovo IdeaPad Slim 3",
-    "category": "Laptops & Computers",
-    "stockQuantity": 16,
-    "minStockLevel": 5,
-    "price": 42000,
-    "manufacturer": "Lenovo India",
-    "lastUpdated": "2026-02-15T00:51:44.991025"
-  },
-  {
-    "id": "a98abce9",
-    "name": "Dell Inspiron 15 3000",
-    "category": "Laptops & Computers",
-    "stockQuantity": 12,
-    "minStockLevel": 4,
-    "price": 51990,
-    "manufacturer": "Dell India",
-    "lastUpdated": "2026-02-17T00:51:44.991034"
-  },
-  {
-    "id": "3fee4dd4",
-    "name": "Keychron K2 Mechanical Keyboard",
-    "category": "Laptops & Computers",
-    "stockQuantity": 42,
-    "minStockLevel": 15,
-    "price": 6999,
-    "manufacturer": "Keychron",
-    "lastUpdated": "2026-02-10T00:51:44.991044"
-  },
-  {
-    "id": "e8dc315a",
-    "name": "New Balance Fresh Foam 1080",
-    "category": "Shoes",
-    "stockQuantity": 25,
-    "minStockLevel": 10,
-    "price": 13500,
-    "manufacturer": "New Balance India",
-    "lastUpdated": "2026-02-16T00:51:44.991053"
-  },
-  {
-    "id": "7d1a7663",
-    "name": "Skechers D'Lites Chunky",
-    "category": "Shoes",
-    "stockQuantity": 48,
-    "minStockLevel": 18,
-    "price": 5995,
-    "manufacturer": "Skechers India",
-    "lastUpdated": "2026-02-18T00:51:44.991061"
-  },
-  {
-    "id": "af442076",
-    "name": "Bata Comfit Leather Shoes",
-    "category": "Shoes",
-    "stockQuantity": 60,
-    "minStockLevel": 20,
-    "price": 2999,
-    "manufacturer": "Bata India Ltd",
-    "lastUpdated": "2026-02-13T00:51:44.991071"
-  },
-  {
-    "id": "53e1d672",
-    "name": "Peter England Slim Fit Chino",
-    "category": "Clothing",
-    "stockQuantity": 75,
-    "minStockLevel": 25,
-    "price": 1799,
-    "manufacturer": "Aditya Birla Fashion",
-    "lastUpdated": "2026-02-17T00:51:44.991081"
-  },
-  {
-    "id": "2a4bd7e3",
-    "name": "Van Heusen Slim Fit Blazer",
-    "category": "Clothing",
-    "stockQuantity": 30,
-    "minStockLevel": 10,
-    "price": 4499,
-    "manufacturer": "Aditya Birla Fashion",
-    "lastUpdated": "2026-02-19T00:51:44.991090"
-  },
-  {
-    "id": "137dbe84",
-    "name": "Jockey Sport T-Shirt Pack of 3",
-    "category": "Clothing",
-    "stockQuantity": 100,
-    "minStockLevel": 35,
-    "price": 1299,
-    "manufacturer": "Page Industries",
-    "lastUpdated": "2026-02-14T00:51:44.991098"
-  },
-  {
-    "id": "9305d2ea",
-    "name": "H&M Regular Hooded Sweatshirt",
-    "category": "Clothing",
-    "stockQuantity": 55,
-    "minStockLevel": 20,
-    "price": 1999,
-    "manufacturer": "H&M India",
-    "lastUpdated": "2026-02-20T00:51:44.991107"
-  },
-  {
-    "id": "62ee9748",
-    "name": "Cosco Inflatable Basketball",
-    "category": "Sports & Fitness",
-    "stockQuantity": 80,
-    "minStockLevel": 30,
-    "price": 799,
-    "manufacturer": "Cosco India",
-    "lastUpdated": "2026-02-11T00:51:44.991116"
-  },
-  {
-    "id": "6b3a1896",
-    "name": "Boldfit Yoga Mat 6mm Non-Slip",
-    "category": "Sports & Fitness",
-    "stockQuantity": 95,
-    "minStockLevel": 30,
-    "price": 699,
-    "manufacturer": "Boldfit",
-    "lastUpdated": "2026-02-15T00:51:44.991125"
-  },
-  {
-    "id": "8fb3bf6f",
-    "name": "Lifelong Resistance Bands Set of 5",
-    "category": "Sports & Fitness",
-    "stockQuantity": 120,
-    "minStockLevel": 40,
-    "price": 499,
-    "manufacturer": "Lifelong India",
-    "lastUpdated": "2026-02-18T00:51:44.991134"
-  },
-  {
-    "id": "2018f977",
-    "name": "Decathlon Kiprun Running Shoes",
-    "category": "Sports & Fitness",
-    "stockQuantity": 40,
-    "minStockLevel": 15,
-    "price": 3499,
-    "manufacturer": "Decathlon India",
-    "lastUpdated": "2026-02-16T00:51:44.991143"
-  },
-  {
-    "id": "7bebbc03",
-    "name": "Philips Series 5000 Beard Trimmer",
-    "category": "Personal Care",
-    "stockQuantity": 45,
-    "minStockLevel": 15,
-    "price": 2499,
-    "manufacturer": "Philips India",
-    "lastUpdated": "2026-02-17T00:51:44.991152"
-  },
-  {
-    "id": "121c926f",
-    "name": "Braun Series 3 Electric Shaver",
-    "category": "Personal Care",
-    "stockQuantity": 22,
-    "minStockLevel": 8,
-    "price": 4999,
-    "manufacturer": "Braun India",
-    "lastUpdated": "2026-02-19T00:51:44.991161"
-  },
-  {
-    "id": "5370e2c0",
-    "name": "Dyson Supersonic Hair Dryer",
-    "category": "Personal Care",
-    "stockQuantity": 8,
-    "minStockLevel": 4,
-    "price": 32900,
-    "manufacturer": "Dyson India",
-    "lastUpdated": "2026-02-12T00:51:44.991170"
-  },
-  {
-    "id": "b55115b3",
-    "name": "Morphy Richards Juicer Mixer 500W",
-    "category": "Home & Kitchen",
-    "stockQuantity": 35,
-    "minStockLevel": 12,
-    "price": 3299,
-    "manufacturer": "Morphy Richards India",
-    "lastUpdated": "2026-02-14T00:51:44.991179"
-  },
-  {
-    "id": "7c232ad2",
-    "name": "Bajaj Majesty 1000W OTG Oven",
-    "category": "Home & Kitchen",
-    "stockQuantity": 20,
-    "minStockLevel": 7,
-    "price": 4199,
-    "manufacturer": "Bajaj Electricals",
-    "lastUpdated": "2026-02-16T00:51:44.991191"
-  },
-  {
-    "id": "531675a0",
-    "name": "Butterfly Rapid Plus 3L Pressure Cooker",
-    "category": "Home & Kitchen",
-    "stockQuantity": 50,
-    "minStockLevel": 18,
-    "price": 1299,
-    "manufacturer": "Butterfly Gandhimathi",
-    "lastUpdated": "2026-02-18T00:51:44.991200"
+    "lastUpdated": "2026-01-21T15:35:17.049696"
   }
 ]

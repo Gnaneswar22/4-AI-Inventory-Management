@@ -1,71 +1,160 @@
+/**
+ * server.js — Invenio AI Inventory Management
+ * Node.js / Express backend — MongoDB Atlas storage
+ * Port: 5000
+ */
+
+"use strict";
+
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
-const fs = require("fs");
-const path = require("path");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 const app = express();
+const PORT = 5000;
 
 // ─────────────────────────────────────────────────
-// DATA DIRECTORY & FILE PATHS
+// MONGODB CONNECTION
 // ─────────────────────────────────────────────────
-const BASE_DIR = "/tmp";
-const DATA_DIR = path.join(BASE_DIR, "data");
-const USERS_FILE = path.join(DATA_DIR, "users.json");
-const PRODUCTS_FILE = path.join(DATA_DIR, "products.json");
-const SALES_FILE = path.join(DATA_DIR, "sales.json");
-const STOCK_LOGS_FILE = path.join(DATA_DIR, "stock_logs.json");
-const USAGE_FILE = path.join(DATA_DIR, "usage.json");
-const SALES_COUNTER_FILE = path.join(DATA_DIR, "sales_counter.json");
-const NOTIFICATIONS_FILE = path.join(DATA_DIR, "notifications.json");
-const FORECASTS_FILE = path.join(DATA_DIR, "forecasts.json");
+const MONGO_URI = 'mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hvxvofb.mongodb.net/invenio?retryWrites=true&w=majority&appName=Cluster0';
 
-// ─────────────────────────────────────────────────
-// JSON STORAGE HELPERS
-// ─────────────────────────────────────────────────
-function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-}
-
-function readJson(filepath) {
-  if (!fs.existsSync(filepath)) return [];
+let isConnected = false;
+const connectDB = async () => {
+  if (isConnected) return;
   try {
-    return JSON.parse(fs.readFileSync(filepath, "utf-8"));
-  } catch {
-    return [];
+    const db = await mongoose.connect(MONGO_URI, { family: 4 });
+    isConnected = db.connections[0].readyState;
+    console.log("  [mongo] Connected to MongoDB Atlas");
+  } catch (err) {
+    console.error("  [mongo] Connection error:", err.message);
   }
+};
+connectDB();
+
+// ─────────────────────────────────────────────────
+// MIDDLEWARE
+// ─────────────────────────────────────────────────
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://127.0.0.1:5173",
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+    ],
+    credentials: true,
+  }),
+);
+
+app.use(express.json());
+
+app.use(
+  session({
+    secret: "invenio-ai-secret-key-2024",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 },
+  }),
+);
+
+// ─────────────────────────────────────────────────
+// MONGOOSE SCHEMAS
+// ─────────────────────────────────────────────────
+const schemaOpts = { strict: false, versionKey: false };
+
+const UserSchema = new mongoose.Schema(
+  {
+    id: { type: String, required: true, unique: true },
+    email: { type: String, unique: true },
+  },
+  schemaOpts,
+);
+
+const ProductSchema = new mongoose.Schema(
+  { id: { type: String, required: true, unique: true } },
+  schemaOpts,
+);
+
+const SaleSchema = new mongoose.Schema(
+  { id: { type: String, required: true, unique: true } },
+  schemaOpts,
+);
+
+const StockLogSchema = new mongoose.Schema(
+  { id: { type: String, required: true, unique: true } },
+  schemaOpts,
+);
+
+const UsageSchema = new mongoose.Schema(
+  { id: { type: String, required: true, unique: true } },
+  schemaOpts,
+);
+
+const SalesCounterSchema = new mongoose.Schema(
+  {
+    totalSalesCount: { type: Number, default: 0 },
+    totalRevenue: { type: Number, default: 0 },
+  },
+  schemaOpts,
+);
+
+const NotificationSchema = new mongoose.Schema(
+  {
+    id: { type: String, required: true, unique: true },
+    metadata: mongoose.Schema.Types.Mixed,
+  },
+  schemaOpts,
+);
+
+const ForecastDataSchema = new mongoose.Schema(
+  { products: [mongoose.Schema.Types.Mixed] },
+  schemaOpts,
+);
+
+const User = mongoose.model("User", UserSchema);
+const Product = mongoose.model("Product", ProductSchema);
+const Sale = mongoose.model("Sale", SaleSchema);
+const StockLog = mongoose.model("StockLog", StockLogSchema);
+const Usage = mongoose.model("Usage", UsageSchema);
+const SalesCounter = mongoose.model("SalesCounter", SalesCounterSchema);
+const Notification = mongoose.model("Notification", NotificationSchema);
+const ForecastData = mongoose.model("ForecastData", ForecastDataSchema);
+
+// ─────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────
+/** Strip internal MongoDB fields from a lean document or array */
+function clean(doc) {
+  if (!doc) return doc;
+  if (Array.isArray(doc))
+    return doc.map((d) => {
+      const o = { ...d };
+      delete o._id;
+      delete o.__v;
+      return o;
+    });
+  const o = { ...doc };
+  delete o._id;
+  delete o.__v;
+  return o;
 }
 
-function writeJson(filepath, data) {
-  ensureDataDir();
-  fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
-}
-
-function readJsonObj(filepath) {
-  if (!fs.existsSync(filepath)) return {};
-  try {
-    return JSON.parse(fs.readFileSync(filepath, "utf-8"));
-  } catch {
-    return {};
-  }
-}
-
+/** Generate a short 8-char id */
 function generateId() {
-  return uuidv4().substring(0, 8);
+  return uuidv4().replace(/-/g, "").slice(0, 8);
 }
 
 // ─────────────────────────────────────────────────
-// INITIALIZE DEFAULT DATA
+// INITIALIZE DEFAULT DATA (runs after DB connects)
 // ─────────────────────────────────────────────────
-function initializeData() {
-  ensureDataDir();
-
-  if (!fs.existsSync(USERS_FILE)) {
-    const defaultUsers = [
+async function initializeData() {
+  const userCount = await User.countDocuments();
+  if (userCount === 0) {
+    await User.insertMany([
       {
         id: "u1",
         name: "Admin User",
@@ -88,530 +177,28 @@ function initializeData() {
         security_answer: bcrypt.hashSync("buddy", 10),
         created_at: new Date().toISOString(),
       },
-    ];
-    writeJson(USERS_FILE, defaultUsers);
+    ]);
+    console.log("  [init] Default users created.");
   }
 
-  if (!fs.existsSync(PRODUCTS_FILE)) {
-    writeJson(PRODUCTS_FILE, []);
-  }
-
-  if (!fs.existsSync(SALES_FILE)) {
-    writeJson(SALES_FILE, []);
-  }
-
-  if (!fs.existsSync(STOCK_LOGS_FILE)) {
-    writeJson(STOCK_LOGS_FILE, []);
-  }
-
-  if (!fs.existsSync(USAGE_FILE)) {
-    writeJson(USAGE_FILE, []);
-  }
-
-  if (!fs.existsSync(SALES_COUNTER_FILE)) {
-    writeJson(SALES_COUNTER_FILE, { totalSalesCount: 0, totalRevenue: 0 });
-  }
-
-  if (!fs.existsSync(NOTIFICATIONS_FILE)) {
-    writeJson(NOTIFICATIONS_FILE, []);
+  const counterCount = await SalesCounter.countDocuments();
+  if (counterCount === 0) {
+    await SalesCounter.create({ totalSalesCount: 0, totalRevenue: 0 });
+    console.log("  [init] Sales counter initialized.");
   }
 }
 
 // ─────────────────────────────────────────────────
-// MIDDLEWARE
+// STOCK-LOG HELPER
 // ─────────────────────────────────────────────────
-app.use(
-  cors({
-    origin: true, // Allow all for Vercel
-    credentials: true,
-  }),
-);
-
-app.use(express.json());
-
-app.use(
-  session({
-    secret: "invenio-ai-secret-key-2024",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false }, // For Vercel, might need adjustment
-  }),
-);
-
-// ─────────────────────────────────────────────────
-// AUTH DECORATOR
-// ─────────────────────────────────────────────────
-function loginRequired(req, res, next) {
-  if (!req.session.user_id) {
-    return res
-      .status(401)
-      .json({ error: "Authentication required. Please log in." });
-  }
-  next();
-}
-
-// ═══════════════════════════════════════════════════
-//  AUTH ROUTES — Register, Login, Logout, Forgot Password
-// ═══════════════════════════════════════════════════
-
-app.post("/api/auth/register", (req, res) => {
-  const {
-    name,
-    email,
-    password,
-    role = "USER",
-    security_question,
-    security_answer,
-  } = req.body;
-
-  if (!name || !email || !password || !security_question || !security_answer) {
-    return res.status(400).json({ error: "All fields are required." });
-  }
-
-  if (password.length < 6) {
-    return res
-      .status(400)
-      .json({ error: "Password must be at least 6 characters." });
-  }
-
-  const users = readJson(USERS_FILE);
-  if (users.some((u) => u.email === email)) {
-    return res
-      .status(409)
-      .json({ error: "An account with this email already exists." });
-  }
-
-  const newUser = {
-    id: generateId(),
-    name,
-    email,
-    password: bcrypt.hashSync(password, 10),
-    role,
-    avatar: `https://picsum.photos/seed/${generateId()}/200/200`,
-    security_question,
-    security_answer: bcrypt.hashSync(security_answer, 10),
-    created_at: new Date().toISOString(),
-  };
-
-  users.push(newUser);
-  writeJson(USERS_FILE, users);
-
-  const { password: _, security_answer: __, ...safeUser } = newUser;
-  res.status(201).json({ message: "Registration successful!", user: safeUser });
-});
-
-app.post("/api/auth/login", (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email and password are required." });
-  }
-
-  const users = readJson(USERS_FILE);
-  const user = users.find((u) => u.email === email);
-
-  if (!user || !bcrypt.compareSync(password, user.password)) {
-    return res.status(401).json({ error: "Invalid email or password." });
-  }
-
-  req.session.user_id = user.id;
-  req.session.user_email = user.email;
-  req.session.user_role = user.role;
-
-  const safeUser = {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    avatar: user.avatar,
-  };
-
-  res.json({ message: "Login successful!", user: safeUser });
-});
-
-app.post("/api/auth/logout", (req, res) => {
-  req.session.destroy();
-  res.json({ message: "Logged out successfully." });
-});
-
-app.get("/api/auth/me", loginRequired, (req, res) => {
-  const users = readJson(USERS_FILE);
-  const user = users.find((u) => u.id === req.session.user_id);
-
-  if (!user) {
-    req.session.destroy();
-    return res.status(404).json({ error: "User not found." });
-  }
-
-  const safeUser = {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    avatar: user.avatar,
-  };
-
-  res.json({ user: safeUser });
-});
-
-app.post("/api/auth/forgot-password", (req, res) => {
-  const { email } = req.body;
-
-  if (!email) {
-    return res.status(400).json({ error: "Email is required." });
-  }
-
-  const users = readJson(USERS_FILE);
-  const user = users.find((u) => u.email === email);
-
-  if (!user) {
-    return res.status(404).json({ error: "No account found with this email." });
-  }
-
-  res.json({
-    message: "Security question retrieved.",
-    security_question: user.security_question,
-    email,
-  });
-});
-
-app.post("/api/auth/reset-password", (req, res) => {
-  const { email, security_answer, new_password } = req.body;
-
-  if (!email || !security_answer || !new_password) {
-    return res.status(400).json({ error: "All fields are required." });
-  }
-
-  if (new_password.length < 6) {
-    return res
-      .status(400)
-      .json({ error: "New password must be at least 6 characters." });
-  }
-
-  const users = readJson(USERS_FILE);
-  const user = users.find((u) => u.email === email);
-
-  if (!user) {
-    return res.status(404).json({ error: "No account found with this email." });
-  }
-
-  if (!bcrypt.compareSync(security_answer, user.security_answer)) {
-    return res.status(403).json({ error: "Incorrect security answer." });
-  }
-
-  user.password = bcrypt.hashSync(new_password, 10);
-  writeJson(USERS_FILE, users);
-
-  res.json({
-    message:
-      "Password reset successfully! You can now log in with your new password.",
-  });
-});
-
-// ═══════════════════════════════════════════════════
-//  PRODUCT / INVENTORY ROUTES — JSON Storage
-// ═══════════════════════════════════════════════════
-
-app.get("/api/products", loginRequired, (req, res) => {
-  const products = readJson(PRODUCTS_FILE);
-  res.json({ products });
-});
-
-app.post("/api/products", loginRequired, (req, res) => {
-  const { name, category, stockQuantity, minStockLevel, price, manufacturer } =
-    req.body;
-
-  if (
-    !name ||
-    !category ||
-    stockQuantity == null ||
-    minStockLevel == null ||
-    price == null ||
-    !manufacturer
-  ) {
-    return res.status(400).json({ error: "All fields are required." });
-  }
-
-  const newProduct = {
-    id: generateId(),
-    name,
-    category,
-    stockQuantity: parseInt(stockQuantity),
-    minStockLevel: parseInt(minStockLevel),
-    price: parseFloat(price),
-    manufacturer,
-    lastUpdated: new Date().toISOString(),
-  };
-
-  const products = readJson(PRODUCTS_FILE);
-  products.push(newProduct);
-  writeJson(PRODUCTS_FILE, products);
-
-  // Log initial stock
-  addStockLog(
-    newProduct.id,
-    "INITIAL",
-    newProduct.stockQuantity,
-    newProduct.stockQuantity,
-    "Product Created",
-  );
-
-  res
-    .status(201)
-    .json({ message: "Product added successfully!", product: newProduct });
-});
-
-app.put("/api/products/:productId", loginRequired, (req, res) => {
-  const { productId } = req.params;
-  const products = readJson(PRODUCTS_FILE);
-  const product = products.find((p) => p.id === productId);
-
-  if (!product) {
-    return res.status(404).json({ error: "Product not found." });
-  }
-
-  const oldStock = product.stockQuantity;
-
-  [
-    "name",
-    "category",
-    "stockQuantity",
-    "minStockLevel",
-    "price",
-    "manufacturer",
-  ].forEach((key) => {
-    if (req.body[key] != null) {
-      if (key === "stockQuantity" || key === "minStockLevel") {
-        product[key] = parseInt(req.body[key]);
-      } else if (key === "price") {
-        product[key] = parseFloat(req.body[key]);
-      } else {
-        product[key] = req.body[key];
-      }
-    }
-  });
-
-  product.lastUpdated = new Date().toISOString();
-  writeJson(PRODUCTS_FILE, products);
-
-  if (product.stockQuantity !== oldStock) {
-    const diff = product.stockQuantity - oldStock;
-    addStockLog(
-      productId,
-      "ADJUSTMENT",
-      diff,
-      product.stockQuantity,
-      "Manual Adjustment",
-    );
-  }
-
-  res.json({ message: "Product updated!", product });
-});
-
-app.delete("/api/products/:productId", loginRequired, (req, res) => {
-  const { productId } = req.params;
-  const products = readJson(PRODUCTS_FILE);
-  const filtered = products.filter((p) => p.id !== productId);
-  writeJson(PRODUCTS_FILE, filtered);
-  res.json({ message: "Product deleted successfully." });
-});
-
-app.post("/api/products/:productId/restock", loginRequired, (req, res) => {
-  const { productId } = req.params;
-  const { quantity } = req.body;
-  const qty = parseInt(quantity);
-
-  if (qty <= 0) {
-    return res
-      .status(400)
-      .json({ error: "Restock quantity must be positive." });
-  }
-
-  const products = readJson(PRODUCTS_FILE);
-  const product = products.find((p) => p.id === productId);
-
-  if (!product) {
-    return res.status(404).json({ error: "Product not found." });
-  }
-
-  product.stockQuantity += qty;
-  product.lastUpdated = new Date().toISOString();
-  writeJson(PRODUCTS_FILE, products);
-
-  addStockLog(
-    productId,
-    "RESTOCK",
-    qty,
-    product.stockQuantity,
-    "Manufacturer Delivery",
-  );
-
-  res.json({ message: `Restocked ${qty} units!`, product });
-});
-
-// ═══════════════════════════════════════════════════
-//  SALES ROUTES
-// ═══════════════════════════════════════════════════
-
-app.get("/api/sales", loginRequired, (req, res) => {
-  const sales = readJson(SALES_FILE).sort(
-    (a, b) => new Date(b.date) - new Date(a.date),
-  );
-  const counter = readJsonObj(SALES_COUNTER_FILE);
-  res.json({
-    sales,
-    totalSalesCount: counter.totalSalesCount || 0,
-    totalRevenue: counter.totalRevenue || 0,
-  });
-});
-
-app.post("/api/sales", loginRequired, (req, res) => {
-  const {
-    productId,
-    quantity,
-    customerName = "Unknown",
-    customerAddress = "",
-  } = req.body;
-  const qty = parseInt(quantity);
-
-  if (!productId || qty <= 0) {
-    return res
-      .status(400)
-      .json({ error: "Valid product ID and quantity are required." });
-  }
-
-  const products = readJson(PRODUCTS_FILE);
-  const product = products.find((p) => p.id === productId);
-
-  if (!product) {
-    return res.status(404).json({ error: "Product not found." });
-  }
-
-  if (product.stockQuantity < qty) {
-    return res
-      .status(400)
-      .json({
-        error: `Insufficient stock! Available: ${product.stockQuantity}, Requested: ${qty}`,
-      });
-  }
-
-  product.stockQuantity -= qty;
-  product.lastUpdated = new Date().toISOString();
-  writeJson(PRODUCTS_FILE, products);
-
-  const totalPrice = qty * product.price;
-  const newSale = {
-    id: generateId(),
-    productId,
-    productName: product.name,
-    quantity: qty,
-    totalPrice,
-    date: new Date().toISOString(),
-    customerName,
-    customerAddress,
-  };
-
-  const sales = readJson(SALES_FILE);
-  sales.push(newSale);
-  writeJson(SALES_FILE, sales);
-
-  const counter = readJsonObj(SALES_COUNTER_FILE);
-  counter.totalSalesCount = (counter.totalSalesCount || 0) + 1;
-  counter.totalRevenue = (counter.totalRevenue || 0) + totalPrice;
-  writeJson(SALES_COUNTER_FILE, counter);
-
-  addStockLog(
-    productId,
-    "SALE",
-    -qty,
-    product.stockQuantity,
-    `Sold to ${customerName}`,
-  );
-
-  res.status(201).json({
-    message: "Sale recorded successfully!",
-    sale: newSale,
-    updatedStock: product.stockQuantity,
-    totalSalesCount: counter.totalSalesCount,
-  });
-});
-
-// ═══════════════════════════════════════════════════
-//  USAGE ROUTES
-// ═══════════════════════════════════════════════════
-
-app.get("/api/usage", loginRequired, (req, res) => {
-  const usage = readJson(USAGE_FILE);
-  res.json({ usage });
-});
-
-app.post("/api/usage", loginRequired, (req, res) => {
-  const {
-    productId,
-    quantity,
-    userId = req.session.user_id,
-    userName = "Unknown",
-  } = req.body;
-  const qty = parseInt(quantity);
-
-  if (!productId || qty <= 0) {
-    return res
-      .status(400)
-      .json({ error: "Valid product ID and quantity are required." });
-  }
-
-  const products = readJson(PRODUCTS_FILE);
-  const product = products.find((p) => p.id === productId);
-
-  if (!product) {
-    return res.status(404).json({ error: "Product not found." });
-  }
-
-  if (product.stockQuantity < qty) {
-    return res.status(400).json({ error: "Insufficient stock!" });
-  }
-
-  product.stockQuantity -= qty;
-  product.lastUpdated = new Date().toISOString();
-  writeJson(PRODUCTS_FILE, products);
-
-  const newUsage = {
-    id: generateId(),
-    productId,
-    productName: product.name,
-    userId,
-    userName,
-    quantity: qty,
-    date: new Date().toISOString(),
-  };
-
-  const usage = readJson(USAGE_FILE);
-  usage.push(newUsage);
-  writeJson(USAGE_FILE, usage);
-
-  addStockLog(
-    productId,
-    "USAGE",
-    -qty,
-    product.stockQuantity,
-    `Used by ${userName}`,
-  );
-
-  res
-    .status(201)
-    .json({
-      message: "Usage recorded!",
-      usage: newUsage,
-      updatedStock: product.stockQuantity,
-    });
-});
-
-// ═══════════════════════════════════════════════════
-//  STOCK LOGS ROUTES
-// ═══════════════════════════════════════════════════
-
-function addStockLog(productId, action, change, remainingStock, note = "") {
-  const log = {
+async function addStockLog(
+  productId,
+  action,
+  change,
+  remainingStock,
+  note = "",
+) {
+  await StockLog.create({
     id: generateId(),
     productId,
     action,
@@ -619,118 +206,677 @@ function addStockLog(productId, action, change, remainingStock, note = "") {
     remainingStock,
     timestamp: new Date().toISOString(),
     note,
-  };
-  const logs = readJson(STOCK_LOGS_FILE);
-  logs.unshift(log);
-  writeJson(STOCK_LOGS_FILE, logs);
+  });
 }
 
-app.get("/api/stock-logs", loginRequired, (req, res) => {
-  const logs = readJson(STOCK_LOGS_FILE);
-  res.json({ stockLogs: logs });
+// ─────────────────────────────────────────────────
+// AUTH MIDDLEWARE
+// ─────────────────────────────────────────────────
+function loginRequired(req, res, next) {
+  if (!req.session.userId)
+    return res
+      .status(401)
+      .json({ error: "Authentication required. Please log in." });
+  next();
+}
+
+// ═══════════════════════════════════════════════════
+//  AUTH ROUTES
+// ═══════════════════════════════════════════════════
+
+// POST /api/auth/register
+app.post("/api/auth/register", async (req, res) => {
+  try {
+    const {
+      name = "",
+      email = "",
+      password = "",
+      role = "USER",
+      security_question = "",
+      security_answer = "",
+    } = req.body;
+
+    const eName = name.trim();
+    const eEmail = email.trim().toLowerCase();
+    const eSQ = security_question.trim();
+    const eSA = security_answer.trim().toLowerCase();
+
+    if (!eName || !eEmail || !password)
+      return res
+        .status(400)
+        .json({ error: "Name, email, and password are required." });
+    if (password.length < 6)
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 6 characters." });
+    if (!eSQ || !eSA)
+      return res.status(400).json({
+        error:
+          "Security question and answer are required for password recovery.",
+      });
+
+    const existing = await User.findOne({ email: eEmail }).lean();
+    if (existing)
+      return res
+        .status(409)
+        .json({ error: "An account with this email already exists." });
+
+    const newUser = {
+      id: generateId(),
+      name: eName,
+      email: eEmail,
+      password: bcrypt.hashSync(password, 10),
+      role,
+      avatar: `https://picsum.photos/seed/${generateId()}/200/200`,
+      security_question: eSQ,
+      security_answer: bcrypt.hashSync(eSA, 10),
+      created_at: new Date().toISOString(),
+    };
+
+    await User.create(newUser);
+    const { password: _p, security_answer: _sa, ...safeUser } = newUser;
+    return res
+      .status(201)
+      .json({ message: "Registration successful!", user: safeUser });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/auth/login
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    const { email = "", password = "" } = req.body;
+    const eEmail = email.trim().toLowerCase();
+
+    if (!eEmail || !password)
+      return res
+        .status(400)
+        .json({ error: "Email and password are required." });
+
+    const user = await User.findOne({ email: eEmail }).lean();
+    if (!user || !bcrypt.compareSync(password, user.password))
+      return res.status(401).json({ error: "Invalid email or password." });
+
+    req.session.userId = user.id;
+    req.session.userEmail = user.email;
+    req.session.userRole = user.role;
+
+    return res.status(200).json({
+      message: "Login successful!",
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar || "",
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/auth/logout
+app.post("/api/auth/logout", (req, res) => {
+  req.session.destroy();
+  return res.status(200).json({ message: "Logged out successfully." });
+});
+
+// GET /api/auth/me
+app.get("/api/auth/me", async (req, res) => {
+  try {
+    if (!req.session.userId)
+      return res.status(401).json({ error: "Not authenticated." });
+
+    const user = await User.findOne({ id: req.session.userId }).lean();
+    if (!user) {
+      req.session.destroy();
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    return res.status(200).json({
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar || "",
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/auth/forgot-password
+app.post("/api/auth/forgot-password", async (req, res) => {
+  try {
+    const { email = "" } = req.body;
+    const eEmail = email.trim().toLowerCase();
+    if (!eEmail) return res.status(400).json({ error: "Email is required." });
+
+    const user = await User.findOne({ email: eEmail }).lean();
+    if (!user)
+      return res
+        .status(404)
+        .json({ error: "No account found with this email." });
+
+    return res.status(200).json({
+      message: "Security question retrieved.",
+      security_question: user.security_question,
+      email: eEmail,
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/auth/reset-password
+app.post("/api/auth/reset-password", async (req, res) => {
+  try {
+    const { email = "", security_answer = "", new_password = "" } = req.body;
+    const eEmail = email.trim().toLowerCase();
+    const eSA = security_answer.trim().toLowerCase();
+
+    if (!eEmail || !eSA || !new_password)
+      return res.status(400).json({ error: "All fields are required." });
+    if (new_password.length < 6)
+      return res
+        .status(400)
+        .json({ error: "New password must be at least 6 characters." });
+
+    const user = await User.findOne({ email: eEmail });
+    if (!user)
+      return res
+        .status(404)
+        .json({ error: "No account found with this email." });
+    if (!bcrypt.compareSync(eSA, user.security_answer))
+      return res.status(403).json({ error: "Incorrect security answer." });
+
+    user.password = bcrypt.hashSync(new_password, 10);
+    await user.save();
+
+    return res.status(200).json({
+      message:
+        "Password reset successfully! You can now log in with your new password.",
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // ═══════════════════════════════════════════════════
-//  PREDICTIONS ROUTE
+//  PRODUCT / INVENTORY ROUTES
 // ═══════════════════════════════════════════════════
 
-function calculateWeightedMovingAverage(dataPoints, weights) {
-  if (!dataPoints.length) return 0;
-  if (!weights) {
-    weights = Array.from({ length: dataPoints.length }, (_, i) => 2 ** i);
+// GET /api/products
+app.get("/api/products", loginRequired, async (req, res) => {
+  try {
+    const products = await Product.find().lean();
+    return res.status(200).json({ products: clean(products) });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
-  const weightedSum = dataPoints.reduce((sum, d, i) => sum + d * weights[i], 0);
-  return weightedSum / weights.reduce((sum, w) => sum + w, 0);
+});
+
+// POST /api/products
+app.post("/api/products", loginRequired, async (req, res) => {
+  try {
+    const data = req.body;
+    for (const field of [
+      "name",
+      "category",
+      "stockQuantity",
+      "minStockLevel",
+      "price",
+      "manufacturer",
+    ]) {
+      if (data[field] === undefined || data[field] === "")
+        return res.status(400).json({ error: `'${field}' is required.` });
+    }
+
+    const newProduct = {
+      id: generateId(),
+      name: data.name,
+      category: data.category,
+      stockQuantity: parseInt(data.stockQuantity),
+      minStockLevel: parseInt(data.minStockLevel),
+      price: parseFloat(data.price),
+      manufacturer: data.manufacturer,
+      lastUpdated: new Date().toISOString(),
+    };
+
+    await Product.create(newProduct);
+    await addStockLog(
+      newProduct.id,
+      "INITIAL",
+      newProduct.stockQuantity,
+      newProduct.stockQuantity,
+      "Product Created",
+    );
+
+    return res
+      .status(201)
+      .json({ message: "Product added successfully!", product: newProduct });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /api/products/:id
+app.put("/api/products/:id", loginRequired, async (req, res) => {
+  try {
+    const data = req.body;
+    const product = await Product.findOne({ id: req.params.id });
+    if (!product) return res.status(404).json({ error: "Product not found." });
+
+    const oldStock = product.stockQuantity;
+
+    for (const key of [
+      "name",
+      "category",
+      "stockQuantity",
+      "minStockLevel",
+      "price",
+      "manufacturer",
+    ]) {
+      if (key in data) {
+        if (["stockQuantity", "minStockLevel"].includes(key))
+          product[key] = parseInt(data[key]);
+        else if (key === "price") product[key] = parseFloat(data[key]);
+        else product[key] = data[key];
+      }
+    }
+    product.lastUpdated = new Date().toISOString();
+    await product.save();
+
+    if (product.stockQuantity !== oldStock)
+      await addStockLog(
+        product.id,
+        "ADJUSTMENT",
+        product.stockQuantity - oldStock,
+        product.stockQuantity,
+        "Manual Adjustment",
+      );
+
+    const obj = product.toObject();
+    delete obj._id;
+    delete obj.__v;
+    return res.status(200).json({ message: "Product updated!", product: obj });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE /api/products/:id
+app.delete("/api/products/:id", loginRequired, async (req, res) => {
+  try {
+    await Product.deleteOne({ id: req.params.id });
+    return res.status(200).json({ message: "Product deleted successfully." });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/products/:id/restock
+app.post("/api/products/:id/restock", loginRequired, async (req, res) => {
+  try {
+    const quantity = parseInt(req.body.quantity || 0);
+    if (quantity <= 0)
+      return res
+        .status(400)
+        .json({ error: "Restock quantity must be positive." });
+
+    const product = await Product.findOne({ id: req.params.id });
+    if (!product) return res.status(404).json({ error: "Product not found." });
+
+    product.stockQuantity += quantity;
+    product.lastUpdated = new Date().toISOString();
+    await product.save();
+
+    await addStockLog(
+      product.id,
+      "RESTOCK",
+      quantity,
+      product.stockQuantity,
+      "Manufacturer Delivery",
+    );
+
+    const obj = product.toObject();
+    delete obj._id;
+    delete obj.__v;
+    return res
+      .status(200)
+      .json({ message: `Restocked ${quantity} units!`, product: obj });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ═══════════════════════════════════════════════════
+//  SALES ROUTES
+// ═══════════════════════════════════════════════════
+
+// GET /api/sales
+app.get("/api/sales", loginRequired, async (req, res) => {
+  try {
+    const sales = await Sale.find().sort({ date: -1 }).lean();
+    const counter = (await SalesCounter.findOne().lean()) || {
+      totalSalesCount: 0,
+      totalRevenue: 0,
+    };
+    return res.status(200).json({
+      sales: clean(sales),
+      totalSalesCount: counter.totalSalesCount ?? sales.length,
+      totalRevenue: counter.totalRevenue ?? 0,
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/sales
+app.post("/api/sales", loginRequired, async (req, res) => {
+  try {
+    const {
+      productId,
+      quantity: rawQty,
+      customerName = "Unknown",
+      customerAddress = "",
+    } = req.body;
+    const quantity = parseInt(rawQty || 0);
+    if (!productId || quantity <= 0)
+      return res
+        .status(400)
+        .json({ error: "Valid product ID and quantity are required." });
+
+    const product = await Product.findOne({ id: productId });
+    if (!product) return res.status(404).json({ error: "Product not found." });
+    if (product.stockQuantity < quantity)
+      return res.status(400).json({
+        error: `Insufficient stock! Available: ${product.stockQuantity}, Requested: ${quantity}`,
+      });
+
+    product.stockQuantity -= quantity;
+    product.lastUpdated = new Date().toISOString();
+    await product.save();
+
+    const totalPrice = quantity * product.price;
+    const newSale = {
+      id: generateId(),
+      productId,
+      productName: product.name,
+      quantity,
+      totalPrice,
+      date: new Date().toISOString(),
+      customerName,
+      customerAddress,
+    };
+
+    await Sale.create(newSale);
+
+    const counter = await SalesCounter.findOneAndUpdate(
+      {},
+      { $inc: { totalSalesCount: 1, totalRevenue: totalPrice } },
+      { upsert: true, new: true },
+    ).lean();
+
+    await addStockLog(
+      productId,
+      "SALE",
+      -quantity,
+      product.stockQuantity,
+      `Sold to ${customerName}`,
+    );
+
+    return res.status(201).json({
+      message: "Sale recorded successfully!",
+      sale: newSale,
+      updatedStock: product.stockQuantity,
+      totalSalesCount: counter.totalSalesCount,
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/sales/stats
+app.get("/api/sales/stats", loginRequired, async (req, res) => {
+  try {
+    const sales = await Sale.find().lean();
+    const counter = (await SalesCounter.findOne().lean()) || {
+      totalSalesCount: 0,
+      totalRevenue: 0,
+    };
+
+    const productStats = {};
+    for (const sale of sales) {
+      const pid = sale.productId;
+      if (!productStats[pid]) {
+        productStats[pid] = {
+          productId: pid,
+          productName: sale.productName,
+          totalQuantitySold: 0,
+          totalRevenue: 0,
+          saleCount: 0,
+        };
+      }
+      productStats[pid].totalQuantitySold += sale.quantity;
+      productStats[pid].totalRevenue += sale.totalPrice;
+      productStats[pid].saleCount += 1;
+    }
+
+    return res.status(200).json({
+      totalSalesCount: counter.totalSalesCount || 0,
+      totalRevenue: counter.totalRevenue || 0,
+      productStats: Object.values(productStats),
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ═══════════════════════════════════════════════════
+//  USAGE ROUTES
+// ═══════════════════════════════════════════════════
+
+// GET /api/usage
+app.get("/api/usage", loginRequired, async (req, res) => {
+  try {
+    const usage = await Usage.find().lean();
+    return res.status(200).json({ usage: clean(usage) });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/usage
+app.post("/api/usage", loginRequired, async (req, res) => {
+  try {
+    const {
+      productId,
+      quantity: rawQty,
+      userId,
+      userName = "Unknown",
+    } = req.body;
+    const quantity = parseInt(rawQty || 0);
+    const uId = userId || req.session.userId || "unknown";
+
+    if (!productId || quantity <= 0)
+      return res
+        .status(400)
+        .json({ error: "Valid product ID and quantity are required." });
+
+    const product = await Product.findOne({ id: productId });
+    if (!product) return res.status(404).json({ error: "Product not found." });
+    if (product.stockQuantity < quantity)
+      return res.status(400).json({ error: "Insufficient stock!" });
+
+    product.stockQuantity -= quantity;
+    product.lastUpdated = new Date().toISOString();
+    await product.save();
+
+    const newUsage = {
+      id: generateId(),
+      productId,
+      productName: product.name,
+      userId: uId,
+      userName,
+      quantity,
+      date: new Date().toISOString(),
+    };
+
+    await Usage.create(newUsage);
+    await addStockLog(
+      productId,
+      "USAGE",
+      -quantity,
+      product.stockQuantity,
+      `Used by ${userName}`,
+    );
+
+    return res.status(201).json({
+      message: "Usage recorded!",
+      usage: newUsage,
+      updatedStock: product.stockQuantity,
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ═══════════════════════════════════════════════════
+//  STOCK LOGS
+// ═══════════════════════════════════════════════════
+
+// GET /api/stock-logs
+app.get("/api/stock-logs", loginRequired, async (req, res) => {
+  try {
+    const stockLogs = await StockLog.find().sort({ timestamp: -1 }).lean();
+    return res.status(200).json({ stockLogs: clean(stockLogs) });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ═══════════════════════════════════════════════════
+//  PREDICTIONS — direct port of Flask algorithm
+// ═══════════════════════════════════════════════════
+
+function calculateWeightedMovingAverage(dataPoints, weights = null) {
+  if (!dataPoints || dataPoints.length === 0) return 0;
+  const w = weights || dataPoints.map((_, i) => Math.pow(2, i));
+  const weightedSum = dataPoints.reduce((sum, d, i) => sum + d * w[i], 0);
+  return weightedSum / w.reduce((a, b) => a + b, 0);
 }
 
 function detectTrend(recentSales) {
-  if (recentSales.length < 3) return ["stable", 1.0];
+  if (!recentSales || recentSales.length < 3) return ["stable", 1.0];
   const mid = Math.floor(recentSales.length / 2);
   const firstHalfAvg =
     recentSales.slice(0, mid).reduce((a, b) => a + b, 0) / mid;
+  const secondHalfLen = recentSales.length - mid;
   const secondHalfAvg =
-    recentSales.slice(mid).reduce((a, b) => a + b, 0) /
-    (recentSales.length - mid);
+    recentSales.slice(mid).reduce((a, b) => a + b, 0) / secondHalfLen;
   if (secondHalfAvg > firstHalfAvg * 1.2) return ["increasing", 1.3];
   if (secondHalfAvg < firstHalfAvg * 0.8) return ["decreasing", 0.7];
   return ["stable", 1.0];
 }
 
-function calculateReorderPoint(avgDailyUsage) {
-  const safetyStock = avgDailyUsage * 7 * 1.5;
-  return Math.floor(avgDailyUsage * 7 + safetyStock);
+function calculateReorderPoint(
+  avgDailyUsage,
+  leadTimeDays = 7,
+  safetyStockFactor = 1.5,
+) {
+  const safetyStock = avgDailyUsage * leadTimeDays * safetyStockFactor;
+  return Math.floor(avgDailyUsage * leadTimeDays + safetyStock);
 }
 
-function calculateForecastAccuracy(
-  productSales,
-  productUsage,
-  totalTransactions,
-) {
-  const allQuantities = [
+function calculateForecastAccuracy(productSales, productUsage) {
+  const allQty = [
     ...productSales.map((s) => s.quantity),
     ...productUsage.map((u) => u.quantity),
   ];
-  if (allQuantities.length < 3) return ["Low", 0.3];
-  const avg = allQuantities.reduce((a, b) => a + b, 0) / allQuantities.length;
-  const variance =
-    allQuantities.reduce((sum, x) => sum + (x - avg) ** 2, 0) /
-    allQuantities.length;
+  const total = allQty.length;
+  if (total < 3) return ["Low", 0.3];
+
+  const avg = allQty.reduce((a, b) => a + b, 0) / total;
+  const variance = allQty.reduce((s, x) => s + Math.pow(x - avg, 2), 0) / total;
   const stdDev = Math.sqrt(variance);
   const cv = avg > 0 ? (stdDev / avg) * 100 : 100;
+
   const dataScore =
-    allQuantities.length >= 20
-      ? 1.0
-      : allQuantities.length >= 10
-        ? 0.7
-        : allQuantities.length >= 5
-          ? 0.5
-          : 0.3;
+    total >= 20 ? 1.0 : total >= 10 ? 0.7 : total >= 5 ? 0.5 : 0.3;
+
+  let consistencyScore = 0.5;
+  if (total >= 6) {
+    const recent = allQty.slice(-3);
+    const historical = allQty.slice(0, -3);
+    const recentAvg = recent.reduce((a, b) => a + b, 0) / recent.length;
+    const histAvg = historical.length
+      ? historical.reduce((a, b) => a + b, 0) / historical.length
+      : recentAvg;
+    if (histAvg > 0) {
+      const deviation = Math.abs(recentAvg - histAvg) / histAvg;
+      consistencyScore = Math.max(0, 1 - deviation);
+    }
+  }
+
   const cvScore = cv < 15 ? 1.0 : cv < 30 ? 0.8 : cv < 50 ? 0.6 : 0.4;
-  const finalScore = cvScore * 0.5 + dataScore * 0.3 + 0.2; // Simplified
-  return finalScore >= 0.75
-    ? ["High", finalScore]
-    : finalScore >= 0.5
-      ? ["Medium", finalScore]
-      : ["Low", finalScore];
+  const finalScore = cvScore * 0.5 + dataScore * 0.3 + consistencyScore * 0.2;
+
+  if (finalScore >= 0.75) return ["High", finalScore];
+  if (finalScore >= 0.5) return ["Medium", finalScore];
+  return ["Low", finalScore];
 }
 
-app.get("/api/predictions", loginRequired, (req, res) => {
-  const products = readJson(PRODUCTS_FILE);
-  const sales = readJson(SALES_FILE);
-  const usageRecords = readJson(USAGE_FILE);
+async function buildPredictions() {
+  const products = await Product.find().lean();
+  const sales = await Sale.find().lean();
+  const usageRecords = await Usage.find().lean();
+  const priorityOrder = {
+    Immediate: 0,
+    Urgent: 1,
+    High: 2,
+    Medium: 3,
+    Normal: 4,
+    Review: 5,
+    Low: 6,
+  };
 
   const predictions = products.map((product) => {
     const productSales = sales.filter((s) => s.productId === product.id);
     const productUsage = usageRecords.filter((u) => u.productId === product.id);
-    const salesQuantities = productSales.slice(-14).map((s) => s.quantity);
-    const usageQuantities = productUsage.slice(-14).map((u) => u.quantity);
-    const allQuantities = [...salesQuantities, ...usageQuantities];
-    const totalConsumed =
-      productSales.reduce((sum, s) => sum + s.quantity, 0) +
-      productUsage.reduce((sum, u) => sum + u.quantity, 0);
+    const salesQty = productSales.slice(-14).map((s) => s.quantity);
+    const usageQty = productUsage.slice(-14).map((u) => u.quantity);
+    const allQty = [...salesQty, ...usageQty];
 
-    const weightedAvgUsage = allQuantities.length
-      ? calculateWeightedMovingAverage(allQuantities)
-      : 0.1;
-    const [trendDirection, trendFactor] = detectTrend(allQuantities);
+    const totalConsumed =
+      productSales.reduce((s, x) => s + x.quantity, 0) +
+      productUsage.reduce((s, x) => s + x.quantity, 0);
+
+    const [trendDirection, trendFactor] = allQty.length
+      ? detectTrend(allQty)
+      : ["stable", 1.0];
     const daysActive = Math.max(30, productSales.length + productUsage.length);
-    const baseDailyUsage = Math.max(0.1, totalConsumed / daysActive);
-    const adjustedDailyUsage = baseDailyUsage * trendFactor;
-    const avgDailyUsage = Math.round(adjustedDailyUsage * 100) / 100;
+    const adjustedDaily =
+      Math.max(0.1, totalConsumed / daysActive) * trendFactor;
+    const avgDailyUsage = Math.round(adjustedDaily * 100) / 100;
+
     const daysRemaining =
       avgDailyUsage > 0
         ? Math.floor(product.stockQuantity / avgDailyUsage)
         : 9999;
     const reorderPoint = calculateReorderPoint(avgDailyUsage);
-    const totalTransactions = productSales.length + productUsage.length;
     const [forecastAccuracy, accuracyScore] = calculateForecastAccuracy(
       productSales,
       productUsage,
-      totalTransactions,
     );
 
     const currentStock = product.stockQuantity;
     const minLevel = product.minStockLevel;
+
     let status, priority;
     if (currentStock <= 0) {
       status = "Critical";
@@ -744,20 +890,24 @@ app.get("/api/predictions", loginRequired, (req, res) => {
     } else if (currentStock < minLevel) {
       status = "Low";
       priority = "Medium";
+    } else if (daysRemaining > 90) {
+      status = "Overstocked";
+      priority = "Review";
+    } else if (currentStock > minLevel * 3) {
+      status = "Overstocked";
+      priority = "Low";
     } else {
       status = "Healthy";
       priority = "Normal";
     }
 
-    const recommendedOrderQty =
-      status === "Critical" || status === "Low"
-        ? Math.max(
-            0,
-            Math.floor(Math.max(reorderPoint, minLevel * 1.3) - currentStock),
-          )
-        : currentStock < reorderPoint
-          ? Math.floor((reorderPoint - currentStock) * 1.2)
-          : 0;
+    let recommendedOrderQty = 0;
+    if (["Critical", "Low"].includes(status)) {
+      const targetStock = Math.max(reorderPoint, minLevel * 1.3);
+      recommendedOrderQty = Math.max(0, Math.floor(targetStock - currentStock));
+    } else if (currentStock < reorderPoint) {
+      recommendedOrderQty = Math.floor((reorderPoint - currentStock) * 1.2);
+    }
 
     const confidence =
       accuracyScore >= 0.75 ? "High" : accuracyScore >= 0.5 ? "Medium" : "Low";
@@ -776,86 +926,98 @@ app.get("/api/predictions", loginRequired, (req, res) => {
       forecastAccuracy,
       confidence,
       currentStock,
-      minStockLevel,
+      minStockLevel: minLevel,
     };
   });
 
-  const priorityOrder = {
-    Immediate: 0,
-    Urgent: 1,
-    High: 2,
-    Medium: 3,
-    Normal: 4,
-    Review: 5,
-    Low: 6,
-  };
-  predictions.sort(
-    (a, b) =>
-      (priorityOrder[a.priority] || 999) - (priorityOrder[b.priority] || 999) ||
-      a.daysRemaining - b.daysRemaining,
-  );
-
-  res.json({ predictions });
-});
-
-// ═══════════════════════════════════════════════════
-//  DASHBOARD ANALYTICS ROUTE
-// ═══════════════════════════════════════════════════
-
-app.get("/api/dashboard", loginRequired, (req, res) => {
-  const products = readJson(PRODUCTS_FILE);
-  const sales = readJson(SALES_FILE);
-  const counter = readJsonObj(SALES_COUNTER_FILE);
-
-  const totalProducts = products.length;
-  const totalStock = products.reduce((sum, p) => sum + p.stockQuantity, 0);
-  const lowStockCount = products.filter(
-    (p) => p.stockQuantity < p.minStockLevel,
-  ).length;
-  const totalValue = products.reduce(
-    (sum, p) => sum + p.stockQuantity * p.price,
-    0,
-  );
-
-  const categories = {};
-  products.forEach((p) => {
-    if (!categories[p.category])
-      categories[p.category] = { count: 0, totalStock: 0, totalValue: 0 };
-    categories[p.category].count++;
-    categories[p.category].totalStock += p.stockQuantity;
-    categories[p.category].totalValue += p.stockQuantity * p.price;
+  predictions.sort((a, b) => {
+    const pa = priorityOrder[a.priority] ?? 999;
+    const pb = priorityOrder[b.priority] ?? 999;
+    return pa !== pb ? pa - pb : a.daysRemaining - b.daysRemaining;
   });
 
-  res.json({
-    totalProducts,
-    totalStock,
-    lowStockCount,
-    totalValue,
-    totalSalesCount: counter.totalSalesCount || 0,
-    totalRevenue: counter.totalRevenue || 0,
-    categories,
-    recentSales: sales.slice(-5),
-  });
-});
+  return predictions;
+}
 
-// ═══════════════════════════════════════════════════
-//  USER MANAGEMENT ROUTE
-// ═══════════════════════════════════════════════════
-
-app.get("/api/users", loginRequired, (req, res) => {
-  if (req.session.user_role !== "ADMIN") {
-    return res.status(403).json({ error: "Admin access required." });
+// GET /api/predictions
+app.get("/api/predictions", loginRequired, async (req, res) => {
+  try {
+    return res.status(200).json({ predictions: await buildPredictions() });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
-  const users = readJson(USERS_FILE);
-  const safeUsers = users.map((u) => {
-    const { password, security_answer, ...safe } = u;
-    return safe;
-  });
-  res.json({ users: safeUsers });
 });
 
 // ═══════════════════════════════════════════════════
-//  NOTIFICATIONS ROUTES
+//  DASHBOARD
+// ═══════════════════════════════════════════════════
+
+// GET /api/dashboard
+app.get("/api/dashboard", loginRequired, async (req, res) => {
+  try {
+    const products = await Product.find().lean();
+    const sales = await Sale.find().sort({ date: -1 }).lean();
+    const counter = (await SalesCounter.findOne().lean()) || {
+      totalSalesCount: 0,
+      totalRevenue: 0,
+    };
+
+    const totalProducts = products.length;
+    const totalStock = products.reduce((s, p) => s + p.stockQuantity, 0);
+    const lowStockCount = products.filter(
+      (p) => p.stockQuantity < p.minStockLevel,
+    ).length;
+    const totalValue = products.reduce(
+      (s, p) => s + p.stockQuantity * p.price,
+      0,
+    );
+
+    const categories = {};
+    for (const p of products) {
+      if (!categories[p.category])
+        categories[p.category] = { count: 0, totalStock: 0, totalValue: 0 };
+      categories[p.category].count += 1;
+      categories[p.category].totalStock += p.stockQuantity;
+      categories[p.category].totalValue += p.stockQuantity * p.price;
+    }
+
+    return res.status(200).json({
+      totalProducts,
+      totalStock,
+      lowStockCount,
+      totalValue,
+      totalSalesCount: counter.totalSalesCount || 0,
+      totalRevenue: counter.totalRevenue || 0,
+      categories,
+      recentSales: clean(sales.slice(0, 5)),
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ═══════════════════════════════════════════════════
+//  USERS (admin only)
+// ═══════════════════════════════════════════════════
+
+// GET /api/users
+app.get("/api/users", loginRequired, async (req, res) => {
+  try {
+    if (req.session.userRole !== "ADMIN")
+      return res.status(403).json({ error: "Admin access required." });
+
+    const users = await User.find().lean();
+    const safeUsers = users.map(
+      ({ _id, __v, password, security_answer, ...safe }) => safe,
+    );
+    return res.status(200).json({ users: safeUsers });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ═══════════════════════════════════════════════════
+//  NOTIFICATIONS
 // ═══════════════════════════════════════════════════
 
 function createNotification(
@@ -879,30 +1041,68 @@ function createNotification(
   };
 }
 
-app.get("/api/notifications", loginRequired, (req, res) => {
-  const notifications = readJson(NOTIFICATIONS_FILE);
-  const products = readJson(PRODUCTS_FILE);
-  const sales = readJson(SALES_FILE);
+// GET /api/notifications
+app.get("/api/notifications", loginRequired, async (req, res) => {
+  try {
+    // Purge notifications older than 7 days
+    const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    await Notification.deleteMany({ timestamp: { $lt: cutoff } });
 
-  // Remove old notifications
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - 7);
-  const recentNotifications = notifications.filter(
-    (n) => new Date(n.timestamp) > cutoff,
-  );
+    let notifs = await Notification.find().lean();
 
-  // Generate low stock alerts
-  const predictions = []; // Simplified, assume we call the predictions logic
-  // For brevity, skip detailed predictions here, but in full code, integrate
+    const products = await Product.find().lean();
+    const sales = await Sale.find().sort({ date: -1 }).lean();
+    const predictions = await buildPredictions();
 
-  // Recent sales notifications
-  const recentSales = sales.slice(-5).reverse();
-  recentSales.forEach((sale) => {
-    const existing = recentNotifications.find(
-      (n) => n.type === "sale" && n.metadata?.saleId === sale.id,
-    );
-    if (!existing) {
-      recentNotifications.push(
+    const newNotifs = [];
+
+    // Low-stock alerts
+    for (const pred of predictions) {
+      if (!["Critical", "Low"].includes(pred.status)) continue;
+      const product = products.find((p) => p.id === pred.productId);
+      if (!product) continue;
+
+      const existing = notifs.find(
+        (n) =>
+          n.type === "low_stock" && n.productId === pred.productId && !n.read,
+      );
+      if (existing) continue;
+
+      let optimalOrder = pred.recommendedOrderQty;
+      const minOrder = Math.max(pred.minStockLevel - pred.currentStock, 0);
+      if (optimalOrder === 0)
+        optimalOrder = Math.max(minOrder, Math.floor(pred.reorderPoint * 1.2));
+
+      newNotifs.push(
+        createNotification(
+          "low_stock",
+          `${pred.status} Stock Alert`,
+          `${pred.productName} needs restocking`,
+          pred.productId,
+          pred.productName,
+          {
+            status: pred.status,
+            priority: pred.priority,
+            currentStock: pred.currentStock,
+            minStockLevel: pred.minStockLevel,
+            daysRemaining: pred.daysRemaining,
+            optimalOrder,
+            minimumOrder: minOrder,
+            reorderPoint: pred.reorderPoint,
+            manufacturer: product.manufacturer || "Unknown",
+          },
+        ),
+      );
+    }
+
+    // Recent sales notifications (last 5)
+    for (const sale of sales.slice(0, 5)) {
+      const existing = notifs.find(
+        (n) => n.type === "sale" && n.metadata?.saleId === sale.id,
+      );
+      if (existing) continue;
+
+      newNotifs.push(
         createNotification(
           "sale",
           "New Sale Recorded",
@@ -913,154 +1113,256 @@ app.get("/api/notifications", loginRequired, (req, res) => {
             saleId: sale.id,
             quantity: sale.quantity,
             totalPrice: sale.totalPrice,
-            customerName: sale.customerName,
+            customerName: sale.customerName || "Unknown",
             date: sale.date,
           },
         ),
       );
     }
-  });
 
-  writeJson(NOTIFICATIONS_FILE, recentNotifications);
-  recentNotifications.sort(
-    (a, b) => new Date(b.timestamp) - new Date(a.timestamp),
-  );
-  const unreadCount = recentNotifications.filter((n) => !n.read).length;
+    if (newNotifs.length > 0) {
+      await Notification.insertMany(newNotifs, { ordered: false });
+      notifs = [...notifs, ...newNotifs];
+    }
 
-  res.json({
-    notifications: recentNotifications,
-    unreadCount,
-    total: recentNotifications.length,
-  });
+    const sorted = notifs.sort((a, b) =>
+      b.timestamp.localeCompare(a.timestamp),
+    );
+    const unreadCount = sorted.filter((n) => !n.read).length;
+
+    return res.status(200).json({
+      notifications: clean(sorted),
+      unreadCount,
+      total: sorted.length,
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
-app.post(
-  "/api/notifications/:notificationId/read",
-  loginRequired,
-  (req, res) => {
-    const { notificationId } = req.params;
-    const notifications = readJson(NOTIFICATIONS_FILE);
-    const notification = notifications.find((n) => n.id === notificationId);
-    if (!notification)
+// POST /api/notifications/:id/read
+app.post("/api/notifications/:id/read", loginRequired, async (req, res) => {
+  try {
+    const notif = await Notification.findOne({ id: req.params.id });
+    if (!notif)
       return res.status(404).json({ error: "Notification not found" });
-    notification.read = true;
-    writeJson(NOTIFICATIONS_FILE, notifications);
-    res.json({ message: "Notification marked as read", notification });
-  },
-);
+
+    notif.read = true;
+    await notif.save();
+
+    const obj = notif.toObject();
+    delete obj._id;
+    delete obj.__v;
+    return res
+      .status(200)
+      .json({ message: "Notification marked as read", notification: obj });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/notifications/clear-all  ← must be BEFORE /:id/action
+app.post("/api/notifications/clear-all", loginRequired, async (req, res) => {
+  try {
+    await Notification.deleteMany({ read: true });
+    const remaining = await Notification.countDocuments();
+    return res
+      .status(200)
+      .json({ message: "All read notifications cleared", remaining });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/notifications/:id/action
+app.post("/api/notifications/:id/action", loginRequired, async (req, res) => {
+  try {
+    const { action, quantity, orderType = "optimal" } = req.body;
+    const notif = await Notification.findOne({ id: req.params.id });
+    if (!notif)
+      return res.status(404).json({ error: "Notification not found" });
+
+    if (action === "order" && quantity) {
+      const productId = notif.productId;
+      const product = await Product.findOne({ id: productId });
+
+      if (product) {
+        product.stockQuantity += quantity;
+        product.lastUpdated = new Date().toISOString();
+        await product.save();
+
+        await StockLog.create({
+          id: generateId(),
+          productId,
+          productName: product.name,
+          action: "restock",
+          quantityChange: quantity,
+          remainingStock: product.stockQuantity,
+          timestamp: new Date().toISOString(),
+          note: `Ordered via notification - ${orderType} order`,
+        });
+      }
+
+      notif.read = true;
+      notif.resolved = true;
+      notif.resolvedAt = new Date().toISOString();
+
+      const meta = notif.metadata ? { ...notif.metadata } : {};
+      meta.orderPlaced = {
+        quantity,
+        type: orderType,
+        timestamp: new Date().toISOString(),
+      };
+      notif.metadata = meta;
+      notif.markModified("metadata");
+      await notif.save();
+
+      const obj = notif.toObject();
+      delete obj._id;
+      delete obj.__v;
+      return res.status(200).json({
+        message: `Order placed successfully for ${quantity} units`,
+        notification: obj,
+      });
+    }
+
+    return res.status(400).json({ error: "Invalid action" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
 
 // ═══════════════════════════════════════════════════
 //  HEALTH CHECK
 // ═══════════════════════════════════════════════════
 
 app.get("/api/health", (req, res) => {
-  res.json({
+  const states = ["disconnected", "connected", "connecting", "disconnecting"];
+  return res.status(200).json({
     status: "healthy",
     message: "Invenio AI Backend is running!",
-    storage: "JSON-based file storage",
-    data_directory: DATA_DIR,
+    storage: "MongoDB Atlas",
+    dbState: states[mongoose.connection.readyState] || "unknown",
     timestamp: new Date().toISOString(),
   });
 });
 
 // ═══════════════════════════════════════════════════
-//  FORECASTS ROUTES
+//  DEMAND FORECASTING ENDPOINTS
 // ═══════════════════════════════════════════════════
 
-app.get("/api/forecasts", (req, res) => {
-  if (!fs.existsSync(FORECASTS_FILE)) {
-    return res
-      .status(404)
-      .json({
+// GET /api/forecasts
+app.get("/api/forecasts", async (req, res) => {
+  try {
+    const data = await ForecastData.findOne().lean();
+    if (!data)
+      return res.status(404).json({
         error:
           "Forecasts not yet generated. Run train_forecast_model.py first.",
       });
-  }
-  const data = readJsonObj(FORECASTS_FILE);
-  if (!data)
-    return res
-      .status(500)
-      .json({ error: "Forecasts file is empty or corrupted." });
 
-  const horizon = req.query.horizon;
-  const productId = req.query.productId;
-  let productsFc = data.products || [];
+    delete data._id;
+    delete data.__v;
+    const { horizon = null, productId = null } = req.query;
+    let productsFc = data.products || [];
 
-  if (productId) {
-    productsFc = productsFc.filter((p) => p.productId === productId);
-    if (!productsFc.length)
-      return res
-        .status(404)
-        .json({ error: `No forecast found for productId=${productId}` });
-  }
+    if (productId) {
+      productsFc = productsFc.filter((p) => p.productId === productId);
+      if (!productsFc.length)
+        return res
+          .status(404)
+          .json({ error: `No forecast found for productId=${productId}` });
+    }
 
-  if (horizon && ["30d", "60d", "90d"].includes(horizon)) {
-    const slim = productsFc.map((p) => {
-      const entry = { ...p };
-      delete entry.forecasts;
-      const fc = p.forecasts?.[horizon] || {};
-      entry.forecast = Object.fromEntries(
-        Object.entries(fc).filter(([k]) => k !== "daily_breakdown"),
+    if (horizon && ["30d", "60d", "90d"].includes(horizon)) {
+      const slim = productsFc.map((p) => {
+        const entry = Object.fromEntries(
+          Object.entries(p).filter(([k]) => k !== "forecasts"),
+        );
+        const fc = (p.forecasts || {})[horizon] || {};
+        entry.forecast = Object.fromEntries(
+          Object.entries(fc).filter(([k]) => k !== "daily_breakdown"),
+        );
+        entry.horizon = horizon;
+        return entry;
+      });
+      return res.status(200).json({
+        generatedAt: data.generatedAt,
+        forecastedUpTo: data.forecastedUpTo,
+        horizon,
+        products: slim,
+      });
+    }
+
+    const summary = productsFc.map((p) => {
+      const entry = Object.fromEntries(
+        Object.entries(p).filter(([k]) => k !== "forecasts"),
       );
-      entry.horizon = horizon;
+      entry.forecasts = {};
+      for (const h of ["30d", "60d", "90d"]) {
+        const fc = (p.forecasts || {})[h] || {};
+        entry.forecasts[h] = Object.fromEntries(
+          Object.entries(fc).filter(([k]) => k !== "daily_breakdown"),
+        );
+      }
       return entry;
     });
-    return res.json({
+
+    return res.status(200).json({
       generatedAt: data.generatedAt,
       forecastedUpTo: data.forecastedUpTo,
-      horizon,
-      products: slim,
+      horizons: data.horizons || ["30d", "60d", "90d"],
+      products: summary,
     });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
+});
 
-  const summary = productsFc.map((p) => {
-    const entry = { ...p };
-    delete entry.forecasts;
-    entry.forecasts = {};
-    ["30d", "60d", "90d"].forEach((h) => {
-      const fc = p.forecasts?.[h] || {};
-      entry.forecasts[h] = Object.fromEntries(
-        Object.entries(fc).filter(([k]) => k !== "daily_breakdown"),
-      );
+// GET /api/forecasts/:productId/daily
+app.get("/api/forecasts/:productId/daily", async (req, res) => {
+  try {
+    const data = await ForecastData.findOne().lean();
+    if (!data)
+      return res.status(404).json({ error: "Forecasts not generated yet." });
+
+    const productsFc = data.products || [];
+    const match = productsFc.find((p) => p.productId === req.params.productId);
+    if (!match)
+      return res
+        .status(404)
+        .json({ error: `No forecast for productId=${req.params.productId}` });
+
+    const horizon = req.query.horizon || "30d";
+    if (!["30d", "60d", "90d"].includes(horizon))
+      return res
+        .status(400)
+        .json({ error: "horizon must be 30d, 60d, or 90d" });
+
+    const daily =
+      ((match.forecasts || {})[horizon] || {}).daily_breakdown || [];
+
+    return res.status(200).json({
+      productId: req.params.productId,
+      productName: match.productName,
+      horizon,
+      generatedAt: data.generatedAt,
+      daily,
     });
-    return entry;
-  });
-
-  res.json({
-    generatedAt: data.generatedAt,
-    forecastedUpTo: data.forecastedUpTo,
-    horizons: ["30d", "60d", "90d"],
-    products: summary,
-  });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
-app.get("/api/forecasts/:productId/daily", (req, res) => {
-  const { productId } = req.params;
-  if (!fs.existsSync(FORECASTS_FILE))
-    return res.status(404).json({ error: "Forecasts not generated yet." });
-  const data = readJsonObj(FORECASTS_FILE);
-  const match = data.products?.find((p) => p.productId === productId);
-  if (!match)
-    return res
-      .status(404)
-      .json({ error: `No forecast for productId=${productId}` });
-
-  const horizon = req.query.horizon || "30d";
-  if (!["30d", "60d", "90d"].includes(horizon))
-    return res.status(400).json({ error: "horizon must be 30d, 60d, or 90d" });
-
-  const daily = match.forecasts?.[horizon]?.daily_breakdown || [];
-  res.json({
-    productId,
-    productName: match.productName,
-    horizon,
-    generatedAt: data.generatedAt,
-    daily,
-  });
+// ═══════════════════════════════════════════════════
+//  START SERVER (only after DB is connected)
+// ═══════════════════════════════════════════════════
+mongoose.connection.once("open", async () => {
+  await initializeData();
 });
 
-// Initialize data
-initializeData();
+mongoose.connection.on("error", (err) => {
+  console.error("[mongo] Runtime error:", err.message);
+});
 
-// Export for Vercel
 module.exports = app;

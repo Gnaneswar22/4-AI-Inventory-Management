@@ -8,12 +8,12 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const bcrypt   = require('bcryptjs');
-const fs       = require('fs');
-const path     = require('path');
+const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
 
 const MONGO_URI = 'mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hvxvofb.mongodb.net/invenio?retryWrites=true&w=majority&appName=Cluster0';
-const DATA_DIR  = path.join(__dirname, 'data');
+const DATA_DIR = path.join(__dirname, 'data');
 
 // ─── helpers ───────────────────────────────────────
 function readJson(file) {
@@ -33,27 +33,27 @@ function isWerkzeugHash(h) {
 }
 
 const DEFAULT_CREDS = {
-  'admin@invenio.ai':   { password: 'admin123',   security_answer: 'blue'  },
+  'admin@invenio.ai': { password: 'admin123', security_answer: 'blue' },
   'manager@invenio.ai': { password: 'manager123', security_answer: 'buddy' },
 };
 
 // ─── lean Mongoose schemas (no _id exposure) ──────
 const opts = { strict: false, versionKey: false };
 
-const UserSchema        = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
-const ProductSchema     = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
-const SaleSchema        = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
-const StockLogSchema    = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
-const UsageSchema       = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
-const SalesCounterSchema= new mongoose.Schema({}, opts);
-const NotificationSchema= new mongoose.Schema({ id: { type: String, unique: true } }, opts);
-const ForecastDataSchema= new mongoose.Schema({}, opts);
+const UserSchema = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
+const ProductSchema = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
+const SaleSchema = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
+const StockLogSchema = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
+const UsageSchema = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
+const SalesCounterSchema = new mongoose.Schema({}, opts);
+const NotificationSchema = new mongoose.Schema({ id: { type: String, unique: true } }, opts);
+const ForecastDataSchema = new mongoose.Schema({}, opts);
 
-const User         = mongoose.model('User',         UserSchema);
-const Product      = mongoose.model('Product',      ProductSchema);
-const Sale         = mongoose.model('Sale',         SaleSchema);
-const StockLog     = mongoose.model('StockLog',     StockLogSchema);
-const Usage        = mongoose.model('Usage',        UsageSchema);
+const User = mongoose.model('User', UserSchema);
+const Product = mongoose.model('Product', ProductSchema);
+const Sale = mongoose.model('Sale', SaleSchema);
+const StockLog = mongoose.model('StockLog', StockLogSchema);
+const Usage = mongoose.model('Usage', UsageSchema);
 const SalesCounter = mongoose.model('SalesCounter', SalesCounterSchema);
 const Notification = mongoose.model('Notification', NotificationSchema);
 const ForecastData = mongoose.model('ForecastData', ForecastDataSchema);
@@ -77,11 +77,11 @@ async function migrate() {
       if (isWerkzeugHash(u.password)) {
         const cred = DEFAULT_CREDS[u.email];
         if (cred) {
-          u.password        = bcrypt.hashSync(cred.password, 10);
+          u.password = bcrypt.hashSync(cred.password, 10);
           u.security_answer = bcrypt.hashSync(cred.security_answer, 10);
           console.log(`  [users] Re-hashed Werkzeug → bcrypt: ${u.email}`);
         } else {
-          u.password             = bcrypt.hashSync('changeme123', 10);
+          u.password = bcrypt.hashSync('changeme123', 10);
           u.needs_password_reset = true;
           console.log(`  [users] Reset unknown account to changeme123: ${u.email}`);
         }

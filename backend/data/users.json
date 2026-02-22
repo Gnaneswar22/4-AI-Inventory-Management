@@ -1,36 +1,35 @@
 [
   {
-    "id": "fda460e6",
+    "id": "867a5aad",
     "name": "Admin User",
     "email": "admin@invenio.ai",
-    "password": "$2a$10$5uLUEcOd.bp.2xtbyE/pru5Lfd88JWl/6t/avJxW05k.WL0hTRlzi",
+    "password": "scrypt:32768:8:1$R4oPZHMXnuB3Jvwo$ab2cf50cac9f25239e3f4f98d14cf14ed4c7c49a0e9db1c99dd872d81e034788808ae62fd7e7dee24efe0dee28a88bbcf678fad65e40add692c85bdfa565e9b6",
     "role": "ADMIN",
     "avatar": "",
     "security_question": "What is your favorite color?",
-    "security_answer": "$2a$10$uiwjuRfWk992KIYQ8BA5yeSgrBUWjpwTOcvDzLbPg3BlW/bHJ75qy",
-    "created_at": "2025-10-20T17:39:10.443180"
+    "security_answer": "scrypt:32768:8:1$R7Om5pWlhn2HAERz$879beb6500dcd8471fdfcf2ea181442df2f6e526e45f186cb4d8e154f5bf2708a791225c8a36560c899fa65bdc8be498cc6434cf8a1a59dbd9777f2521ae1d6f",
+    "created_at": "2025-10-26T03:18:55.080864"
   },
   {
-    "id": "2e2e4c48",
+    "id": "10de3d87",
     "name": "Store Manager",
     "email": "manager@invenio.ai",
-    "password": "$2a$10$IZGfdY0iL7OAeq2.hw800uAT9CpYQTlEkh.gxdC.UB2v64cOaaEtC",
+    "password": "scrypt:32768:8:1$SnB0L9yUnb7H1tnr$057b346b91b9d183458e8c9b4b164efa8bae381d5db1a46f1e1be6da88adb9cdc1d0c14652c1dfed87b6b0b57474e0547805fd8842feaa4d918c319b568705cb",
     "role": "USER",
     "avatar": "",
     "security_question": "What is your pet's name?",
-    "security_answer": "$2a$10$oAeLwxhrQoDhWgqw9/z0q.GCBsR6ECoNyhPrGAYq14l7dSh1jWGfW",
-    "created_at": "2025-11-19T17:39:10.993853"
+    "security_answer": "scrypt:32768:8:1$BFYbYYdXGeDKNbl5$fa9e111cdeac7b14c3a730578df265ca80761623cc95777c988b588f32b24ee09d795f67a2173fd09135150c9a0a69553c3556fd0ffa47f34e121f5786271f2b",
+    "created_at": "2025-11-25T03:18:55.575281"
   },
   {
-    "id": "7902e604",
+    "id": "2b2137f3",
     "name": "Warehouse Lead",
     "email": "warehouse@invenio.ai",
-    "password": "$2a$10$RlcQvarDpuXvaiM9lHm.AOjnQxKVteyroZWhEAVKUOm/NPrjUtxYK",
+    "password": "scrypt:32768:8:1$EUfuFwD09gV8qAqQ$f2136e0f761dea8164c5c591a4d48dc9eed0d85d56d170e06016c6337ba2be56018dbe78faed597b74faa5de589f163dcecfb6b5b7856fb3b75701b14a3d973b",
     "role": "USER",
     "avatar": "",
     "security_question": "What city were you born in?",
-    "security_answer": "scrypt:32768:8:1$IDURMFrZOndUsi6I$43d818a52bf12f0cf1f6e05c257bbcdfa30cd838539dabcf6f3da2798850d1d0f466567560952143927e270e7e92802fcf903d05f83e98672a4df36aed9f17f0",
-    "created_at": "2025-12-19T17:39:11.543694",
-    "needs_password_reset": true
+    "security_answer": "scrypt:32768:8:1$fAvZwGKqz6Ig2HoI$549033f49b0b4ec4fd32aec1c6ef007d1443f7979612e830ef0249f0fb596cfa85ff605ddb79ad23c29152ad08e0b35719a81f48c24ac4026c321f9c9c6f5cda",
+    "created_at": "2025-12-25T03:18:56.045280"
   }
 ]
