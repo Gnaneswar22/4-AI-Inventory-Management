@@ -24,20 +24,23 @@ const MONGO_URI = 'mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hv
 
 let isConnected = false;
 const connectDB = async () => {
-  if (isConnected) return;
+  if (isConnected || mongoose.connections[0].readyState) return;
   try {
-    const db = await mongoose.connect(MONGO_URI, { family: 4 });
-    isConnected = db.connections[0].readyState;
+    await mongoose.connect(MONGO_URI, { family: 4 });
+    isConnected = true;
     console.log("  [mongo] Connected to MongoDB Atlas");
   } catch (err) {
     console.error("  [mongo] Connection error:", err.message);
   }
 };
-connectDB();
 
 // ─────────────────────────────────────────────────
 // MIDDLEWARE
 // ─────────────────────────────────────────────────
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 app.use(
   cors({
     origin: [
@@ -50,6 +53,7 @@ app.use(
   }),
 );
 
+const MongoStore = require("connect-mongo");
 app.use(express.json());
 
 app.use(
@@ -57,6 +61,7 @@ app.use(
     secret: "invenio-ai-secret-key-2024",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: MONGO_URI }),
     cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 },
   }),
 );
