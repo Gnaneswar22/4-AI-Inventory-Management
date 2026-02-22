@@ -53,7 +53,7 @@ app.use(
   }),
 );
 
-const MongoStore = require("connect-mongo");
+const MongoStore = require("connect-mongo").default;
 app.use(express.json());
 
 app.use(
