@@ -1,0 +1,36 @@
+[
+  {
+    "id": "fda460e6",
+    "name": "Admin User",
+    "email": "admin@invenio.ai",
+    "password": "$2a$10$5uLUEcOd.bp.2xtbyE/pru5Lfd88JWl/6t/avJxW05k.WL0hTRlzi",
+    "role": "ADMIN",
+    "avatar": "",
+    "security_question": "What is your favorite color?",
+    "security_answer": "$2a$10$uiwjuRfWk992KIYQ8BA5yeSgrBUWjpwTOcvDzLbPg3BlW/bHJ75qy",
+    "created_at": "2025-10-20T17:39:10.443180"
+  },
+  {
+    "id": "2e2e4c48",
+    "name": "Store Manager",
+    "email": "manager@invenio.ai",
+    "password": "$2a$10$IZGfdY0iL7OAeq2.hw800uAT9CpYQTlEkh.gxdC.UB2v64cOaaEtC",
+    "role": "USER",
+    "avatar": "",
+    "security_question": "What is your pet's name?",
+    "security_answer": "$2a$10$oAeLwxhrQoDhWgqw9/z0q.GCBsR6ECoNyhPrGAYq14l7dSh1jWGfW",
+    "created_at": "2025-11-19T17:39:10.993853"
+  },
+  {
+    "id": "7902e604",
+    "name": "Warehouse Lead",
+    "email": "warehouse@invenio.ai",
+    "password": "$2a$10$RlcQvarDpuXvaiM9lHm.AOjnQxKVteyroZWhEAVKUOm/NPrjUtxYK",
+    "role": "USER",
+    "avatar": "",
+    "security_question": "What city were you born in?",
+    "security_answer": "scrypt:32768:8:1$IDURMFrZOndUsi6I$43d818a52bf12f0cf1f6e05c257bbcdfa30cd838539dabcf6f3da2798850d1d0f466567560952143927e270e7e92802fcf903d05f83e98672a4df36aed9f17f0",
+    "created_at": "2025-12-19T17:39:11.543694",
+    "needs_password_reset": true
+  }
+]

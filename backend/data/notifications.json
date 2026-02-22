@@ -1,0 +1,193 @@
+[
+  {
+    "id": "213e4215",
+    "type": "low_stock",
+    "title": "Critical Stock Alert",
+    "message": "Puma RS-X Reinvention needs restocking",
+    "productId": "75978dd0",
+    "productName": "Puma RS-X Reinvention",
+    "metadata": {
+      "status": "Critical",
+      "priority": "High",
+      "currentStock": 8,
+      "minStockLevel": 25,
+      "daysRemaining": 80,
+      "optimalOrder": 0,
+      "minimumOrder": 17,
+      "reorderPoint": 1,
+      "manufacturer": "Puma Sports India"
+    },
+    "read": false,
+    "timestamp": "2026-02-18T16:34:57.687008"
+  },
+  {
+    "id": "36daf508",
+    "type": "sale",
+    "title": "New Sale Recorded",
+    "message": "Adidas Ultraboost Light - Qty: 1",
+    "productId": "2750d332",
+    "productName": "Adidas Ultraboost Light",
+    "metadata": {
+      "saleId": "2ebcaaf5",
+      "quantity": 1,
+      "totalPrice": 16000,
+      "customerName": "Sneha Das",
+      "date": "2025-11-21T03:14:36.549022"
+    },
+    "read": false,
+    "timestamp": "2026-02-18T16:34:57.687066"
+  },
+  {
+    "id": "4e33c1db",
+    "type": "sale",
+    "title": "New Sale Recorded",
+    "message": "boAt Airdopes 141 - Qty: 5",
+    "productId": "34f46a00",
+    "productName": "boAt Airdopes 141",
+    "metadata": {
+      "saleId": "ee1bfbf6",
+      "quantity": 5,
+      "totalPrice": 6495,
+      "customerName": "Rohit Verma",
+      "date": "2025-11-21T07:44:23.548834"
+    },
+    "read": false,
+    "timestamp": "2026-02-18T16:34:57.687097"
+  },
+  {
+    "id": "a7233046",
+    "type": "sale",
+    "title": "New Sale Recorded",
+    "message": "Fossil Gen 6 Smartwatch - Qty: 1",
+    "productId": "964341d5",
+    "productName": "Fossil Gen 6 Smartwatch",
+    "metadata": {
+      "saleId": "b608fcbe",
+      "quantity": 1,
+      "totalPrice": 24000,
+      "customerName": "Manish Agarwal",
+      "date": "2025-11-21T12:38:12.549199"
+    },
+    "read": false,
+    "timestamp": "2026-02-18T16:34:57.687122"
+  },
+  {
+    "id": "acc60d11",
+    "type": "sale",
+    "title": "New Sale Recorded",
+    "message": "Milton Thermosteel Flask 1L - Qty: 1",
+    "productId": "8494d92d",
+    "productName": "Milton Thermosteel Flask 1L",
+    "metadata": {
+      "saleId": "05bf1ec8",
+      "quantity": 1,
+      "totalPrice": 799,
+      "customerName": "Deepak Tiwari",
+      "date": "2025-11-23T03:56:03.549432"
+    },
+    "read": false,
+    "timestamp": "2026-02-18T16:34:57.687146"
+  },
+  {
+    "id": "d27ee37d",
+    "type": "sale",
+    "title": "New Sale Recorded",
+    "message": "boAt Airdopes 141 - Qty: 2",
+    "productId": "34f46a00",
+    "productName": "boAt Airdopes 141",
+    "metadata": {
+      "saleId": "23b3fdd5",
+      "quantity": 2,
+      "totalPrice": 2598,
+      "customerName": "Suresh Iyer",
+      "date": "2025-11-28T08:05:35.548613"
+    },
+    "read": false,
+    "timestamp": "2026-02-18T16:34:57.687168"
+  },
+  {
+    "id": "aa3668cd",
+    "type": "sale",
+    "title": "New Sale Recorded",
+    "message": "Allen Solly Formal Shirt - Qty: 2",
+    "productId": "a1295b93",
+    "productName": "Allen Solly Formal Shirt",
+    "metadata": {
+      "saleId": "939635a2",
+      "quantity": 2,
+      "totalPrice": 3598,
+      "customerName": "Karthik Menon",
+      "date": "2024-11-01T08:38:35"
+    },
+    "read": false,
+    "timestamp": "2026-02-22T00:10:43.606988"
+  },
+  {
+    "id": "e0f56857",
+    "type": "sale",
+    "title": "New Sale Recorded",
+    "message": "Ray-Ban Aviator Sunglasses - Qty: 1",
+    "productId": "584396b5",
+    "productName": "Ray-Ban Aviator Sunglasses",
+    "metadata": {
+      "saleId": "0f7de7ac",
+      "quantity": 1,
+      "totalPrice": 7990,
+      "customerName": "Vikram Singh",
+      "date": "2024-11-01T08:45:58"
+    },
+    "read": false,
+    "timestamp": "2026-02-22T00:10:43.607020"
+  },
+  {
+    "id": "fd1d1940",
+    "type": "sale",
+    "title": "New Sale Recorded",
+    "message": "JBL Flip 6 Bluetooth Speaker - Qty: 1",
+    "productId": "128b2df1",
+    "productName": "JBL Flip 6 Bluetooth Speaker",
+    "metadata": {
+      "saleId": "cbca8140",
+      "quantity": 1,
+      "totalPrice": 11999,
+      "customerName": "Rajesh Kumar",
+      "date": "2024-11-01T09:25:30"
+    },
+    "read": false,
+    "timestamp": "2026-02-22T00:10:43.607040"
+  },
+  {
+    "id": "e1fd102d",
+    "type": "sale",
+    "title": "New Sale Recorded",
+    "message": "Prestige Omega Fry Pan - Qty: 1",
+    "productId": "7d9218a6",
+    "productName": "Prestige Omega Fry Pan",
+    "metadata": {
+      "saleId": "058c706f",
+      "quantity": 1,
+      "totalPrice": 1599,
+      "customerName": "Meena Krishnan",
+      "date": "2024-11-01T10:10:47"
+    },
+    "read": false,
+    "timestamp": "2026-02-22T00:10:43.607054"
+  },
+  {
+    "id": "d2de6ae7",
+    "type": "sale",
+    "title": "New Sale Recorded",
+    "message": "Louis Philippe Leather Belt - Qty: 3",
+    "productId": "60ee9f39",
+    "productName": "Louis Philippe Leather Belt",
+    "metadata": {
+      "saleId": "fc005d50",
+      "quantity": 3,
+      "totalPrice": 7497,
+      "customerName": "Suresh Iyer",
+      "date": "2024-11-01T12:19:22"
+    },
+    "read": false,
+    "timestamp": "2026-02-22T00:10:43.607069"
+  }
+]
