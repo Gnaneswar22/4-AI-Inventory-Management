@@ -97,7 +97,7 @@ const SubmitButton: React.FC<{ text: string; isLoading: boolean }> = ({ text, is
 // ─── MAIN LOGIN COMPONENT ────────────────────────
 
 const Login: React.FC = () => {
-  const { login, register, forgotPassword, resetPassword } = useAuth();
+  const { login, register, forgotPassword, resetPassword, sendOtp } = useAuth();
 
   // View state
   const [view, setView] = useState<AuthView>('login');
@@ -116,6 +116,9 @@ const Login: React.FC = () => {
   const [regSecurityQuestion, setRegSecurityQuestion] = useState(SECURITY_QUESTIONS[0]);
   const [regSecurityAnswer, setRegSecurityAnswer] = useState('');
   const [showRegPassword, setShowRegPassword] = useState(false);
+  const [regOtp, setRegOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
 
   // Forgot password form
   const [forgotEmail, setForgotEmail] = useState('');
@@ -155,6 +158,23 @@ const Login: React.FC = () => {
     setIsLoading(false);
   };
 
+  const handleSendOtp = async () => {
+    if (!regEmail || !regEmail.includes('@')) {
+      setError('Please enter a valid email address first.');
+      return;
+    }
+    setIsSendingOtp(true);
+    clearMessages();
+    const result = await sendOtp(regEmail);
+    if (result.success) {
+      setSuccess('Verification code sent! Please check your email.');
+      setOtpSent(true);
+    } else {
+      setError(result.error || 'Failed to send verification code.');
+    }
+    setIsSendingOtp(false);
+  };
+
   // ─── REGISTER HANDLER ─────────────────────────
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -179,12 +199,19 @@ const Login: React.FC = () => {
       return;
     }
 
+    if (!regOtp.trim()) {
+      setError('Verification code is required.');
+      setIsLoading(false);
+      return;
+    }
+
     const result = await register({
       name: regName,
       email: regEmail,
       password: regPassword,
       security_question: regSecurityQuestion,
       security_answer: regSecurityAnswer,
+      otp: regOtp,
     });
 
     if (result.success) {
@@ -392,7 +419,25 @@ const Login: React.FC = () => {
 
               <form onSubmit={handleRegister} className="space-y-4">
                 <InputField icon={User} label="Full Name" value={regName} onChange={setRegName} placeholder="John Doe" />
-                <InputField icon={Mail} label="Email Address" type="email" value={regEmail} onChange={setRegEmail} placeholder="name@company.com" />
+
+                <div className="flex gap-2 items-end">
+                  <div className="flex-1">
+                    <InputField icon={Mail} label="Email Address" type="email" value={regEmail} onChange={setRegEmail} placeholder="name@company.com" />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleSendOtp}
+                    disabled={isSendingOtp || otpSent}
+                    className="h-[52px] px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-xl font-bold transition-colors border border-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap mb-[2px]"
+                  >
+                    {isSendingOtp ? 'Sending...' : otpSent ? 'Code Sent ✓' : 'Send Code'}
+                  </button>
+                </div>
+
+                {otpSent && (
+                  <InputField icon={KeyRound} label="Verification Code (OTP)" value={regOtp} onChange={setRegOtp} placeholder="Enter Code" />
+                )}
+
                 <PasswordField label="Password (min 6 chars)" value={regPassword} onChange={setRegPassword} placeholder="Choose a strong password" show={showRegPassword} toggleShow={() => setShowRegPassword(!showRegPassword)} />
 
                 <div>

@@ -41,10 +41,17 @@ export const authAPI = {
     role?: string;
     security_question: string;
     security_answer: string;
+    otp: string;
   }) =>
     apiRequest('/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData),
+    }),
+
+  sendOtp: (email: string) =>
+    apiRequest('/auth/send-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email })
     }),
 
   logout: () =>

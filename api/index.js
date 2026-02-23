@@ -14,6 +14,15 @@ const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+const nodemailer = require("nodemailer");
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "gnanesh847@gmail.com",
+    pass: "ajlm sbwm nfuy twvw",
+  },
+});
+
 const app = express();
 const PORT = 5000;
 
@@ -120,6 +129,15 @@ const ForecastDataSchema = new mongoose.Schema(
   schemaOpts,
 );
 
+const OtpSchema = new mongoose.Schema(
+  {
+    email: { type: String, required: true },
+    otp: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now, expires: 300 },
+  },
+  schemaOpts,
+);
+
 const User = mongoose.model("User", UserSchema);
 const Product = mongoose.model("Product", ProductSchema);
 const Sale = mongoose.model("Sale", SaleSchema);
@@ -128,6 +146,7 @@ const Usage = mongoose.model("Usage", UsageSchema);
 const SalesCounter = mongoose.model("SalesCounter", SalesCounterSchema);
 const Notification = mongoose.model("Notification", NotificationSchema);
 const ForecastData = mongoose.model("ForecastData", ForecastDataSchema);
+const Otp = mongoose.model("Otp", OtpSchema);
 
 // ─────────────────────────────────────────────────
 // HELPERS
@@ -283,6 +302,35 @@ function loginRequired(req, res, next) {
 //  AUTH ROUTES
 // ═══════════════════════════════════════════════════
 
+// POST /api/auth/send-otp
+app.post("/api/auth/send-otp", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const eEmail = (email || "").trim().toLowerCase();
+    if (!eEmail) return res.status(400).json({ error: "Email is required." });
+
+    const existing = await User.findOne({ email: eEmail }).lean();
+    if (existing) return res.status(409).json({ error: "An account with this email already exists." });
+
+    const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await Otp.deleteMany({ email: eEmail });
+    await Otp.create({ email: eEmail, otp: generatedOtp });
+
+    const mailOptions = {
+      from: "gnanesh847@gmail.com",
+      to: eEmail,
+      subject: "Invenio AI - Verification Code",
+      text: `Your OTP for registration is: ${generatedOtp}. It is valid for 5 minutes.`
+    };
+
+    await transporter.sendMail(mailOptions);
+    return res.status(200).json({ message: "OTP sent successfully." });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 // POST /api/auth/register
 app.post("/api/auth/register", async (req, res) => {
   try {
@@ -293,17 +341,19 @@ app.post("/api/auth/register", async (req, res) => {
       role = "USER",
       security_question = "",
       security_answer = "",
+      otp = "",
     } = req.body;
 
     const eName = name.trim();
     const eEmail = email.trim().toLowerCase();
     const eSQ = security_question.trim();
     const eSA = security_answer.trim().toLowerCase();
+    const eOtp = otp.trim();
 
-    if (!eName || !eEmail || !password)
+    if (!eName || !eEmail || !password || !eOtp)
       return res
         .status(400)
-        .json({ error: "Name, email, and password are required." });
+        .json({ error: "Name, email, password, and OTP are required." });
     if (password.length < 6)
       return res
         .status(400)
@@ -320,6 +370,10 @@ app.post("/api/auth/register", async (req, res) => {
         .status(409)
         .json({ error: "An account with this email already exists." });
 
+    const otpRecord = await Otp.findOne({ email: eEmail }).sort({ createdAt: -1 });
+    if (!otpRecord) return res.status(400).json({ error: "OTP expired or not requested." });
+    if (otpRecord.otp !== eOtp) return res.status(400).json({ error: "Invalid OTP." });
+
     const newUser = {
       id: generateId(),
       name: eName,
@@ -333,6 +387,7 @@ app.post("/api/auth/register", async (req, res) => {
     };
 
     await User.create(newUser);
+    await Otp.deleteMany({ email: eEmail });
     const { password: _p, security_answer: _sa, ...safeUser } = newUser;
     return res
       .status(201)

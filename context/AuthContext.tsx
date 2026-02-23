@@ -13,7 +13,9 @@ interface AuthContextType {
     role?: string;
     security_question: string;
     security_answer: string;
+    otp: string;
   }) => Promise<{ success: boolean; error?: string }>;
+  sendOtp: (email: string) => Promise<{ success: boolean; error?: string }>;
   forgotPassword: (email: string) => Promise<{ success: boolean; security_question?: string; error?: string }>;
   resetPassword: (email: string, security_answer: string, new_password: string) => Promise<{ success: boolean; error?: string }>;
   isAuthenticated: boolean;
@@ -82,6 +84,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     role?: string;
     security_question: string;
     security_answer: string;
+    otp: string;
   }): Promise<{ success: boolean; error?: string }> => {
     try {
       setAuthError('');
@@ -89,6 +92,16 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message || 'Registration failed.' };
+    }
+  };
+
+  const sendOtp = async (email: string): Promise<{ success: boolean; error?: string }> => {
+    try {
+      setAuthError('');
+      await authAPI.sendOtp(email);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message || 'Failed to send OTP.' };
     }
   };
 
@@ -126,6 +139,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       login,
       logout,
       register,
+      sendOtp,
       forgotPassword,
       resetPassword,
       isAuthenticated: !!user,
