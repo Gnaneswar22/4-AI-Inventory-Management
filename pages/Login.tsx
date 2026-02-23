@@ -431,23 +431,6 @@ const Login: React.FC = () => {
                     Create Account
                   </button>
                 </p>
-                <div className="text-xs text-slate-400 text-center mb-3 uppercase tracking-wider font-semibold">Default Accounts</div>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  <button
-                    type="button"
-                    onClick={() => { setEmail('admin@invenio.ai'); setPassword('admin123'); }}
-                    className="px-3 py-1.5 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 rounded-lg text-xs font-mono text-slate-600 hover:text-indigo-600 transition-colors cursor-pointer"
-                  >
-                    admin / admin123
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setEmail('manager@invenio.ai'); setPassword('manager123'); }}
-                    className="px-3 py-1.5 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 rounded-lg text-xs font-mono text-slate-600 hover:text-indigo-600 transition-colors cursor-pointer"
-                  >
-                    manager / manager123
-                  </button>
-                </div>
               </div>
             </>
           )}
