@@ -28,10 +28,10 @@ async function apiRequest(endpoint: string, options: RequestInit = {}): Promise<
 
 // ─── AUTH API ───────────────────────────────────
 export const authAPI = {
-  login: (email: string, password: string) =>
+  login: (email: string, password: string, otp: string) =>
     apiRequest('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, otp }),
     }),
 
   register: (userData: {
@@ -48,10 +48,10 @@ export const authAPI = {
       body: JSON.stringify(userData),
     }),
 
-  sendOtp: (email: string) =>
+  sendOtp: (email: string, type: 'login' | 'register' = 'register') =>
     apiRequest('/auth/send-otp', {
       method: 'POST',
-      body: JSON.stringify({ email })
+      body: JSON.stringify({ email, type })
     }),
 
   logout: () =>

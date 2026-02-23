@@ -107,6 +107,9 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loginOtp, setLoginOtp] = useState('');
+  const [loginOtpSent, setLoginOtpSent] = useState(false);
+  const [isSendingLoginOtp, setIsSendingLoginOtp] = useState(false);
 
   // Register form
   const [regName, setRegName] = useState('');
@@ -141,16 +144,39 @@ const Login: React.FC = () => {
     setView(newView);
   };
 
+  const handleSendLoginOtp = async () => {
+    if (!email || !email.includes('@')) {
+      setError('Please enter a valid email address first.');
+      return;
+    }
+    setIsSendingLoginOtp(true);
+    clearMessages();
+    const result = await sendOtp(email, 'login');
+    if (result.success) {
+      setSuccess('Verification code sent! Please check your email.');
+      setLoginOtpSent(true);
+    } else {
+      setError(result.error || 'Failed to send verification code. Are you registered?');
+    }
+    setIsSendingLoginOtp(false);
+  };
+
   // ─── LOGIN HANDLER ─────────────────────────────
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     clearMessages();
 
+    if (!loginOtp.trim()) {
+      setError('Verification code is required.');
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const result = await login(email, password);
+      const result = await login(email, password, loginOtp);
       if (!result) {
-        setError('Invalid email or password. Please try again.');
+        setError('Invalid email, password, or OTP. Please try again.');
       }
     } catch (err: any) {
       setError(err.message || 'Login failed. Is the backend running?');
@@ -364,7 +390,24 @@ const Login: React.FC = () => {
               </div>
 
               <form onSubmit={handleLogin} className="space-y-5">
-                <InputField icon={Mail} label="Email Address" type="email" value={email} onChange={setEmail} placeholder="name@company.com" />
+                <div className="flex gap-2 items-end">
+                  <div className="flex-1">
+                    <InputField icon={Mail} label="Email Address" type="email" value={email} onChange={setEmail} placeholder="name@company.com" />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleSendLoginOtp}
+                    disabled={isSendingLoginOtp || loginOtpSent}
+                    className="h-[52px] px-4 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-xl font-bold transition-colors border border-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap mb-[2px]"
+                  >
+                    {isSendingLoginOtp ? 'Sending...' : loginOtpSent ? 'Code Sent ✓' : 'Send Code'}
+                  </button>
+                </div>
+
+                {loginOtpSent && (
+                  <InputField icon={KeyRound} label="Verification Code (OTP)" value={loginOtp} onChange={setLoginOtp} placeholder="Enter Code" />
+                )}
+
                 <PasswordField label="Password" value={password} onChange={setPassword} placeholder="Enter your password" show={showPassword} toggleShow={() => setShowPassword(!showPassword)} />
 
                 <div className="flex items-center justify-between text-sm pt-1">

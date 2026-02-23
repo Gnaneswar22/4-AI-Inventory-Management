@@ -305,12 +305,17 @@ function loginRequired(req, res, next) {
 // POST /api/auth/send-otp
 app.post("/api/auth/send-otp", async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, type = "register" } = req.body;
     const eEmail = (email || "").trim().toLowerCase();
     if (!eEmail) return res.status(400).json({ error: "Email is required." });
 
+    if (eEmail !== "gnanesh847@gmail.com") {
+      return res.status(403).json({ error: "Access denied. Only authorized email allowed." });
+    }
+
     const existing = await User.findOne({ email: eEmail }).lean();
-    if (existing) return res.status(409).json({ error: "An account with this email already exists." });
+    if (type === "register" && existing) return res.status(409).json({ error: "An account with this email already exists." });
+    if (type === "login" && !existing) return res.status(404).json({ error: "No account found with this email." });
 
     const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -321,7 +326,7 @@ app.post("/api/auth/send-otp", async (req, res) => {
       from: "gnanesh847@gmail.com",
       to: eEmail,
       subject: "Invenio AI - Verification Code",
-      text: `Your OTP for registration is: ${generatedOtp}. It is valid for 5 minutes.`
+      text: `Your OTP is: ${generatedOtp}. It is valid for 5 minutes.`
     };
 
     await transporter.sendMail(mailOptions);
@@ -349,6 +354,10 @@ app.post("/api/auth/register", async (req, res) => {
     const eSQ = security_question.trim();
     const eSA = security_answer.trim().toLowerCase();
     const eOtp = otp.trim();
+
+    if (eEmail !== "gnanesh847@gmail.com") {
+      return res.status(403).json({ error: "Access denied. Only authorized email allowed." });
+    }
 
     if (!eName || !eEmail || !password || !eOtp)
       return res
@@ -400,17 +409,28 @@ app.post("/api/auth/register", async (req, res) => {
 // POST /api/auth/login
 app.post("/api/auth/login", async (req, res) => {
   try {
-    const { email = "", password = "" } = req.body;
+    const { email = "", password = "", otp = "" } = req.body;
     const eEmail = email.trim().toLowerCase();
+    const eOtp = otp.trim();
 
-    if (!eEmail || !password)
+    if (eEmail !== "gnanesh847@gmail.com") {
+      return res.status(403).json({ error: "Access denied. Only authorized email allowed." });
+    }
+
+    if (!eEmail || !password || !eOtp)
       return res
         .status(400)
-        .json({ error: "Email and password are required." });
+        .json({ error: "Email, password, and OTP are required." });
 
     const user = await User.findOne({ email: eEmail }).lean();
     if (!user || !bcrypt.compareSync(password, user.password))
       return res.status(401).json({ error: "Invalid email or password." });
+
+    const otpRecord = await Otp.findOne({ email: eEmail }).sort({ createdAt: -1 });
+    if (!otpRecord) return res.status(400).json({ error: "OTP expired or not requested." });
+    if (otpRecord.otp !== eOtp) return res.status(400).json({ error: "Invalid OTP." });
+
+    await Otp.deleteMany({ email: eEmail });
 
     req.session.userId = user.id;
     req.session.userEmail = user.email;

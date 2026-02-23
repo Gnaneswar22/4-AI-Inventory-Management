@@ -4,7 +4,7 @@ import { authAPI } from '../services/apiService';
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string, otp: string) => Promise<boolean>;
   logout: () => void;
   register: (userData: {
     name: string;
@@ -15,7 +15,7 @@ interface AuthContextType {
     security_answer: string;
     otp: string;
   }) => Promise<{ success: boolean; error?: string }>;
-  sendOtp: (email: string) => Promise<{ success: boolean; error?: string }>;
+  sendOtp: (email: string, type?: 'login' | 'register') => Promise<{ success: boolean; error?: string }>;
   forgotPassword: (email: string) => Promise<{ success: boolean; security_question?: string; error?: string }>;
   resetPassword: (email: string, security_answer: string, new_password: string) => Promise<{ success: boolean; error?: string }>;
   isAuthenticated: boolean;
@@ -61,10 +61,10 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string, otp: string): Promise<boolean> => {
     try {
       setAuthError('');
-      const data = await authAPI.login(email, password);
+      const data = await authAPI.login(email, password, otp);
       if (data.user) {
         setUser(data.user);
         localStorage.setItem('authUser', JSON.stringify(data.user));
@@ -95,10 +95,10 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
-  const sendOtp = async (email: string): Promise<{ success: boolean; error?: string }> => {
+  const sendOtp = async (email: string, type: 'login' | 'register' = 'register'): Promise<{ success: boolean; error?: string }> => {
     try {
       setAuthError('');
-      await authAPI.sendOtp(email);
+      await authAPI.sendOtp(email, type);
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message || 'Failed to send OTP.' };
