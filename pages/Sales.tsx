@@ -243,83 +243,81 @@ const Sales: React.FC = () => {
                   <CheckCircle2 size={32} />
                 </div>
                 <h3 className="text-xl font-bold text-slate-800">Transaction Complete</h3>
-                <p className="text-slate-500 text-sm mt-1">Receipt sent to email.</p>
               </div>
             </div>
           )}
-        </form>
-      </div>
-    </div>
-
-      {/* History Table */ }
-  <div className="lg:col-span-8 h-full overflow-hidden">
-    <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 h-full flex flex-col">
-      <div className="p-8 border-b border-slate-100 flex justify-between items-center">
-        <div>
-          <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            Recent Sales
-          </h3>
-          <p className="text-sm text-slate-400 mt-1">Real-time transaction log</p>
         </div>
-        <button className="p-2 bg-slate-50 hover:bg-slate-100 rounded-xl text-slate-500 transition-colors">
-          <Receipt size={20} />
-        </button>
       </div>
 
-      <div className="flex-1 overflow-auto p-4">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-slate-50/80 sticky top-0 backdrop-blur-md z-10">
-            <tr>
-              <th className="p-5 pl-6 text-xs font-extrabold text-slate-400 uppercase tracking-wider rounded-l-xl">Timestamp</th>
-              <th className="p-5 text-xs font-extrabold text-slate-400 uppercase tracking-wider">Product Info</th>
-              <th className="p-5 text-xs font-extrabold text-slate-400 uppercase tracking-wider">Customer</th>
-              <th className="p-5 text-xs font-extrabold text-slate-400 uppercase tracking-wider text-right">Qty</th>
-              <th className="p-5 pr-6 text-xs font-extrabold text-slate-400 uppercase tracking-wider text-right rounded-r-xl">Amount</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-50">
-            {[...sales].reverse().map(sale => (
-              <tr key={sale.id} className="hover:bg-slate-50/60 transition-colors group">
-                <td className="p-5 pl-6">
-                  <div className="text-sm font-bold text-slate-700">
-                    {new Date(sale.date).toLocaleDateString()}
-                  </div>
-                  <div className="text-xs text-slate-400 font-medium">
-                    {new Date(sale.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </div>
-                </td>
-                <td className="p-5 font-medium text-slate-700">
-                  <span className="font-bold">{sale.productName}</span>
-                </td>
-                <td className="p-5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xs">
-                      {sale.customerName ? sale.customerName.charAt(0).toUpperCase() : 'G'}
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-slate-700">{sale.customerName || 'Walk-in Guest'}</div>
-                      <div className="text-[10px] text-slate-400 max-w-[150px] truncate font-medium" title={sale.customerAddress}>
-                        {sale.customerAddress || 'N/A'}
+      {/* History Table */}
+      <div className="lg:col-span-8 h-full overflow-hidden">
+        <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 h-full flex flex-col">
+          <div className="p-8 border-b border-slate-100 flex justify-between items-center">
+            <div>
+              <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+                Recent Sales
+              </h3>
+              <p className="text-sm text-slate-400 mt-1">Real-time transaction log</p>
+            </div>
+            <button className="p-2 bg-slate-50 hover:bg-slate-100 rounded-xl text-slate-500 transition-colors">
+              <Receipt size={20} />
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-auto p-4">
+            <table className="w-full text-left border-collapse">
+              <thead className="bg-slate-50/80 sticky top-0 backdrop-blur-md z-10">
+                <tr>
+                  <th className="p-5 pl-6 text-xs font-extrabold text-slate-400 uppercase tracking-wider rounded-l-xl">Timestamp</th>
+                  <th className="p-5 text-xs font-extrabold text-slate-400 uppercase tracking-wider">Product Info</th>
+                  <th className="p-5 text-xs font-extrabold text-slate-400 uppercase tracking-wider">Customer</th>
+                  <th className="p-5 text-xs font-extrabold text-slate-400 uppercase tracking-wider text-right">Qty</th>
+                  <th className="p-5 pr-6 text-xs font-extrabold text-slate-400 uppercase tracking-wider text-right rounded-r-xl">Amount</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {[...sales].reverse().map(sale => (
+                  <tr key={sale.id} className="hover:bg-slate-50/60 transition-colors group">
+                    <td className="p-5 pl-6">
+                      <div className="text-sm font-bold text-slate-700">
+                        {new Date(sale.date).toLocaleDateString()}
                       </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="p-5 text-right font-mono text-slate-600 font-bold">{sale.quantity}</td>
-                <td className="p-5 pr-6 text-right">
-                  <span className="inline-block px-3 py-1 bg-emerald-50 text-emerald-600 rounded-lg font-bold text-sm border border-emerald-100">
-                    +₹{sale.totalPrice.toLocaleString()}
-                  </span>
-                </td>
-              </tr>
-            ))}
-            {sales.length === 0 && (
-              <tr><td colSpan={5} className="p-16 text-center text-slate-400">No sales recorded yet.</td></tr>
-            )}
-          </tbody>
-        </table>
+                      <div className="text-xs text-slate-400 font-medium">
+                        {new Date(sale.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </div>
+                    </td>
+                    <td className="p-5 font-medium text-slate-700">
+                      <span className="font-bold">{sale.productName}</span>
+                    </td>
+                    <td className="p-5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xs">
+                          {sale.customerName ? sale.customerName.charAt(0).toUpperCase() : 'G'}
+                        </div>
+                        <div>
+                          <div className="text-sm font-semibold text-slate-700">{sale.customerName || 'Walk-in Guest'}</div>
+                          <div className="text-[10px] text-slate-400 max-w-[150px] truncate font-medium" title={sale.customerAddress}>
+                            {sale.customerAddress || 'N/A'}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-5 text-right font-mono text-slate-600 font-bold">{sale.quantity}</td>
+                    <td className="p-5 pr-6 text-right">
+                      <span className="inline-block px-3 py-1 bg-emerald-50 text-emerald-600 rounded-lg font-bold text-sm border border-emerald-100">
+                        +₹{sale.totalPrice.toLocaleString()}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+                {sales.length === 0 && (
+                  <tr><td colSpan={5} className="p-16 text-center text-slate-400">No sales recorded yet.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
     </div >
   );
 };
