@@ -16,11 +16,13 @@ require("dotenv").config();
 
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.SMTP_PORT || '587'),
+  secure: process.env.SMTP_SECURE === 'true',
   auth: {
-    user: "gnanesh847@gmail.com",
-    pass: "ajlm sbwm nfuy twvw",
-  },
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
+  }
 });
 
 const app = express();
@@ -29,7 +31,7 @@ const PORT = 5000;
 // ─────────────────────────────────────────────────
 // MONGODB CONNECTION
 // ─────────────────────────────────────────────────
-const MONGO_URI = 'mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hvxvofb.mongodb.net/invenio?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI;
 
 let isConnected = false;
 const connectDB = async () => {
@@ -323,7 +325,7 @@ app.post("/api/auth/send-otp", async (req, res) => {
     await Otp.create({ email: eEmail, otp: generatedOtp });
 
     const mailOptions = {
-      from: "gnanesh847@gmail.com",
+      from: `"Invenio AI" <${process.env.SMTP_USER}>`,
       to: eEmail,
       subject: "Invenio AI - Verification Code",
       text: `Your OTP is: ${generatedOtp}. It is valid for 5 minutes.`
