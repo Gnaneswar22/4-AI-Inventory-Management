@@ -49,6 +49,11 @@ const connectDB = async () => {
 // MIDDLEWARE
 // ─────────────────────────────────────────────────
 app.use(async (req, res, next) => {
+  if (!MONGO_URI) {
+    return res.status(500).json({
+      error: "Environment Variable 'MONGO_URI' is missing in Vercel. Please add it to Settings > Environment Variables."
+    });
+  }
   await connectDB();
   next();
 });
@@ -64,18 +69,21 @@ app.use(
   }),
 );
 
-const MongoStore = require("connect-mongo").default;
+const MongoStore = require("connect-mongo");
 app.use(express.json());
 
-app.use(
-  session({
-    secret: "invenio-ai-secret-key-2024",
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: MONGO_URI }),
-    cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 },
-  }),
-);
+const sessionOpts = {
+  secret: "invenio-ai-secret-key-2024",
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 },
+};
+
+if (MONGO_URI) {
+  sessionOpts.store = MongoStore.create({ mongoUrl: MONGO_URI });
+}
+
+app.use(session(sessionOpts));
 
 // ─────────────────────────────────────────────────
 // MONGOOSE SCHEMAS
@@ -1509,6 +1517,15 @@ mongoose.connection.once("open", async () => {
 
 mongoose.connection.on("error", (err) => {
   console.error("[mongo] Runtime error:", err.message);
+});
+
+// Global Error Handler to catch crashes and return JSON
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    error: "A server-side error occurred.",
+    details: err.message
+  });
 });
 
 module.exports = app;
