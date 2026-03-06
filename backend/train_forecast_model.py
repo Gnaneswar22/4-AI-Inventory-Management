@@ -9,11 +9,59 @@ train_forecast_model.py  (v2 — NumPy-only, no sklearn workers)
 Run:  python train_forecast_model.py
 """
 
-import json, os, math, sys
+
+#based on criteria like seasons and time 
+
+import os, math, sys
 from datetime import datetime, timedelta
 from collections import defaultdict
 
 import numpy as np
+
+# ── Major Festivals & Events (Month, Day) ──────────────────────────────────
+FESTIVALS = [
+    (1, 1),   # New Year's Day
+    (1, 26),  # Republic Day (India)
+    (2, 14),  # Valentine's Day
+    (3, 8),   # Women's Day
+    (3, 14),  # Holi (approximate mid-march placeholder for synthetic data)
+    (8, 15),  # Independence Day (India)
+    (10, 31), # Halloween
+    (11, 1),  # Diwali (approximate early Nov placeholder)
+    (11, 28), # Black Friday (approximate late Nov placeholder)
+    (12, 25), # Christmas
+    (12, 31), # New Year's Eve
+]
+
+def get_days_to_nearest_festival(d: datetime) -> int:
+    """Returns the absolute number of days to the closest festival (0 if today is a festival)."""
+    min_dist = 365
+    for (f_month, f_day) in FESTIVALS:
+        # Check this year
+        try:
+            f_date_this = datetime(d.year, f_month, f_day)
+            dist_this = abs((f_date_this - d).days)
+            min_dist = min(min_dist, dist_this)
+        except ValueError:
+            pass # Handle leap years if 2/29
+        
+        # Check next year (for events early next year when currently in Dec)
+        try:
+            f_date_next = datetime(d.year + 1, f_month, f_day)
+            dist_next = abs((f_date_next - d).days)
+            min_dist = min(min_dist, dist_next)
+        except ValueError:
+            pass
+            
+        # Check last year (for events late last year when currently in Jan)
+        try:
+            f_date_prev = datetime(d.year - 1, f_month, f_day)
+            dist_prev = abs((d - f_date_prev).days)
+            min_dist = min(min_dist, dist_prev)
+        except ValueError:
+            pass
+
+    return min_dist
 
 # Force UTF-8 stdout/stderr on Windows so product names with unicode don't crash
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
@@ -23,26 +71,29 @@ if sys.stderr.encoding and sys.stderr.encoding.lower() != "utf-8":
 
 # ── paths ──────────────────────────────────────────────────────────────────
 BASE_DIR       = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR       = os.path.join(BASE_DIR, "data")
 MODELS_DIR     = os.path.join(BASE_DIR, "models")
-SALES_FILE     = os.path.join(DATA_DIR, "sales.json")
-PRODUCTS_FILE  = os.path.join(DATA_DIR, "products.json")
-FORECASTS_FILE = os.path.join(DATA_DIR, "forecasts.json")
-
 os.makedirs(MODELS_DIR, exist_ok=True)
 
-def jload(p):
-    with open(p, "r", encoding="utf-8") as f:
+import json
+
+PRODUCTS_FILE = os.path.join(BASE_DIR, "data", "products.json")
+SALES_FILE = os.path.join(BASE_DIR, "data", "sales.json")
+FORECASTS_FILE = os.path.join(BASE_DIR, "data", "forecasts.json")
+
+def read_json_list(filepath):
+    if not os.path.exists(filepath):
+        return []
+    with open(filepath, 'r', encoding='utf-8') as f:
         return json.load(f)
 
-def jsave(p, d):
-    with open(p, "w", encoding="utf-8") as f:
-        json.dump(d, f, indent=2, ensure_ascii=False)
+def write_json(filepath, data):
+    with open(filepath, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
 # ── load ───────────────────────────────────────────────────────────────────
-print("Loading data ...", flush=True)
-products  = jload(PRODUCTS_FILE)
-sales_raw = jload(SALES_FILE)
+print("Loading data from JSON...", flush=True)
+products  = read_json_list(PRODUCTS_FILE)
+sales_raw = read_json_list(SALES_FILE)
 PROD_MAP  = {p["id"]: p for p in products}
 print(f"  {len(products)} products, {len(sales_raw):,} sales records", flush=True)
 
@@ -53,13 +104,20 @@ for rec in sales_raw:
 # ── feature building ───────────────────────────────────────────────────────
 def build_row(d: datetime, hist: list, i: int) -> list:
     dow, mon, doy = d.weekday(), d.month, d.timetuple().tm_yday
+    days_to_fest = get_days_to_nearest_festival(d)
+    
     row = [
         math.sin(2*math.pi*dow/7),  math.cos(2*math.pi*dow/7),
         math.sin(2*math.pi*mon/12), math.cos(2*math.pi*mon/12),
         math.sin(2*math.pi*doy/365),
-        1 if dow >= 5 else 0,
-        1 if d.day == 1 else 0,
-        1 if d.day >= 28 else 0,
+        1 if dow >= 5 else 0, # is weekend
+        1 if d.day == 1 else 0, # is start of month
+        1 if d.day >= 28 else 0, # is end of month
+        # Festival features
+        1 if days_to_fest == 0 else 0,           # is_festival_day
+        1 if 0 < days_to_fest <= 3 else 0,       # 3 days around festival
+        1 if 3 < days_to_fest <= 7 else 0,       # 1 week around festival
+        math.exp(-days_to_fest / 3.0),           # Exponential decay proximity score
     ]
     for lag in [1, 3, 7, 14, 30]:
         row.append(hist[i - lag] if i >= lag else 0.0)
@@ -78,7 +136,7 @@ def ridge_predict(w, X):
     return np.column_stack([np.ones(len(X)), X]) @ w
 
 # ── main ───────────────────────────────────────────────────────────────────
-TODAY    = datetime(2026, 2, 21)
+TODAY    = datetime.now()
 HORIZONS = {"30d": 30, "60d": 60, "90d": 90}
 
 print("\nTraining models ...", flush=True)
@@ -140,20 +198,60 @@ for prod in products:
     trend_pct = round(((fc30 - recent30) / max(recent30, 1)) * 100, 1)
     restock   = max(0, int(fc30 * 1.25) - prod["stockQuantity"])
 
+    # --- Generate Insight Reason ---
+    insight_parts = []
+    
+    # 1. Festival Check
+    days_to_peak = (datetime.strptime(peak["date"], "%Y-%m-%d") - TODAY).days
+    if 0 <= days_to_peak <= 30:
+        for f_month, f_day in FESTIVALS:
+            f_date = datetime(TODAY.year, f_month, f_day)
+            if f_date < TODAY:
+                f_date = datetime(TODAY.year + 1, f_month, f_day)
+            if abs((f_date - datetime.strptime(peak["date"], "%Y-%m-%d")).days) <= 7:
+                 insight_parts.append(f"A festival/event is approaching on {f_date.strftime('%b %d')}, causing a demand spike.")
+                 break
+                 
+    # 2. Trend Check
+    if trend_pct > 15:
+         insight_parts.append(f"Recent sales are trending strongly upward (+{trend_pct}%).")
+    elif trend_pct < -15:
+         insight_parts.append(f"Demand is cooling down ({trend_pct}%).")
+         
+    # 3. Stock Check
+    if restock > 0:
+         insight_parts.append(f"Current stock ({prod['stockQuantity']}) cannot cover the anticipated 30-day demand + buffer.")
+    elif prod["stockQuantity"] > fc30 * 3 and fc30 > 0:
+         # Rough heuristic for overstock
+         insight_parts.append(f"High overstock risk: Inventory ({prod['stockQuantity']}) far exceeds 90-day needs.")
+
+    if not insight_parts:
+         if fc30 > recent30:
+             insight_parts.append("Demand is expected to remain stable with a slight increase.")
+         else:
+             insight_parts.append("Demand is expected to remain stable.")
+
+    insight_reason = " ".join(insight_parts)
+
     all_forecasts.append({
         "productId": pid, "productName": pname, "category": prod["category"],
         "currentStock": prod["stockQuantity"], "minStockLevel": prod["minStockLevel"],
         "price": prod["price"],
         "modelMAE": round(mae,3), "modelRMSE": round(rmse,3),
         "trendPercent": trend_pct, "restockSuggested": restock,
+        "insightReason": insight_reason,
         "generatedAt": TODAY.isoformat(), "forecasts": hs,
     })
 
-jsave(FORECASTS_FILE, {"generatedAt": TODAY.isoformat(),
-                       "forecastedUpTo": (TODAY + timedelta(days=90)).strftime("%Y-%m-%d"),
-                       "horizons": ["30d","60d","90d"], "products": all_forecasts})
+forecast_doc = {
+    "generatedAt": TODAY.isoformat(),
+    "forecastedUpTo": (TODAY + timedelta(days=90)).strftime("%Y-%m-%d"),
+    "horizons": ["30d","60d","90d"], "products": all_forecasts
+}
 
-print(f"\n[DONE] forecasts.json saved ({len(all_forecasts)} products)", flush=True)
+write_json(FORECASTS_FILE, forecast_doc)
+
+print(f"\n[DONE] Forecasts saved to {FORECASTS_FILE} ({len(all_forecasts)} products)", flush=True)
 print(f"[DONE] {models_saved} model files in models/", flush=True)
 
 print("\n--- Top-10 by 30d demand ---", flush=True)

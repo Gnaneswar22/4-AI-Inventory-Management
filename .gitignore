@@ -25,3 +25,6 @@ dist-ssr
 
 .vercel
 .env*.local
+.env
+backend/.env
+backend/node_modules/

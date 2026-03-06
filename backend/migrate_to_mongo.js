@@ -7,12 +7,13 @@
 
 'use strict';
 
+require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const path = require('path');
 
-const MONGO_URI = 'mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hvxvofb.mongodb.net/invenio?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hvxvofb.mongodb.net/invenio?retryWrites=true&w=majority&appName=Cluster0';
 const DATA_DIR = path.join(__dirname, 'data');
 
 // ─── helpers ───────────────────────────────────────

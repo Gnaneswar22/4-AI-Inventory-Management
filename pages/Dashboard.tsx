@@ -13,7 +13,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     const isLowStock = data.stock < data.min;
 
     return (
-      <div className={`bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-2xl border ${isLowStock ? 'border-red-200' : 'border-slate-100'} min-w-[200px]`}>
+      <div className={`bg-white backdrop-blur-md p-4 rounded-xl shadow-2xl border ${isLowStock ? 'border-red-200' : 'border-slate-100'} min-w-[200px]`}>
         <p className="text-sm font-bold text-slate-800 mb-2">{data.fullName}</p>
         <div className="space-y-1">
           <div className="flex justify-between gap-4 text-sm">
@@ -45,7 +45,14 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 // ─── KPI CARD (stable) ───────────────────────────────
-const KPICard: React.FC<{ title: string; value: any; icon: any; color: string }> = ({ title, value, icon: Icon, color }) => {
+const KPICard: React.FC<{
+  title: string;
+  value: any;
+  icon: any;
+  color: string;
+  isSelected?: boolean;
+  onClick?: () => void;
+}> = ({ title, value, icon: Icon, color, isSelected = false, onClick }) => {
   const gradients: any = {
     blue: 'from-blue-500 to-blue-600',
     emerald: 'from-emerald-500 to-emerald-600',
@@ -68,7 +75,9 @@ const KPICard: React.FC<{ title: string; value: any; icon: any; color: string }>
   };
 
   return (
-    <div className={`relative p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group bg-gradient-to-br ${bgGradients[color] || 'from-white to-slate-50'}`}>
+    <div
+      onClick={onClick}
+      className={`relative p-6 rounded-3xl border ${isSelected ? `border-2 border-${color}-400 shadow-xl scale-[1.02]` : 'border-slate-100 shadow-sm'} ${onClick ? 'cursor-pointer hover:shadow-xl hover:-translate-y-1' : ''} transition-all duration-300 group bg-gradient-to-br ${bgGradients[color] || 'from-white to-slate-50'}`}>
       <div className="flex justify-between items-start mb-4">
         <div className={`p-3.5 rounded-2xl bg-gradient-to-br ${gradients[color]} text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
           <Icon size={22} />
@@ -448,12 +457,139 @@ const QuickAddModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isO
 };
 
 
+// ─── DASHBOARD INSIGHTS PANEL ────────────────────────
+const DashboardInsightsPanel: React.FC<{
+  selectedKpi: string | null;
+  products: any[];
+  sales: any[];
+  onClose: () => void;
+}> = ({ selectedKpi, products, sales, onClose }) => {
+  if (!selectedKpi) return null;
+
+  let content = null;
+
+  if (selectedKpi === 'Total Products') {
+    const sorted = [...products].sort((a, b) => b.stockQuantity - a.stockQuantity);
+    content = (
+      <div>
+        <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <Package className="text-blue-500" size={18} /> Highest Stock Products
+        </h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {sorted.slice(0, 8).map(p => (
+            <div key={p.id} className="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="font-medium text-sm text-slate-700 truncate mr-2">{p.name}</span>
+              <span className="font-bold text-blue-600 text-sm whitespace-nowrap">{p.stockQuantity} units</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  } else if (selectedKpi === 'Inventory Value') {
+    const topValue = [...products]
+      .map(p => ({ ...p, totalVal: p.stockQuantity * p.price }))
+      .sort((a, b) => b.totalVal - a.totalVal);
+    content = (
+      <div>
+        <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <DollarSign className="text-emerald-500" size={18} /> Top Value Contributors
+        </h4>
+        <div className="space-y-2">
+          {topValue.slice(0, 5).map(p => (
+            <div key={p.id} className="flex justify-between items-center p-3 bg-emerald-50/50 rounded-xl border border-emerald-100/50">
+              <div className="flex flex-col">
+                <span className="font-medium text-sm text-slate-800">{p.name}</span>
+                <span className="text-xs text-slate-500">{p.stockQuantity} units @ ₹{p.price}</span>
+              </div>
+              <span className="font-bold text-emerald-700 text-sm">₹{(p.totalVal / 1000).toFixed(1)}k</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  } else if (selectedKpi === 'Total Revenue') {
+    // calculate revenue per product
+    const revMap: Record<string, { name: string, rev: number }> = {};
+    sales.forEach(s => {
+      if (!revMap[s.productId]) {
+        revMap[s.productId] = { name: s.productName, rev: 0 };
+      }
+      revMap[s.productId].rev += s.totalPrice;
+    });
+    const topSales = Object.values(revMap).sort((a, b) => b.rev - a.rev);
+
+    content = (
+      <div>
+        <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <TrendingUp className="text-indigo-500" size={18} /> Top Historical Best-Sellers
+        </h4>
+        <div className="space-y-2">
+          {topSales.slice(0, 5).map(s => (
+            <div key={s.name} className="flex justify-between items-center p-3 bg-indigo-50/50 rounded-xl border border-indigo-100/50">
+              <span className="font-medium text-sm text-slate-800">{s.name}</span>
+              <span className="font-bold text-indigo-700 text-sm">₹{(s.rev / 1000).toFixed(1)}k</span>
+            </div>
+          ))}
+          {topSales.length === 0 && <p className="text-sm text-slate-500">No sales data available yet.</p>}
+        </div>
+      </div>
+    );
+  } else if (selectedKpi === 'Low Stock Alerts') {
+    const lowStock = products.filter(p => p.stockQuantity < p.minStockLevel);
+    content = (
+      <div>
+        <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <AlertTriangle className="text-rose-500" size={18} /> Products Needing Attention
+        </h4>
+        {lowStock.length > 0 ? (
+          <div className="space-y-2">
+            {lowStock.map(p => (
+              <div key={p.id} className="flex justify-between items-center p-3 bg-rose-50 rounded-xl border border-rose-100">
+                <div className="flex flex-col">
+                  <span className="font-medium text-sm text-slate-800">{p.name}</span>
+                  <span className="text-xs text-rose-600 mt-0.5">Shortage: {p.minStockLevel - p.stockQuantity} units</span>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs text-slate-500 block mb-0.5">Current vs Min</span>
+                  <div className="flex items-center gap-1.5 font-mono text-sm">
+                    <span className="font-bold text-rose-600">{p.stockQuantity}</span>
+                    <span className="text-slate-300">/</span>
+                    <span className="text-slate-600">{p.minStockLevel}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="py-6 text-center text-sm text-slate-500 font-medium bg-emerald-50 rounded-xl border border-emerald-100">
+            <ShieldCheck size={24} className="mx-auto mb-2 text-emerald-500" />
+            All inventory levels are healthy!
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-6 mb-8 bg-white border border-slate-200 rounded-3xl p-6 shadow-xl shadow-slate-200/50 relative overflow-hidden animate-in slide-in-from-top-4 duration-300">
+      <div className="absolute top-0 right-0 p-4">
+        <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+          <X size={18} />
+        </button>
+      </div>
+      {content}
+    </div>
+  );
+};
+
+
 // ─── MAIN DASHBOARD COMPONENT ────────────────────────
 
 const Dashboard: React.FC = () => {
   const { products, sales, predictions } = useData();
   const [filter, setFilter] = useState<'all' | 'low'>('all');
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+  const [selectedKpi, setSelectedKpi] = useState<string | null>(null);
 
   // Stats
   const totalStock = products.reduce((acc, p) => acc + p.stockQuantity, 0);
@@ -500,6 +636,8 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
+      <QuickAddModal isOpen={isQuickAddOpen} onClose={() => setIsQuickAddOpen(false)} />
+
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <KPICard
@@ -507,26 +645,41 @@ const Dashboard: React.FC = () => {
           value={products.length}
           icon={Package}
           color="blue"
+          isSelected={selectedKpi === 'Total Products'}
+          onClick={() => setSelectedKpi(selectedKpi === 'Total Products' ? null : 'Total Products')}
         />
         <KPICard
           title="Inventory Value"
           value={`₹${(totalValue / 1000).toFixed(1)}k`}
           icon={DollarSign}
           color="emerald"
+          isSelected={selectedKpi === 'Inventory Value'}
+          onClick={() => setSelectedKpi(selectedKpi === 'Inventory Value' ? null : 'Inventory Value')}
         />
         <KPICard
           title="Total Revenue"
           value={`₹${(totalSales / 1000).toFixed(1)}k`}
           icon={TrendingUp}
           color="indigo"
+          isSelected={selectedKpi === 'Total Revenue'}
+          onClick={() => setSelectedKpi(selectedKpi === 'Total Revenue' ? null : 'Total Revenue')}
         />
         <KPICard
           title="Low Stock Alerts"
           value={lowStockCount}
           icon={AlertTriangle}
           color={lowStockCount > 0 ? 'rose' : 'emerald'}
+          isSelected={selectedKpi === 'Low Stock Alerts'}
+          onClick={() => setSelectedKpi(selectedKpi === 'Low Stock Alerts' ? null : 'Low Stock Alerts')}
         />
       </div>
+
+      <DashboardInsightsPanel
+        selectedKpi={selectedKpi}
+        products={products}
+        sales={sales}
+        onClose={() => setSelectedKpi(null)}
+      />
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-10 gap-8">
@@ -538,7 +691,7 @@ const Dashboard: React.FC = () => {
           <div className="bg-gradient-to-br from-white to-slate-50/50 p-8 rounded-[2rem] shadow-lg border border-slate-200 relative overflow-hidden">
             {/* Decorative element */}
             <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-indigo-100/40 to-purple-100/40 rounded-full blur-3xl -z-10"></div>
-            
+
             <div className="flex justify-between items-center mb-8">
               <div>
                 <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
@@ -565,59 +718,59 @@ const Dashboard: React.FC = () => {
             </div>
 
             <div className="h-[380px] w-full">{chartData.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={chartData}
-                    barGap={0}
-                    barSize={40}
-                    margin={{ top: 10, right: 10, left: 0, bottom: 60 }}
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={chartData}
+                  barGap={0}
+                  barSize={40}
+                  margin={{ top: 10, right: 10, left: 0, bottom: 60 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis
+                    dataKey="name"
+                    stroke="#94a3b8"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
+                    interval={0}
+                    fontWeight={500}
+                  />
+                  <YAxis
+                    stroke="#94a3b8"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    dx={-10}
+                    width={40}
+                  />
+                  <ReTooltip content={<CustomTooltip />} cursor={{ fill: '#f8fafc', opacity: 0.8 }} />
+                  <Bar
+                    dataKey="stock"
+                    radius={[12, 12, 12, 12]}
+                    animationDuration={1500}
                   >
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                    <XAxis
-                      dataKey="name"
-                      stroke="#94a3b8"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={false}
-                      angle={-45}
-                      textAnchor="end"
-                      height={60}
-                      interval={0}
-                      fontWeight={500}
-                    />
-                    <YAxis
-                      stroke="#94a3b8"
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                      dx={-10}
-                      width={40}
-                    />
-                    <ReTooltip content={<CustomTooltip />} cursor={{ fill: '#f8fafc', opacity: 0.8 }} />
-                    <Bar
-                      dataKey="stock"
-                      radius={[12, 12, 12, 12]}
-                      animationDuration={1500}
-                    >
-                      {chartData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={entry.stock < entry.min ? '#fb7185' : '#6366f1'}
-                          fillOpacity={entry.stock < entry.min ? 1 : 0.85}
-                        />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="h-full flex items-center justify-center text-slate-400">
-                  <div className="text-center">
-                    <Package size={40} className="mx-auto mb-2 opacity-40" />
-                    <p className="font-medium">No products yet</p>
-                    <p className="text-xs mt-1">Add products using Quick Add to see stock distribution</p>
-                  </div>
+                    {chartData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.stock < entry.min ? '#fb7185' : '#6366f1'}
+                        fillOpacity={entry.stock < entry.min ? 1 : 0.85}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-full flex items-center justify-center text-slate-400">
+                <div className="text-center">
+                  <Package size={40} className="mx-auto mb-2 opacity-40" />
+                  <p className="font-medium">No products yet</p>
+                  <p className="text-xs mt-1">Add products using Quick Add to see stock distribution</p>
                 </div>
-              )}
+              </div>
+            )}
             </div>
           </div>
 
@@ -636,59 +789,59 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
             <div className="h-[280px] w-full">{salesTrendData.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart
-                    data={salesTrendData}
-                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-                  >
-                    <defs>
-                      <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                    <XAxis
-                      dataKey="name"
-                      stroke="#94a3b8"
-                      fontSize={10}
-                      tickLine={false}
-                      axisLine={false}
-                      interval="preserveStartEnd"
-                    />
-                    <YAxis
-                      stroke="#94a3b8"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={false}
-                      dx={-10}
-                      width={40}
-                    />
-                    <ReTooltip
-                      contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}
-                      formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Amount']}
-                      itemStyle={{ color: '#059669', fontWeight: 600 }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="amount"
-                      stroke="#10b981"
-                      strokeWidth={3}
-                      fillOpacity={1}
-                      fill="url(#colorSales)"
-                      animationDuration={2000}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="h-full flex items-center justify-center text-slate-400">
-                  <div className="text-center">
-                    <TrendingUp size={40} className="mx-auto mb-2 opacity-40" />
-                    <p className="font-medium">No sales recorded yet</p>
-                    <p className="text-xs mt-1">Sales chart will appear after transactions are made</p>
-                  </div>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={salesTrendData}
+                  margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                >
+                  <defs>
+                    <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis
+                    dataKey="name"
+                    stroke="#94a3b8"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                    interval="preserveStartEnd"
+                  />
+                  <YAxis
+                    stroke="#94a3b8"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                    dx={-10}
+                    width={40}
+                  />
+                  <ReTooltip
+                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}
+                    formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Amount']}
+                    itemStyle={{ color: '#059669', fontWeight: 600 }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="amount"
+                    stroke="#10b981"
+                    strokeWidth={3}
+                    fillOpacity={1}
+                    fill="url(#colorSales)"
+                    animationDuration={2000}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-full flex items-center justify-center text-slate-400">
+                <div className="text-center">
+                  <TrendingUp size={40} className="mx-auto mb-2 opacity-40" />
+                  <p className="font-medium">No sales recorded yet</p>
+                  <p className="text-xs mt-1">Sales chart will appear after transactions are made</p>
                 </div>
-              )}
+              </div>
+            )}
             </div>
           </div>
         </div>
@@ -698,7 +851,7 @@ const Dashboard: React.FC = () => {
           <div className="bg-gradient-to-br from-white via-white to-indigo-50/30 p-6 rounded-[2rem] shadow-lg border border-slate-200 sticky top-4 max-h-[calc(100vh-120px)] flex flex-col relative overflow-hidden">
             {/* Decorative gradient bar */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-            
+
             {/* Animated background decoration */}
             <div className="absolute top-10 right-10 w-32 h-32 bg-gradient-to-br from-indigo-200/20 to-purple-200/20 rounded-full blur-2xl"></div>
             <div className="absolute bottom-10 left-10 w-40 h-40 bg-gradient-to-br from-purple-200/20 to-pink-200/20 rounded-full blur-3xl"></div>
@@ -720,20 +873,18 @@ const Dashboard: React.FC = () => {
                     <div className="flex-1">
                       <h4 className="font-bold text-slate-800 text-sm mb-1">{pred.productName}</h4>
                       <div className="flex items-center gap-2">
-                        <span className={`text-[10px] px-2.5 py-1 rounded-full font-extrabold uppercase tracking-wider ${
-                          pred.status === 'Critical' ? 'bg-rose-100 text-rose-600' :
+                        <span className={`text-[10px] px-2.5 py-1 rounded-full font-extrabold uppercase tracking-wider ${pred.status === 'Critical' ? 'bg-rose-100 text-rose-600' :
                           pred.status === 'Low' ? 'bg-amber-100 text-amber-600' :
-                          pred.status === 'Overstocked' ? 'bg-blue-100 text-blue-600' :
-                          'bg-emerald-100 text-emerald-600'
-                        }`}>
+                            pred.status === 'Overstocked' ? 'bg-blue-100 text-blue-600' :
+                              'bg-emerald-100 text-emerald-600'
+                          }`}>
                           {pred.status}
                         </span>
                         {pred.trend && (
-                          <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase flex items-center gap-0.5 ${
-                            pred.trend === 'increasing' ? 'bg-purple-50 text-purple-600' :
+                          <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase flex items-center gap-0.5 ${pred.trend === 'increasing' ? 'bg-purple-50 text-purple-600' :
                             pred.trend === 'decreasing' ? 'bg-cyan-50 text-cyan-600' :
-                            'bg-slate-100 text-slate-500'
-                          }`}>
+                              'bg-slate-100 text-slate-500'
+                            }`}>
                             {pred.trend === 'increasing' ? '↗' : pred.trend === 'decreasing' ? '↘' : '→'} {pred.trend}
                           </span>
                         )}
@@ -776,12 +927,11 @@ const Dashboard: React.FC = () => {
                       <span className="text-[9px] text-slate-600 font-mono font-bold">{pred.currentStock}/{pred.minStockLevel}</span>
                     </div>
                     <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full transition-all duration-500 ${
-                          pred.currentStock < pred.minStockLevel * 0.5 ? 'bg-rose-500' :
+                      <div
+                        className={`h-full transition-all duration-500 ${pred.currentStock < pred.minStockLevel * 0.5 ? 'bg-rose-500' :
                           pred.currentStock < pred.minStockLevel ? 'bg-amber-500' :
-                          'bg-emerald-500'
-                        }`}
+                            'bg-emerald-500'
+                          }`}
                         style={{ width: `${Math.min(100, (pred.currentStock / pred.minStockLevel) * 100)}%` }}
                       />
                     </div>
@@ -797,60 +947,21 @@ const Dashboard: React.FC = () => {
                       <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full">{pred.priority}</span>
                     </div>
                   )}
-                  
-                  {pred.status === 'Low' && pred.recommendedOrderQty > 0 && (
-                    <div className="mt-3 text-xs text-amber-800 font-medium flex items-center justify-between gap-2 bg-amber-50 border border-amber-200 p-2.5 rounded-lg">
-                      <span>Recommend ordering {pred.recommendedOrderQty} units</span>
-                      <span className="text-[9px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold">{pred.priority}</span>
-                    </div>
-                  )}
-
-                  {pred.status === 'Healthy' && (
-                    <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="w-7 h-7 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
-                        <ShieldCheck size={14} />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Confidence Badge */}
-                  <div className="absolute bottom-3 right-3">
-                    <div className={`text-[8px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                      pred.confidence === 'High' ? 'bg-green-100 text-green-700' :
-                      pred.confidence === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-gray-100 text-gray-600'
-                    }`}>
-                      {pred.confidence} AI
-                    </div>
-                  </div>
                 </div>
               ))}
+
               {predictions.length === 0 && (
-                <div className="text-center text-slate-400 py-10 flex flex-col items-center">
-                  <Box size={40} className="mb-2 opacity-50" />
-                  <span>Gathering data points...</span>
-                  <p className="text-xs mt-1">Predictions appear after sales/usage history builds up</p>
+                <div className="text-center text-slate-400 py-10">
+                  <Activity size={40} className="mx-auto mb-2 opacity-40" />
+                  <p className="font-medium">No active forecasts</p>
                 </div>
               )}
-            </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-200 relative z-10">
-              <div className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 text-slate-500">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                  <span className="font-medium">AI Engine Active</span>
-                </div>
-                <button className="font-bold text-indigo-600 hover:text-indigo-700 uppercase tracking-wider transition-colors">
-                  View Full Analytics →
-                </button>
-              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Quick Add Modal */}
-      <QuickAddModal isOpen={isQuickAddOpen} onClose={() => setIsQuickAddOpen(false)} />
+      </div>
     </div>
   );
 };

@@ -92,36 +92,36 @@ RESTOCK_NOTES = [
 # (base_daily_qty, qty_range, weekend_multiplier, festival_boost_months)
 PRODUCT_SALES_CFG = {
     # Electronics
-    "23d6913c": (2, (1, 4),  1.4, [10, 11, 12]),   # Samsung Buds Pro
-    "34f46a00": (5, (2, 8),  1.3, [10, 11, 12]),   # boAt Airdopes 141
-    "128b2df1": (1, (1, 3),  1.3, [10, 11, 12]),   # JBL Speaker
-    "7fd8485c": (3, (1, 6),  1.2, [10, 11, 12]),   # Realme Power Bank
+    "Samsung Galaxy Buds Pro": (2, (1, 4),  1.4, [10, 11, 12]),   # Samsung Buds Pro
+    "boAt Airdopes 141": (5, (2, 8),  1.3, [10, 11, 12]),   # boAt Airdopes 141
+    "JBL Flip 6 Bluetooth Speaker": (1, (1, 3),  1.3, [10, 11, 12]),   # JBL Speaker
+    "Realme Power Bank 20000mAh": (3, (1, 6),  1.2, [10, 11, 12]),   # Realme Power Bank
     # Shoes
-    "03f15757": (2, (1, 4),  1.5, [1, 2, 10, 11]), # Nike Pegasus
-    "2750d332": (1, (1, 3),  1.4, [1, 2, 10, 11]), # Adidas Ultraboost
-    "75978dd0": (2, (1, 4),  1.5, [1, 2, 10, 11]), # Puma RS-X
-    "bdab3bcb": (2, (1, 5),  1.5, [1, 2, 10, 11]), # Reebok Classic
+    "Nike Air Zoom Pegasus 40": (2, (1, 4),  1.5, [1, 2, 10, 11]), # Nike Pegasus
+    "Adidas Ultraboost Light": (1, (1, 3),  1.4, [1, 2, 10, 11]), # Adidas Ultraboost
+    "Puma RS-X Reinvention": (2, (1, 4),  1.5, [1, 2, 10, 11]), # Puma RS-X
+    "Reebok Classic Leather": (2, (1, 5),  1.5, [1, 2, 10, 11]), # Reebok Classic
     # Watches
-    "7a05949f": (2, (1, 4),  1.3, [10, 11, 12, 2]),# Titan Neo
-    "964341d5": (1, (1, 3),  1.2, [10, 11, 12]),   # Fossil Gen 6
-    "47036afc": (2, (1, 4),  1.3, [10, 11, 12]),   # Casio G-Shock
+    "Titan Neo Analog Watch": (2, (1, 4),  1.3, [10, 11, 12, 2]),# Titan Neo
+    "Fossil Gen 6 Smartwatch": (1, (1, 3),  1.2, [10, 11, 12]),   # Fossil Gen 6
+    "Casio G-Shock GA-2100": (2, (1, 4),  1.3, [10, 11, 12]),   # Casio G-Shock
     # Clothing
-    "68228509": (4, (2, 7),  1.4, [10, 11, 3, 4]), # Levi's Jeans
-    "a1295b93": (4, (2, 7),  1.4, [1, 2, 9, 10]),  # Allen Solly Shirt
-    "06c18dc6": (6, (3, 10), 1.5, [3, 4, 10, 11]), # US Polo T-Shirt
-    "a5966dc2": (1, (1, 3),  1.3, [10, 11, 12, 2]),# Raymond Blazer
+    "Levi's 501 Original Jeans": (4, (2, 7),  1.4, [10, 11, 3, 4]), # Levi's Jeans
+    "Allen Solly Formal Shirt": (4, (2, 7),  1.4, [1, 2, 9, 10]),  # Allen Solly Shirt
+    "US Polo Assn T-Shirt": (6, (3, 10), 1.5, [3, 4, 10, 11]), # US Polo T-Shirt
+    "Raymond Blazer Suit": (1, (1, 3),  1.3, [10, 11, 12, 2]),# Raymond Blazer
     # Accessories
-    "60ee9f39": (3, (1, 5),  1.3, [10, 11, 12]),   # LP Leather Belt
-    "a05e96b5": (2, (1, 4),  1.3, [10, 11, 12, 2]),# Tommy Wallet
-    "584396b5": (1, (1, 3),  1.4, [3, 4, 5, 6]),   # Ray-Ban Aviator
+    "Louis Philippe Leather Belt": (3, (1, 5),  1.3, [10, 11, 12]),   # LP Leather Belt
+    "Tommy Hilfiger Wallet": (2, (1, 4),  1.3, [10, 11, 12, 2]),# Tommy Wallet
+    "Ray-Ban Aviator Sunglasses": (1, (1, 3),  1.4, [3, 4, 5, 6]),   # Ray-Ban Aviator
     # Books
-    "95c2215b": (5, (2, 9),  1.2, [1, 6, 7]),      # Atomic Habits
-    "1abfc76e": (4, (2, 7),  1.2, [1, 6, 7]),      # Psychology of Money
-    "870e5336": (4, (2, 7),  1.2, [1, 6, 7]),      # Ikigai
+    "Atomic Habits — James Clear": (5, (2, 9),  1.2, [1, 6, 7]),      # Atomic Habits
+    "Psychology of Money — Morgan Housel": (4, (2, 7),  1.2, [1, 6, 7]),      # Psychology of Money
+    "Ikigai — Héctor García": (4, (2, 7),  1.2, [1, 6, 7]),      # Ikigai
     # Home & Kitchen
-    "8494d92d": (5, (2, 9),  1.3, [10, 11, 12]),   # Milton Flask
-    "7d9218a6": (2, (1, 5),  1.3, [10, 11, 12]),   # Prestige Fry Pan
-    "954b6709": (3, (1, 6),  1.3, [10, 11, 12]),   # Pigeon Desk Lamp
+    "Milton Thermosteel Flask 1L": (5, (2, 9),  1.3, [10, 11, 12]),   # Milton Flask
+    "Prestige Omega Fry Pan": (2, (1, 5),  1.3, [10, 11, 12]),   # Prestige Fry Pan
+    "Pigeon LED Desk Lamp": (3, (1, 6),  1.3, [10, 11, 12]),   # Pigeon Desk Lamp
 }
 
 # ── date range: Nov 2024 → Feb 21 2026 (15 months) ─────────────────────────
@@ -161,7 +161,8 @@ while current_date <= END_DATE:
     # ── daily sales for each product ───────────────────────────────────────
     for prod in products:
         pid = prod["id"]
-        cfg = PRODUCT_SALES_CFG.get(pid)
+        pname = prod["name"]
+        cfg = PRODUCT_SALES_CFG.get(pname)
         if not cfg:
             continue
 

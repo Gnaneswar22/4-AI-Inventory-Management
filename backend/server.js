@@ -11,7 +11,10 @@ const cors = require("cors");
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
+const path = require("path");
 const mongoose = require("mongoose");
+const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const app = express();
@@ -65,6 +68,8 @@ const UserSchema = new mongoose.Schema(
   {
     id: { type: String, required: true, unique: true },
     email: { type: String, unique: true },
+    otp: { type: String }, // Store current valid OTP
+    otpExpiry: { type: Date } // Expiration time for the OTP
   },
   schemaOpts,
 );
@@ -219,6 +224,74 @@ function loginRequired(req, res, next) {
 //  AUTH ROUTES
 // ═══════════════════════════════════════════════════
 
+// Storage for registration OTPs (before user is created)
+const tempRegistrationOTPs = new Map();
+
+// Configure real email transport using environment variables
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.SMTP_PORT || '587'),
+  secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
+  }
+});
+
+// POST /api/auth/send-otp
+app.post("/api/auth/send-otp", async (req, res) => {
+  try {
+    const { email = "", type = "register" } = req.body;
+    const eEmail = email.trim().toLowerCase();
+
+    if (!eEmail) return res.status(400).json({ error: "Email is required." });
+
+    const user = await User.findOne({ email: eEmail });
+
+    if (type === "register" && user) {
+      return res.status(409).json({ error: "Email already registered." });
+    }
+    if (type === "login" && !user) {
+      return res.status(404).json({ error: "Email not found." });
+    }
+
+    // Generate 6 digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiry = new Date(Date.now() + 10 * 60000); // 10 minutes
+
+    if (type === "register") {
+      tempRegistrationOTPs.set(eEmail, { otp, expiry });
+    } else {
+      user.otp = otp;
+      user.otpExpiry = expiry;
+      await user.save();
+    }
+
+    console.log(`\n\n=== SENDING OTP EMAIL ===\nTo: ${eEmail}\n============================\n\n`);
+
+    // In a real app, send actual email here
+    await transporter.sendMail({
+      from: `"Invenio AI" <${process.env.SMTP_USER}>`,
+      to: eEmail,
+      subject: 'Your Invenio AI Login Code',
+      text: `Your verification code is: ${otp}`,
+      html: `
+        <div style="font-family: sans-serif; padding: 20px; text-align: center;">
+          <h2>Invenio AI Login Verification</h2>
+          <p>Your login verification code is:</p>
+          <h1 style="color: #4f46e5; letter-spacing: 4px; font-size: 36px;">${otp}</h1>
+          <p>This code will expire in 10 minutes.</p>
+        </div>
+      `
+    });
+
+    return res.status(200).json({ success: true, message: "OTP sent successfully." });
+
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // POST /api/auth/register
 app.post("/api/auth/register", async (req, res) => {
   try {
@@ -235,11 +308,12 @@ app.post("/api/auth/register", async (req, res) => {
     const eEmail = email.trim().toLowerCase();
     const eSQ = security_question.trim();
     const eSA = security_answer.trim().toLowerCase();
+    const providedOtp = req.body.otp;
 
-    if (!eName || !eEmail || !password)
+    if (!eName || !eEmail || !password || !providedOtp)
       return res
         .status(400)
-        .json({ error: "Name, email, and password are required." });
+        .json({ error: "Name, email, password and OTP are required." });
     if (password.length < 6)
       return res
         .status(400)
@@ -255,6 +329,12 @@ app.post("/api/auth/register", async (req, res) => {
       return res
         .status(409)
         .json({ error: "An account with this email already exists." });
+
+    // Verify OTP
+    const tempOTP = tempRegistrationOTPs.get(eEmail);
+    if (!tempOTP || tempOTP.otp !== providedOtp || tempOTP.expiry < new Date()) {
+      return res.status(401).json({ error: "Invalid or expired OTP." });
+    }
 
     const newUser = {
       id: generateId(),
@@ -281,17 +361,26 @@ app.post("/api/auth/register", async (req, res) => {
 // POST /api/auth/login
 app.post("/api/auth/login", async (req, res) => {
   try {
-    const { email = "", password = "" } = req.body;
+    const { email = "", password = "", otp = "" } = req.body;
     const eEmail = email.trim().toLowerCase();
 
-    if (!eEmail || !password)
+    if (!eEmail || !password || !otp)
       return res
         .status(400)
-        .json({ error: "Email and password are required." });
+        .json({ error: "Email, password and OTP are required." });
 
-    const user = await User.findOne({ email: eEmail }).lean();
+    const user = await User.findOne({ email: eEmail });
     if (!user || !bcrypt.compareSync(password, user.password))
       return res.status(401).json({ error: "Invalid email or password." });
+
+    if (user.otp !== otp || !user.otpExpiry || user.otpExpiry < new Date()) {
+      return res.status(401).json({ error: "Invalid or expired OTP." });
+    }
+
+    // Clear OTP after successful login
+    user.otp = undefined;
+    user.otpExpiry = undefined;
+    await user.save();
 
     req.session.userId = user.id;
     req.session.userEmail = user.email;
@@ -1249,15 +1338,21 @@ app.get("/api/health", (req, res) => {
 // GET /api/forecasts
 app.get("/api/forecasts", async (req, res) => {
   try {
-    const data = await ForecastData.findOne().lean();
+    const FORECASTS_FILE = path.join(__dirname, 'data', 'forecasts.json');
+    if (!fs.existsSync(FORECASTS_FILE)) {
+      return res.status(404).json({
+        error:
+          "Forecasts not yet generated. Run train_forecast_model.py first.",
+      });
+    }
+    const data = JSON.parse(fs.readFileSync(FORECASTS_FILE, 'utf-8'));
     if (!data)
       return res.status(404).json({
         error:
           "Forecasts not yet generated. Run train_forecast_model.py first.",
       });
 
-    delete data._id;
-    delete data.__v;
+
     const { horizon = null, productId = null } = req.query;
     let productsFc = data.products || [];
 
@@ -1317,7 +1412,11 @@ app.get("/api/forecasts", async (req, res) => {
 // GET /api/forecasts/:productId/daily
 app.get("/api/forecasts/:productId/daily", async (req, res) => {
   try {
-    const data = await ForecastData.findOne().lean();
+    const FORECASTS_FILE = path.join(__dirname, 'data', 'forecasts.json');
+    if (!fs.existsSync(FORECASTS_FILE)) {
+      return res.status(404).json({ error: "Forecasts not generated yet." });
+    }
+    const data = JSON.parse(fs.readFileSync(FORECASTS_FILE, 'utf-8'));
     if (!data)
       return res.status(404).json({ error: "Forecasts not generated yet." });
 

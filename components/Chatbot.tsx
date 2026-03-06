@@ -95,11 +95,11 @@ const Chatbot: React.FC = () => {
     <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end">
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-4 w-[350px] h-[550px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300 origin-bottom-right">
+        <div className="mb-4 w-[350px] h-[550px] bg-white backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300 origin-bottom-right">
           {/* Header */}
           <div className="bg-gradient-to-r from-indigo-600 to-violet-600 p-5 flex justify-between items-center text-white shadow-lg flex-shrink-0">
             <div className="flex items-center gap-3">
-              <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+              <div className="bg-white p-2 rounded-lg backdrop-blur-sm">
                 <Bot size={20} />
               </div>
               <div>
@@ -110,7 +110,7 @@ const Chatbot: React.FC = () => {
                 </div>
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-2 rounded-full transition-colors">
+            <button onClick={() => setIsOpen(false)} className="hover:bg-white p-2 rounded-full transition-colors">
               <X size={18} />
             </button>
           </div>
@@ -175,7 +175,7 @@ const Chatbot: React.FC = () => {
           isOpen ? 'bg-slate-800 text-white' : 'bg-gradient-to-tr from-indigo-600 to-violet-600 text-white'
         }`}
       >
-        <div className="absolute inset-0 rounded-full bg-white/20 animate-ping opacity-0 group-hover:opacity-100 duration-1000"></div>
+        <div className="absolute inset-0 rounded-full bg-white animate-ping opacity-0 group-hover:opacity-100 duration-1000"></div>
         {isOpen ? <X size={24} /> : <Sparkles size={24} />}
       </button>
     </div>

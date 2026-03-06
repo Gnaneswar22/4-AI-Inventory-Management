@@ -335,7 +335,7 @@ const Login: React.FC = () => {
 
           {/* Feature Pills */}
           <div className="space-y-5">
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-white/10 hover:bg-white transition-colors">
               <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center">
                 <BarChart3 className="text-indigo-400" size={20} />
               </div>
@@ -344,7 +344,7 @@ const Login: React.FC = () => {
                 <p className="text-xs text-slate-400">Live sales & stock tracking</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-white/10 hover:bg-white transition-colors">
               <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
                 <TrendingUp className="text-emerald-400" size={20} />
               </div>
@@ -353,7 +353,7 @@ const Login: React.FC = () => {
                 <p className="text-xs text-slate-400">Smart demand forecasting</p>
               </div>
             </div>
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-white/10 hover:bg-white transition-colors">
               <div className="w-10 h-10 rounded-full bg-violet-500/20 flex items-center justify-center">
                 <KeyRound className="text-violet-400" size={20} />
               </div>

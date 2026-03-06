@@ -237,7 +237,7 @@ const Sales: React.FC = () => {
           )}
 
           {isSuccess && (
-            <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center rounded-[2rem]">
+            <div className="absolute inset-0 bg-white backdrop-blur-sm z-10 flex items-center justify-center rounded-[2rem]">
               <div className="bg-white p-6 rounded-3xl shadow-2xl border border-emerald-100 flex flex-col items-center animate-in zoom-in-95">
                 <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4">
                   <CheckCircle2 size={32} />

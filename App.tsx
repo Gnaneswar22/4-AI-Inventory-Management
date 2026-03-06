@@ -28,7 +28,6 @@ const AppContent = () => {
   const { isAuthenticated, isLoading } = useAuth();
   const [currentPage, setCurrentPage] = useState('dashboard');
 
-  // Show loading screen while auth state is being determined
   if (isLoading) {
     return <LoadingScreen />;
   }
