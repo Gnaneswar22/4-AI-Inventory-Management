@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import {
-  LayoutDashboard, Box, ShoppingBag, LogOut,
-  Menu, PieChart, ChevronRight, Bell, TrendingUp
+  LayoutDashboard, Box, ShoppingBag, LogOut, Menu, PieChart, ChevronRight, Bell, TrendingUp, Activity
 } from 'lucide-react';
 import Notifications from './Notifications';
 
@@ -65,6 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
           <NavItem page="sales" icon={ShoppingBag} label="Sales" currentPage={currentPage} onNavigate={onNavigate} />
           <NavItem page="analytics" icon={PieChart} label="Analytics" currentPage={currentPage} onNavigate={onNavigate} />
           <NavItem page="forecasting" icon={TrendingUp} label="Forecasting" currentPage={currentPage} onNavigate={onNavigate} />
+          <NavItem page="performance" icon={Activity} label="Performance" currentPage={currentPage} onNavigate={onNavigate} />
         </nav>
 
         {/* User Profile Snippet */}
@@ -133,6 +133,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
             <NavItem page="sales" icon={ShoppingBag} label="Sales" currentPage={currentPage} onNavigate={onNavigate} onMobileClose={() => setIsMobileMenuOpen(false)} />
             <NavItem page="analytics" icon={PieChart} label="Analytics" currentPage={currentPage} onNavigate={onNavigate} onMobileClose={() => setIsMobileMenuOpen(false)} />
             <NavItem page="forecasting" icon={TrendingUp} label="Forecasting" currentPage={currentPage} onNavigate={onNavigate} onMobileClose={() => setIsMobileMenuOpen(false)} />
+            <NavItem page="performance" icon={Activity} label="Performance" currentPage={currentPage} onNavigate={onNavigate} onMobileClose={() => setIsMobileMenuOpen(false)} />
             <div className="h-px bg-slate-800 my-2"></div>
             <button onClick={logout} className="w-full text-left px-4 py-3 text-red-400 font-medium flex items-center gap-2">
               <LogOut size={16} /> Sign Out
@@ -148,6 +149,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
             {currentPage === 'sales' && <ShoppingBag size={18} className="text-indigo-500" />}
             {currentPage === 'analytics' && <PieChart size={18} className="text-indigo-500" />}
             {currentPage === 'forecasting' && <TrendingUp size={18} className="text-indigo-500" />}
+            {currentPage === 'performance' && <Activity size={18} className="text-indigo-500" />}
             {currentPage}
           </h2>
           <div className="flex items-center gap-4">

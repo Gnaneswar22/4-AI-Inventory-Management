@@ -65,6 +65,34 @@ const Sales: React.FC = () => {
     setTimeout(() => scanInputRef.current?.focus(), 100);
   };
 
+  const handleDownloadInvoice = () => {
+    if (sales.length === 0) return;
+
+    // Create CSV content
+    const headers = ['Date', 'Time', 'Product', 'Customer', 'Quantity', 'Total Amount'];
+    const rows = [...sales].reverse().map(sale => {
+      const dateObj = new Date(sale.date);
+      return [
+        dateObj.toLocaleDateString(),
+        dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        `"${sale.productName}"`,
+        `"${sale.customerName || 'Walk-in Guest'}"`,
+        sale.quantity,
+        sale.totalPrice
+      ].join(',');
+    });
+
+    const csvContent = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `StockSense_Invoice_Report_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500 h-[calc(100vh-140px)]">
 
@@ -259,8 +287,14 @@ const Sales: React.FC = () => {
               </h3>
               <p className="text-sm text-slate-400 mt-1">Real-time transaction log</p>
             </div>
-            <button className="p-2 bg-slate-50 hover:bg-slate-100 rounded-xl text-slate-500 transition-colors">
+            <button
+              onClick={handleDownloadInvoice}
+              disabled={sales.length === 0}
+              className="p-2 bg-slate-50 hover:bg-slate-100 rounded-xl text-slate-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed group relative"
+              title="Download Sales Report"
+            >
               <Receipt size={20} />
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Export to CSV</span>
             </button>
           </div>
 

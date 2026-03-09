@@ -7,6 +7,7 @@ import Inventory from './pages/Inventory';
 import Sales from './pages/Sales';
 import Analytics from './pages/Analytics';
 import Forecasting from './pages/Forecasting';
+import Performance from './pages/Performance';
 import Login from './pages/Login';
 import Chatbot from './components/Chatbot';
 
@@ -43,6 +44,7 @@ const AppContent = () => {
       case 'sales': return <Sales />;
       case 'analytics': return <Analytics />;
       case 'forecasting': return <Forecasting />;
+      case 'performance': return <Performance />;
       default: return <Dashboard />;
     }
   };

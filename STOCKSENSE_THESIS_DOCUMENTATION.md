@@ -100,6 +100,26 @@ The model generates three horizons:
 - **Inventory Matrix**: A sortable, searchable grid for product management.
 - **Analytical Insights**: Graphs showing historical vs. predicted demand.
 
+### 5.3 Performance Overview
+The system was evaluated based on execution speed, prediction accuracy, and reliability of operations. The following section provides a detailed graphical breakdown of these metrics.
+
+### 5.4 Live Graphical Analysis
+
+StockSense features a built-in **Performance Analysis Module** that provides real-time graphical representations of system metrics. Unlike static reports, this module displays "live readings" based on current transaction data and system latency.
+
+#### 5.4.1 Inventory Operations Accuracy
+The system tracks the success rate of every database transaction. This graph visualizes the accuracy of product additions, stock updates, sales processing, and inventory retrieval in real-time. Accuracy levels typically remain above 98% due to atomic transaction handling in the Node/MongoDB stack.
+
+#### 5.4.2 Stock Prediction Accuracy
+This visualization compares the machine learning model's forecasted values against actual sales arrivals. It provides a categorical breakdown (Watches, Clothing, Electronics, etc.) of the model's confidence and R² performance metrics.
+
+#### 5.4.3 Live System Latency
+A real-time line chart monitors the response time across different system operations. This provides a direct observation of system performance under load, showing latencies for tasks ranging from simple retrieval to complex demand forecasting calculations.
+
+> [!TIP]
+> **Exporting Graphs for the Thesis**:
+> Navigate to the **Performance** tab in the sidebar. Click the **"Download Thesis Report"** button to generate a captures of these live readings in a professional format suitable for your final document.
+
 ---
 
 ## 6. BACKEND & DATABASE
