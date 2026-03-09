@@ -1,5 +1,5 @@
 {
-  "name": "Invenio AI",
+  "name": "StockSense",
   "description": "A logic-based AI inventory management system with sales tracking, stock prediction algorithms, and a Gemini-powered assistant.",
   "requestFramePermissions": []
 }

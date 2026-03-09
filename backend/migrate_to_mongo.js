@@ -13,7 +13,7 @@ const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const path = require('path');
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hvxvofb.mongodb.net/invenio?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hvxvofb.mongodb.net/stocksense?retryWrites=true&w=majority&appName=Cluster0';
 const DATA_DIR = path.join(__dirname, 'data');
 
 // ─── helpers ───────────────────────────────────────
@@ -34,8 +34,8 @@ function isWerkzeugHash(h) {
 }
 
 const DEFAULT_CREDS = {
-  'admin@invenio.ai': { password: 'admin123', security_answer: 'blue' },
-  'manager@invenio.ai': { password: 'manager123', security_answer: 'buddy' },
+  'admin@stocksense.ai': { password: 'admin123', security_answer: 'blue' },
+  'manager@stocksense.ai': { password: 'manager123', security_answer: 'buddy' },
 };
 
 // ─── lean Mongoose schemas (no _id exposure) ──────
@@ -62,7 +62,7 @@ const ForecastData = mongoose.model('ForecastData', ForecastDataSchema);
 // ─── main migration ────────────────────────────────
 async function migrate() {
   console.log('\n======================================================');
-  console.log('  Invenio MongoDB Migration');
+  console.log('  StockSense MongoDB Migration');
   console.log('======================================================\n');
 
   await mongoose.connect(MONGO_URI);

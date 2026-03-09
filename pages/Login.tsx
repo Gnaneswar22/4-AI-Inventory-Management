@@ -319,9 +319,9 @@ const Login: React.FC = () => {
           <div>
             <div className="flex items-center gap-3 mb-10">
               <div className="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30 border border-white/10">
-                <span className="font-bold text-2xl text-white">I</span>
+                <span className="font-bold text-2xl text-white">S</span>
               </div>
-              <span className="font-bold text-2xl tracking-tight">Invenio<span className="text-indigo-400">AI</span></span>
+              <span className="font-bold text-2xl tracking-tight">Stock<span className="text-indigo-400">Sense</span></span>
             </div>
 
             <h2 className="text-4xl font-bold leading-tight mb-6">
@@ -365,7 +365,7 @@ const Login: React.FC = () => {
           </div>
 
           <div className="text-xs text-slate-500 mt-8 flex justify-between items-end">
-            <span>&copy; 2024 Invenio Systems Inc.</span>
+            <span>&copy; 2026 StockSense Systems.</span>
             <span className="opacity-50">v2.4.0</span>
           </div>
         </div>
@@ -376,9 +376,9 @@ const Login: React.FC = () => {
           {/* Mobile Header */}
           <div className="mb-8 lg:hidden flex items-center gap-2">
             <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="font-bold text-white">I</span>
+              <span className="font-bold text-white">S</span>
             </div>
-            <span className="text-2xl font-bold text-slate-900">Invenio<span className="text-indigo-600">AI</span></span>
+            <span className="text-2xl font-bold text-slate-900">Stock<span className="text-indigo-600">Sense</span></span>
           </div>
 
           {/* ═══════ LOGIN VIEW ═══════ */}
@@ -440,7 +440,7 @@ const Login: React.FC = () => {
             <>
               <div className="mb-6">
                 <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">Create Account</h1>
-                <p className="text-slate-500">Register to get started with Invenio AI.</p>
+                <p className="text-slate-500">Register to get started with StockSense.</p>
               </div>
 
               <form onSubmit={handleRegister} className="space-y-4">

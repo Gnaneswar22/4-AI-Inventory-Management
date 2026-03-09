@@ -1,5 +1,5 @@
 /**
- * server.js — Invenio AI Inventory Management
+ * server.js — StockSense Inventory Management
  * Node.js / Express backend — MongoDB Atlas storage
  * Port: 5000
  */
@@ -52,7 +52,7 @@ app.use(express.json());
 
 app.use(
   session({
-    secret: "invenio-ai-secret-key-2024",
+    secret: "stocksense-secret-key-2026",
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 },
@@ -158,7 +158,7 @@ async function initializeData() {
       {
         id: "u1",
         name: "Admin User",
-        email: "admin@invenio.ai",
+        email: "admin@stocksense.ai",
         password: bcrypt.hashSync("admin123", 10),
         role: "ADMIN",
         avatar: "https://picsum.photos/200/200",
@@ -169,7 +169,7 @@ async function initializeData() {
       {
         id: "u2",
         name: "Store Manager",
-        email: "manager@invenio.ai",
+        email: "manager@stocksense.ai",
         password: bcrypt.hashSync("manager123", 10),
         role: "USER",
         avatar: "https://picsum.photos/201/201",
@@ -271,13 +271,13 @@ app.post("/api/auth/send-otp", async (req, res) => {
 
     // In a real app, send actual email here
     await transporter.sendMail({
-      from: `"Invenio AI" <${process.env.SMTP_USER}>`,
+      from: `"StockSense" <${process.env.SMTP_USER}>`,
       to: eEmail,
-      subject: 'Your Invenio AI Login Code',
+      subject: 'Your StockSense Login Code',
       text: `Your verification code is: ${otp}`,
       html: `
         <div style="font-family: sans-serif; padding: 20px; text-align: center;">
-          <h2>Invenio AI Login Verification</h2>
+          <h2>StockSense Login Verification</h2>
           <p>Your login verification code is:</p>
           <h1 style="color: #4f46e5; letter-spacing: 4px; font-size: 36px;">${otp}</h1>
           <p>This code will expire in 10 minutes.</p>

@@ -1,5 +1,5 @@
 /**
- * server.js — Invenio AI Inventory Management
+ * server.js — StockSense Inventory Management
  * Node.js / Express backend — MongoDB Atlas storage
  * Port: 5000
  */
@@ -73,7 +73,7 @@ const MongoStore = require("connect-mongo");
 app.use(express.json());
 
 const sessionOpts = {
-  secret: "invenio-ai-secret-key-2024",
+  secret: "stocksense-secret-key-2026",
   resave: false,
   saveUninitialized: false,
   cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 },
@@ -225,7 +225,7 @@ async function initializeData() {
         {
           id: "u1",
           name: "Admin User",
-          email: "admin@invenio.ai",
+          email: "admin@stocksense.ai",
           password: bcrypt.hashSync("admin123", 10),
           role: "ADMIN",
           avatar: "https://picsum.photos/200/200",
@@ -236,7 +236,7 @@ async function initializeData() {
         {
           id: "u2",
           name: "Store Manager",
-          email: "manager@invenio.ai",
+          email: "manager@stocksense.ai",
           password: bcrypt.hashSync("manager123", 10),
           role: "USER",
           avatar: "https://picsum.photos/201/201",
@@ -333,9 +333,9 @@ app.post("/api/auth/send-otp", async (req, res) => {
     await Otp.create({ email: eEmail, otp: generatedOtp });
 
     const mailOptions = {
-      from: `"Invenio AI" <${process.env.SMTP_USER}>`,
+      from: `"StockSense" <${process.env.SMTP_USER}>`,
       to: eEmail,
-      subject: "Invenio AI - Verification Code",
+      subject: "StockSense - Verification Code",
       text: `Your OTP is: ${generatedOtp}. It is valid for 5 minutes.`
     };
 

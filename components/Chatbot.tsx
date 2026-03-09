@@ -12,12 +12,12 @@ interface Message {
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 'welcome', role: 'assistant', text: 'Hello! I\'m **Invenio AI**. I can analyze your stock levels and suggest restocking strategies.' }
+    { id: 'welcome', role: 'assistant', text: 'Hello! I\'m **StockSense**. I can analyze your stock levels and suggest restocking strategies.' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   const { products, sales, predictions } = useData();
 
   const scrollToBottom = () => {
@@ -57,7 +57,7 @@ const Chatbot: React.FC = () => {
   // Improved Markdown Parser
   const renderMessageText = (text: string) => {
     const lines = text.split('\n');
-    
+
     return (
       <div className="space-y-1">
         {lines.map((line, lineIndex) => {
@@ -66,7 +66,7 @@ const Chatbot: React.FC = () => {
           // Check for bullet points (* or -)
           const isBullet = line.trim().startsWith('* ') || line.trim().startsWith('- ');
           const cleanLine = isBullet ? line.trim().substring(2) : line;
-          
+
           // Parse bold (**text**)
           const parts = cleanLine.split(/(\*\*.*?\*\*)/g);
           const content = parts.map((part, partIndex) => {
@@ -103,7 +103,7 @@ const Chatbot: React.FC = () => {
                 <Bot size={20} />
               </div>
               <div>
-                <h3 className="font-bold text-sm">Invenio Assistant</h3>
+                <h3 className="font-bold text-sm">StockSense Assistant</h3>
                 <div className="flex items-center gap-1.5 opacity-80">
                   <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
                   <span className="text-[10px] uppercase tracking-wider font-semibold">Online</span>
@@ -123,11 +123,10 @@ const Chatbot: React.FC = () => {
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[85%] p-4 text-sm shadow-sm ${
-                    msg.role === 'user'
+                  className={`max-w-[85%] p-4 text-sm shadow-sm ${msg.role === 'user'
                       ? 'bg-indigo-600 text-white rounded-2xl rounded-tr-none'
                       : 'bg-white border border-slate-100 text-slate-700 rounded-2xl rounded-tl-none'
-                  }`}
+                    }`}
                 >
                   {renderMessageText(msg.text)}
                 </div>
@@ -171,9 +170,8 @@ const Chatbot: React.FC = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`group relative flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 ${
-          isOpen ? 'bg-slate-800 text-white' : 'bg-gradient-to-tr from-indigo-600 to-violet-600 text-white'
-        }`}
+        className={`group relative flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 ${isOpen ? 'bg-slate-800 text-white' : 'bg-gradient-to-tr from-indigo-600 to-violet-600 text-white'
+          }`}
       >
         <div className="absolute inset-0 rounded-full bg-white animate-ping opacity-0 group-hover:opacity-100 duration-1000"></div>
         {isOpen ? <X size={24} /> : <Sparkles size={24} />}

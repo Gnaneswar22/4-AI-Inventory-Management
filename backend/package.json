@@ -1,7 +1,7 @@
 {
-  "name": "invenio-ai-backend",
+  "name": "stocksense-backend",
   "version": "1.0.0",
-  "description": "Invenio AI Inventory Management — Node.js / Express backend",
+  "description": "StockSense Inventory Management — Node.js / Express backend",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

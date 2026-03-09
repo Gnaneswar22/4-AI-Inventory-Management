@@ -8,7 +8,7 @@ from datetime import datetime
 from functools import wraps
 
 app = Flask(__name__)
-app.secret_key = 'invenio-ai-secret-key-2024'
+app.secret_key = 'stocksense-secret-key-2026'
 CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000", "http://127.0.0.1:3000"])
 
 # ─────────────────────────────────────────────────
@@ -82,7 +82,7 @@ def initialize_data():
             {
                 "id": "u1",
                 "name": "Admin User",
-                "email": "admin@invenio.ai",
+                "email": "admin@stocksense.ai",
                 "password": generate_password_hash("admin123"),
                 "role": "ADMIN",
                 "avatar": "https://picsum.photos/200/200",
@@ -93,7 +93,7 @@ def initialize_data():
             {
                 "id": "u2",
                 "name": "Store Manager",
-                "email": "manager@invenio.ai",
+                "email": "manager@stocksense.ai",
                 "password": generate_password_hash("manager123"),
                 "role": "USER",
                 "avatar": "https://picsum.photos/201/201",
@@ -1169,7 +1169,7 @@ def health_check():
     """API health check endpoint."""
     return jsonify({
         "status": "healthy",
-        "message": "Invenio AI Backend is running!",
+        "message": "StockSense Backend is running!",
         "storage": "JSON-based file storage",
         "data_directory": DATA_DIR,
         "timestamp": datetime.now().isoformat()
@@ -1275,7 +1275,7 @@ def get_forecast_daily(product_id):
 if __name__ == '__main__':
     initialize_data()
     print("\n" + "=" * 50)
-    print("  🚀 Invenio AI Backend Starting...")
+    print("  🚀 StockSense Backend Starting...")
     print(f"  📁 Data Directory: {DATA_DIR}")
     print(f"  📦 Storage: JSON-based file storage")
     print("=" * 50 + "\n")

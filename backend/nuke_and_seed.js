@@ -2,11 +2,11 @@
 
 require('dotenv').config();
 const mongoose = require('mongoose');
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hvxvofb.mongodb.net/invenio?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://harshitindigibilli:qjwfbUuhtE6Pcn32@cluster0.hvxvofb.mongodb.net/stocksense?retryWrites=true&w=majority&appName=Cluster0';
 
 async function nuke() {
     console.log('\n======================================================');
-    console.log('  Nuking MongoDB Legacy Data (Except Users)');
+    console.log('  Nuking StockSense Legacy Data (Except Users)');
     console.log('======================================================\n');
 
     try {

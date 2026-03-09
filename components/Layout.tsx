@@ -50,10 +50,10 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
       <aside className="hidden md:flex flex-col w-64 bg-slate-900 border-r border-slate-800 p-4 h-screen sticky top-0 z-30 shadow-2xl">
         <div className="flex items-center gap-3 px-2 mb-8 mt-2">
           <div className="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20 ring-1 ring-white/10">
-            <span className="text-white font-bold text-lg">I</span>
+            <span className="text-white font-bold text-lg">S</span>
           </div>
           <div>
-            <h1 className="text-lg font-bold text-white tracking-tight">Invenio<span className="text-indigo-400">AI</span></h1>
+            <h1 className="text-lg font-bold text-white tracking-tight">Stock<span className="text-indigo-400">Sense</span></h1>
             <p className="text-[9px] uppercase tracking-widest text-slate-500 font-semibold mt-0.5">Inventory OS</p>
           </div>
         </div>
@@ -97,9 +97,9 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate }) =>
         <header className="md:hidden bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center sticky top-0 z-20 shadow-md">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold">I</span>
+              <span className="text-white font-bold">S</span>
             </div>
-            <span className="font-bold text-white">Invenio AI</span>
+            <span className="font-bold text-white">StockSense</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="relative">

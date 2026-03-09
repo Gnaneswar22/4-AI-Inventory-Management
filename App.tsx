@@ -14,10 +14,10 @@ const LoadingScreen = () => (
   <div className="min-h-screen bg-slate-900 flex items-center justify-center">
     <div className="flex flex-col items-center gap-6">
       <div className="w-16 h-16 bg-gradient-to-tr from-indigo-600 to-violet-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30 border border-white/10 animate-pulse">
-        <span className="font-bold text-3xl text-white">I</span>
+        <span className="font-bold text-3xl text-white">S</span>
       </div>
       <div className="flex items-center gap-2">
-        <span className="font-bold text-xl text-white tracking-tight">Invenio<span className="text-indigo-400">AI</span></span>
+        <span className="font-bold text-xl text-white tracking-tight">Stock<span className="text-indigo-400">Sense</span></span>
       </div>
       <div className="w-8 h-8 border-3 border-white/20 border-t-indigo-400 rounded-full animate-spin"></div>
     </div>

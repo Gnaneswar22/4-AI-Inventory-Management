@@ -1,5 +1,5 @@
 /**
- * Invenio AI Constants
+ * StockSense Constants
  * 
  * All product data, user data, sales, and inventory data
  * is now stored dynamically in JSON files via the Flask backend.
@@ -15,6 +15,6 @@
  */
 
 // App-level constants (non-data)
-export const APP_NAME = 'Invenio AI';
+export const APP_NAME = 'StockSense';
 export const APP_VERSION = 'v2.4.0';
 export const API_BASE_URL = 'http://localhost:5000/api';

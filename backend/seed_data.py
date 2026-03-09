@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════╗
-║  INVENIO AI — SEED DATA GENERATOR                          ║
+║  STOCKSENSE — SEED DATA GENERATOR                          ║
 ║                                                              ║
 ║  Run this script to populate the JSON storage with           ║
 ║  realistic sample data for products, sales, usage,           ║
@@ -68,7 +68,7 @@ def seed_users():
         {
             "id": generate_id(),
             "name": "Admin User",
-            "email": "admin@invenio.ai",
+            "email": "admin@stocksense.ai",
             "password": generate_password_hash("admin123"),
             "role": "ADMIN",
             "avatar": "",
@@ -79,7 +79,7 @@ def seed_users():
         {
             "id": generate_id(),
             "name": "Store Manager",
-            "email": "manager@invenio.ai",
+            "email": "manager@stocksense.ai",
             "password": generate_password_hash("manager123"),
             "role": "USER",
             "avatar": "",
@@ -90,7 +90,7 @@ def seed_users():
         {
             "id": generate_id(),
             "name": "Warehouse Lead",
-            "email": "warehouse@invenio.ai",
+            "email": "warehouse@stocksense.ai",
             "password": generate_password_hash("warehouse123"),
             "role": "USER",
             "avatar": "",
@@ -348,7 +348,7 @@ def seed_sales_counter(sales, total_revenue):
 # ─────────────────────────────────────────────────
 def main():
     print("=" * 60)
-    print("  🚀 INVENIO AI — SEED DATA GENERATOR")
+    print("  🚀 STOCKSENSE — SEED DATA GENERATOR")
     print("=" * 60)
     
     # Ensure data directory exists

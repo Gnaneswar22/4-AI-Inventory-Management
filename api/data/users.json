@@ -2,7 +2,7 @@
   {
     "id": "867a5aad",
     "name": "Admin User",
-    "email": "admin@invenio.ai",
+    "email": "admin@stocksense.ai",
     "password": "scrypt:32768:8:1$R4oPZHMXnuB3Jvwo$ab2cf50cac9f25239e3f4f98d14cf14ed4c7c49a0e9db1c99dd872d81e034788808ae62fd7e7dee24efe0dee28a88bbcf678fad65e40add692c85bdfa565e9b6",
     "role": "ADMIN",
     "avatar": "",
@@ -13,7 +13,7 @@
   {
     "id": "10de3d87",
     "name": "Store Manager",
-    "email": "manager@invenio.ai",
+    "email": "manager@stocksense.ai",
     "password": "scrypt:32768:8:1$SnB0L9yUnb7H1tnr$057b346b91b9d183458e8c9b4b164efa8bae381d5db1a46f1e1be6da88adb9cdc1d0c14652c1dfed87b6b0b57474e0547805fd8842feaa4d918c319b568705cb",
     "role": "USER",
     "avatar": "",
@@ -24,7 +24,7 @@
   {
     "id": "2b2137f3",
     "name": "Warehouse Lead",
-    "email": "warehouse@invenio.ai",
+    "email": "warehouse@stocksense.ai",
     "password": "scrypt:32768:8:1$EUfuFwD09gV8qAqQ$f2136e0f761dea8164c5c591a4d48dc9eed0d85d56d170e06016c6337ba2be56018dbe78faed597b74faa5de589f163dcecfb6b5b7856fb3b75701b14a3d973b",
     "role": "USER",
     "avatar": "",

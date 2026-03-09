@@ -1,5 +1,5 @@
 /**
- * Invenio AI — API Service
+ * StockSense — API Service
  * Communicates with Flask backend (JSON-based storage)
  */
 
